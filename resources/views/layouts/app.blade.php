@@ -22,7 +22,9 @@
 
     <x-panels.header/>
 
-    @yield('content')
+    <main class="flex-1 container mx-auto bg-white">
+        @yield('content')
+    </main>
     
     <x-panels.footer/>
 
