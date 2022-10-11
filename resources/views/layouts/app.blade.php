@@ -20,11 +20,11 @@
 <body class="bg-white text-gray-600 font-sans leading-normal text-base tracking-normal flex min-h-screen flex-col">
 <div class="wrapper flex flex-1 flex-col">
 
-    @include('components/panels.header')
-    
+    <x-panels.header/>
+
     @yield('content')
     
-    @include('components/panels.footer')
+    <x-panels.footer/>
 
 </div>
 
