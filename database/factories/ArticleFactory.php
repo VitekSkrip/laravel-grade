@@ -17,7 +17,10 @@ class ArticleFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'title' => $this->faker->word(),
+            'description' => $this->faker->word(),
+            'published_at' => $this->faker->dateTimeThisMonth(),
+            'body' => $this->faker->text()
         ];
     }
 }

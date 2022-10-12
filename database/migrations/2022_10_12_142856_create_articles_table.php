@@ -16,11 +16,11 @@ return new class extends Migration
     {
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
-            $table->string('slug');
+            // $table->uuid('slug')->nullable();
             $table->string('title', 100);
             $table->string('description', 255);
             $table->text('body');
-            $table->date('published_at');
+            $table->dateTime('published_at')->nullable();
             $table->timestamps();
         });
     }
