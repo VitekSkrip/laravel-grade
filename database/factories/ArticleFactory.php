@@ -20,7 +20,7 @@ class ArticleFactory extends Factory
             'title' => $this->faker->word(),
             'slug' => $this->faker->word(),
             'description' => $this->faker->sentence,
-            'published_at' => $this->faker->dateTimeThisMonth(),
+            'published_at' => $this->faker->optional()->dateTimeThisMonth(),
             'body' => $this->faker->text()
         ];
     }
