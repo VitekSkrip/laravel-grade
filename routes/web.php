@@ -14,8 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/', [PagesController::class, 'homepage'])->name('home');
 
-Route::get('/', [PagesController::class, 'homepage']);
+Route::get('/sales', [PagesController::class, 'sales'])->name('sales');
+
+Route::get('/about', [PagesController::class, 'about'])->name('about');
+
+Route::get('/clients', [PagesController::class, 'clients'])->name('clients');
+
+Route::get('/contacts', [PagesController::class, 'contacts'])->name('contacts');
+
+Route::get('/finances', [PagesController::class, 'finances'])->name('finances');

@@ -6,6 +6,12 @@
 
 @section('page-title', 'Главная страница')
 
+@section('header-logo')
+    <span class="inline-block sm:inline">
+        <img src="assets/images/logo.png" width="222" height="30" alt="">
+    </span>
+@endsection
+
 @section('content')
             <section class="bg-white">
                 <div data-slick-carousel>
