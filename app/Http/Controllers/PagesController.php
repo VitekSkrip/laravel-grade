@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\View\View;
+use App\Models\Article;
 
 class PagesController extends Controller
 {
     public function homepage(): View
     {
-        return view('pages.homepage');
+        $homeNews = Article::latest('published_at')->take(3)->get();
+        return view('pages.homepage', ['homeNews' => $homeNews]);
     }
 
     public function clients(): View

@@ -18,7 +18,8 @@ class ArticleFactory extends Factory
     {
         return [
             'title' => $this->faker->word(),
-            'description' => $this->faker->word(),
+            'slug' => $this->faker->word(),
+            'description' => $this->faker->sentence,
             'published_at' => $this->faker->dateTimeThisMonth(),
             'body' => $this->faker->text()
         ];
