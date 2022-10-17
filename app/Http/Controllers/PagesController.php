@@ -48,4 +48,9 @@ class PagesController extends Controller
     {
         return view('pages.article', ['article' => $article]);
     }
+
+    public function create(): View
+    {
+        return view('pages.create');
+    }
 }

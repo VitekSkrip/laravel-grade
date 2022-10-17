@@ -28,4 +28,7 @@ Route::get('/finances', [PagesController::class, 'finances'])->name('finances');
 
 Route::get('/articles', [PagesController::class, 'articles'])->name('articles');
 
+Route::get('/articles/create', [PagesController::class, 'create'])->name('create');
+
 Route::get('/articles/{article:slug}', [PagesController::class, 'article'])->name('article');
+
