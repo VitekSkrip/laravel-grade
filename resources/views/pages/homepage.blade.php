@@ -85,7 +85,7 @@
                     <span class="inline-block text-gray-200 pl-1"> / <a href="{{ route('articles') }}" class="inline-block pl-1 text-gray-200 hover:text-orange"><b>Все</b></a></span>
                 </div>
 
-                <x-panels.homeNews :homeNews="$homeNews"/>
+                <x-homeArticles.homeNews :homeNews="$homeNews"/>
                 
             </section>
 

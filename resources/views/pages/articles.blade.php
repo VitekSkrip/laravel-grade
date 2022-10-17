@@ -6,8 +6,7 @@
 @section('inner-content')
             <div class="space-y-4">
 
-                <x-panels.allArticles :allArticles="$allArticles"/>
+                <x-articlesPage.allArticles :allArticles="$allArticles"/>
             
             </div>
-    </div>
 @endsection
