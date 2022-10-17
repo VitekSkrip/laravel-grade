@@ -13,7 +13,9 @@
                 <span class="text-sm text-white italic rounded bg-orange px-2">Теги</span>
             </div>
 
-            <p>{{ $article->body }}</p>
+            <p></p>
+            {!! $article->body !!}
+            
         </div>
 
         <div class="mt-4">
