@@ -9,7 +9,7 @@
                 <div class="grid gap-6 grid-cols-1 lg:grid-cols-2">
                     <div class="w-full flex">
                         <div class="h-48 lg:h-auto w-32 xl:w-48 flex-none text-center rounded-lg overflow-hidden">
-                            <a class="block w-full h-full hover:opacity-75" href="salons.html"><img src="assets/pictures/test_salon_1.jpg" class="w-full h-full object-cover" alt=""></a>
+                            <a class="block w-full h-full hover:opacity-75" href="salons.html"><img src="/assets/pictures/test_salon_1.jpg" class="w-full h-full object-cover" alt=""></a>
                         </div>
                         <div class="px-4 flex flex-col justify-between leading-normal">
                             <div class="mb-8">
@@ -26,7 +26,7 @@
                     </div>
                     <div class="w-full flex">
                         <div class="h-48 lg:h-auto w-32 xl:w-48 flex-none text-center rounded-lg overflow-hidden">
-                            <a class="block w-full h-full hover:opacity-75" href="salons.html"><img src="assets/pictures/test_salon_2.jpg" class="w-full h-full object-cover" alt=""></a>
+                            <a class="block w-full h-full hover:opacity-75" href="salons.html"><img src="/assets/pictures/test_salon_2.jpg" class="w-full h-full object-cover" alt=""></a>
                         </div>
                         <div class="px-4 flex flex-col justify-between leading-normal">
                             <div class="mb-8">
@@ -55,7 +55,7 @@
         <div class="space-y-4 sm:space-y-0 sm:flex sm:justify-between items-center py-6 px-2 sm:px-0">
             <div class="copy pr-8">© 2021 Рога &amp; Сила. Продажа автомобилей.</div>
             <div class="text-right">
-                <a href="https://www.qsoft.ru" target="_blank" class="inline-block">Сделано в <img class="ml-2 inline-block" src="assets/images/qsoft.png" width="59" height="11" alt=""/></a>
+                <a href="https://www.qsoft.ru" target="_blank" class="inline-block">Сделано в <img class="ml-2 inline-block" src="/assets/images/qsoft.png" width="59" height="11" alt=""/></a>
             </div>
         </div>
     </footer>

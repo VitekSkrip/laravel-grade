@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @push('styles')
-    <link href="assets/css/inner_page_template_styles.css" rel="stylesheet">
+    <link href="/assets/css/inner_page_template_styles.css" rel="stylesheet">
 @endpush
 
 @section('breadcrumbs')
