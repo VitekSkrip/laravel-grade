@@ -16,6 +16,6 @@ class ArticleSeeder extends Seeder
      */
     public function run()
     {
-        Article::factory()->count(5)->create();
+        Article::factory()->count(5)->create(['published_at' => now()]);
     }
 }
