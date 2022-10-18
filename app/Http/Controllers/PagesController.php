@@ -43,4 +43,9 @@ class PagesController extends Controller
         $allArticles = Article::latest('published_at')->get();
         return view('pages.articles', ['allArticles' => $allArticles]);
     }
+
+    public function article(Article $article): View
+    {
+        return view('pages.article', ['article' => $article]);
+    }
 }
