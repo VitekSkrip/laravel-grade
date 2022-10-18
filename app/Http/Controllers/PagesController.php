@@ -38,4 +38,9 @@ class PagesController extends Controller
         return view('pages.sales');
     }
 
+    public function articles(): View
+    {
+        $allArticles = Article::latest('published_at')->get();
+        return view('pages.articles', ['allArticles' => $allArticles]);
+    }
 }

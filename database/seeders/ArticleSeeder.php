@@ -14,6 +14,7 @@ class ArticleSeeder extends Seeder
      *
      * @return void
      */
+
     public function run()
     {
         Article::factory()->count(5)->create(['published_at' => now()]);
