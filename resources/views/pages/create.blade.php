@@ -19,9 +19,13 @@
 
                 <div class="block">
 
-                    <x-addArticleForm.buttons.submit/>
+                    <x-addArticleForm.buttons.submit>
+                        Создать
+                    </x-addArticleForm.buttons.submit>
 
-                    <x-addArticleForm.buttons.cancel/>
+                    <x-addArticleForm.buttons.cancel>
+                        Отменить
+                    </x-addArticleForm.buttons.cancel>
 
                 </div>
 

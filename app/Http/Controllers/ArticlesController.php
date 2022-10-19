@@ -37,7 +37,7 @@ class ArticlesController extends Controller
      */
     public function store(ArticleRequest $request)
     {
-        Article::create($request->only(['title', 'description', 'body', 'slug', 'published_at']));
+        Article::create($request->validated());
         return back()->with('success_message', 'Новость успешно создана');
     }
 

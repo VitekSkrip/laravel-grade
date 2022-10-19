@@ -37,6 +37,8 @@ class ArticleRequest extends FormRequest
                 'title' => 'required|min:5|max:100',
                 'description' => 'required|max:255',
                 'body' => 'required',
+                'slug' => 'required|unique:articles',
+                'published_at' => 'nullable'
         ];
     }
 }
