@@ -18,7 +18,7 @@
                 <span class="text-sm text-white italic rounded bg-orange px-2">Киа Seed</span>
             </div>
             <div class="flex items-center">
-                <p class="text-sm text-gray-400 italic">{{ $article->published_at->format('d M Y') }}</p>
+                <p class="text-sm text-gray-400 italic">@isset($article->published_at) {{ $article->published_at->format('d M Y') }} @else {{ "" }} @endisset</p>
             </div>
         </div>
     </div>

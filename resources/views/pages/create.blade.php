@@ -10,42 +10,23 @@
     <div class="p-4">
         <h1 class="text-black text-3xl font-bold mb-4">Веб-форма</h1>
 
-        <x-addArticleForm.result.error/>
+        <x-addArticleForm.result.result/>
+        
+        <x-addArticleForm.form action="{{ route('store') }}" method="post">
+                @method('POST')
 
-        <x-addArticleForm.result.success/>
+                <x-addArticleForm.input.all/>
 
-        <form action="" method="post">
-            <div class="mt-8 max-w-md">
-                <div class="grid grid-cols-1 gap-6">
-                    <!-- <label for="field2" class="text-gray-700 font-bold">Пример поля с ошибкой валидации</label>
-                    <input id="field2" type="text" class="mt-1 block w-full rounded-md border-red-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="">
-                    <span class="text-xs italic text-red-600">Поле не заполнено</span> -->
+                <div class="block">
 
-                    <x-addArticleForm.input.group for="title">
-                        <x-addArticleForm.input.text id="title"/>
-                    </x-addArticleForm.input.group>
+                    <x-addArticleForm.buttons.submit/>
 
-                    <x-addArticleForm.input.group for="description">
-                        <x-addArticleForm.input.text id="description"/>
-                    </x-addArticleForm.input.group>
+                    <x-addArticleForm.buttons.cancel/>
 
-                    <x-addArticleForm.input.group for="body">
-                        <x-addArticleForm.input.textarea id="body"/>
-                    </x-addArticleForm.input.group>
-
-                    <div class="block">
-                        <x-addArticleForm.input.checkbox id="is_published"/>
-                    </div>
-
-                    <div class="block">
-
-                        <x-addArticleForm.buttons.orange/>
-
-                        <x-addArticleForm.buttons.grey/>
-
-                    </div>
                 </div>
-            </div>
-        </form>
+
+        </x-addArticleForm.form>
+    
     </div>
+
 @endsection
