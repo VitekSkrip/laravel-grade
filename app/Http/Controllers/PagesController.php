@@ -9,7 +9,7 @@ class PagesController extends Controller
 {
     public function homepage(): View
     {
-        $homeNews = Article::latest('published_at')->take(3)->get();
+        $homeNews = Article::whereNotNull('published_at')->latest('published_at')->take(3)->get();
         return view('pages.homepage', ['homeNews' => $homeNews]);
     }
 
@@ -36,16 +36,5 @@ class PagesController extends Controller
     public function sales(): View
     {
         return view('pages.sales');
-    }
-
-    public function articles(): View
-    {
-        $allArticles = Article::latest('published_at')->get();
-        return view('pages.articles', ['allArticles' => $allArticles]);
-    }
-
-    public function article(Article $article): View
-    {
-        return view('pages.article', ['article' => $article]);
     }
 }
