@@ -73,7 +73,7 @@ class ArticlesController extends Controller
     public function update(ArticleRequest $request, Article $article)
     {
         $article->update($request->validated());
-        return back()->with('success_message', 'Новость успешно обновлена');
+        return redirect(route('articles.index'))->with('success_message', 'Новость успешно обновлена');
     }
 
     /**
