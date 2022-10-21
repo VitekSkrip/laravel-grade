@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('page-title', 'Создание новости')
+@section('page-title', 'Редактирование новости')
 
 @push('styles')
     <link href="/assets/css/inner_page_template_styles.css" rel="stylesheet">
@@ -12,24 +12,24 @@
 
         <x-addArticleForm.result.result/>
         
-        <x-addArticleForm.form action="{{ route('articles.store') }}" method="post">
-                @method('POST')
+        <x-addArticleForm.form action="{{ route('articles.update', $article) }}" method="POST">
+                @method('PATCH')
 
                 <x-addArticleForm.input.all :article="$article"/>
 
                 <div class="block">
 
                     <x-addArticleForm.buttons.submit>
-                        Создать
+                        Сохранить
                     </x-addArticleForm.buttons.submit>
-
-                    <x-addArticleForm.buttons.cancel>
-                        Отменить
-                    </x-addArticleForm.buttons.cancel>
 
                 </div>
 
         </x-addArticleForm.form>
+
+        <x-deleteArticleForm.delete action="{{ route('articles.destroy', $article)}}" method="POST">
+            Удалить
+        </x-deleteArticleForm.delete>
     
     </div>
 
