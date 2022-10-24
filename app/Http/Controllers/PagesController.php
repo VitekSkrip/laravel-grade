@@ -21,6 +21,16 @@ class PagesController extends Controller
 
     public function clients(): View
     {
+        $cars = Car::get();
+        dump(
+            $cars->avg('price'),
+            $cars->whereNotNull('old_price'),
+            $cars->whereNotNull('old_price')->avg('price'),
+            $cars->max('price'),
+            $cars->pluck('salon'),
+            $cars->pluck('engine.name'),
+
+        );
         return view('pages.clients');
     }
 
