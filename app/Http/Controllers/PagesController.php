@@ -4,13 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\View\View;
 use App\Models\Article;
+use App\Models\Car;
 
 class PagesController extends Controller
 {
     public function homepage(): View
     {
         $homeNews = Article::whereNotNull('published_at')->latest('published_at')->take(3)->get();
-        return view('pages.homepage', ['homeNews' => $homeNews]);
+        $cars = Car::where('is_new', true)->take(4)->get();
+
+        return view('pages.homepage', [
+            'homeNews' => $homeNews,
+            'cars' => $cars,
+        ]);
     }
 
     public function clients(): View

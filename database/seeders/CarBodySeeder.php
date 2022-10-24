@@ -29,6 +29,6 @@ class CarBodySeeder extends Seeder
  
         foreach ($bodies as $body) {
             CarBody::factory()->create(['name' => $body]);
-        } 
+        }
     }
 }

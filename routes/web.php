@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ArticlesController;
+use App\Http\Controllers\CarsController;
 use App\Http\Controllers\PagesController;
 use Illuminate\Support\Facades\Route;
 
@@ -34,3 +35,7 @@ Route::get('/articles/create', [ArticlesController::class, 'create'])->name('cre
 Route::post('/articles', [ArticlesController::class, 'store'])->name('store');
 
 Route::get('/articles/{article:slug}', [ArticlesController::class, 'show'])->name('article');
+
+Route::get('/catalog', [CarsController::class, 'index']);
+
+Route::get('/products/{car:id}', [CarsController::class, 'show'])->name('product');

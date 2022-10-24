@@ -15,6 +15,15 @@ return new class extends Migration
     {
         Schema::create('cars', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('body');
+            $table->unsignedInteger('price');
+            $table->unsignedInteger('old_price')->nullable();
+            $table->string('salon')->nullable();
+            $table->string('kpp')->nullable();
+            $table->unsignedInteger('year')->nullable();
+            $table->string('color')->nullable();
+            $table->boolean('is_new')->nullable();
             $table->timestamps();
         });
     }

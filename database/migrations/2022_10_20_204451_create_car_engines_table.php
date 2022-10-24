@@ -21,7 +21,7 @@ return new class extends Migration
         });
 
         Schema::table('cars', function (Blueprint $table) {
-            $table->foreignId('car_engine_id')->references('id')->on('car_engines');
+            $table->foreignId('engine_id')->references('id')->on('car_engines');
         });
     }
 

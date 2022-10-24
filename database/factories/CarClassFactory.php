@@ -16,8 +16,15 @@ class CarClassFactory extends Factory
      */
     public function definition()
     {
+        $classes = [
+            'Бюджет',
+            'Бизнес-класс',
+            'Представительский класс',
+            'Люкс',
+        ];
+
         return [
-            'name' => $this->faker->word() . ' - level' . rand(1, 6),
+            'name' => $this->faker->randomElement($classes),
         ];
     }
 }

@@ -18,20 +18,16 @@ class CarSeeder extends Seeder
      */
     public function run()
     {
-        /** @var Collection $carClasses */
-       $carClasses = CarClass::get();
-       /** @var Collection $carEngines */
-       $carEngines = CarEngine::get();
-       /** @var Collection $carBodies */
-       $carBodies = CarBody::get();
+        $carEngines = CarEngine::get();
+        $carClasses = CarClass::get();
+        $carBodies = CarBody::get();
 
-       foreach (Car::get() as $car) {
-           Car::factory()->create(array_merge($car, [
-               'class_id' => $carClasses->random(),
-               'engine_id' => $carEngines->random(),
-               'body_id' => $carBodies->random(),
-           ]));
-       }
-
+        Car::factory()->count(20)->create(
+            [
+                'body_id' =>  $carBodies->random(),
+                'engine_id' => $carEngines->random(),
+                'class_id' => $carClasses->random()
+            ]
+        );
     }
 }
