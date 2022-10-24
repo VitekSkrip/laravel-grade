@@ -28,13 +28,7 @@ Route::get('/contacts', [PagesController::class, 'contacts'])->name('contacts');
 
 Route::get('/finances', [PagesController::class, 'finances'])->name('finances');
 
-Route::get('/articles', [ArticlesController::class, 'index'])->name('articles');
-
-Route::get('/articles/create', [ArticlesController::class, 'create'])->name('create');
-
-Route::post('/articles', [ArticlesController::class, 'store'])->name('store');
-
-Route::get('/articles/{article:slug}', [ArticlesController::class, 'show'])->name('article');
+Route::resource('articles', ArticlesController::class)->scoped(['article' => 'slug']);
 
 Route::get('/catalog', [CarsController::class, 'index']);
 

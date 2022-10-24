@@ -33,11 +33,13 @@ class ArticleRequest extends FormRequest
      */
     public function rules()
     {
+        $id = $this->article->id ?? '';
+
         return [
                 'title' => 'required|min:5|max:100',
                 'description' => 'required|max:255',
                 'body' => 'required',
-                'slug' => 'required|unique:articles',
+                'slug' => "required|unique:articles,slug,{$id}",
                 'published_at' => 'nullable'
         ];
     }
