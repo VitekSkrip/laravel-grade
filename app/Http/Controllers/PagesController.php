@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\View\View;
 use App\Models\Article;
 use App\Models\Car;
+use Illuminate\Support\Str;
 
 class PagesController extends Controller
 {
@@ -22,15 +23,35 @@ class PagesController extends Controller
     public function clients(): View
     {
         $cars = Car::get();
+
         dump(
             $cars->avg('price'),
-            $cars->whereNotNull('old_price'),
+
             $cars->whereNotNull('old_price')->avg('price'),
-            $cars->max('price'),
-            $cars->pluck('salon'),
-            $cars->pluck('engine.name'),
+
+            $cars->where('price', $cars->max('price'))->toArray(),
+        
+            $salonsCol = $cars->groupBy('salon')->keys()->toArray(),
+
+            $enginesNames = $cars->groupBy('engine.name')->keys()->sort(),
+
+            $classesNames = $cars->groupBy('carClass.name')->keyBy('carClass.name')->sort(),
+
+            $models = $cars->filter(function ($item) {
+                $sales = $item->old_price;
+                $modelName = Str::contains($item->name, ['5', '6']);
+                $engineName = Str::contains($item->engine['name'], ['5', '6']);
+                $kppName = Str::contains($item->kpp, ['5', '6']);
+
+                return $sales && ($engineName || $kppName || $modelName);
+            })->values()->keyBy('id'),
+
+            $bodyCollection = $cars->whereNull('old_price')->groupBy('carBody.name')->map(function ($item){
+                return $item->avg('price');
+            })->sort(),
 
         );
+
         return view('pages.clients');
     }
 
