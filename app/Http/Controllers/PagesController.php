@@ -33,9 +33,9 @@ class PagesController extends Controller
         
             $salonsCol = $cars->groupBy('salon')->keys()->toArray(),
 
-            $enginesNames = $cars->groupBy('engine.name')->keys()->sort(),
+            $enginesNames = $cars->groupBy('engine.name')->keys()->sort()->toArray(),
 
-            $classesNames = $cars->groupBy('carClass.name')->keyBy('carClass.name')->sort(),
+            $classesNames = $cars->groupBy('carClass.name')->sort(),
 
             $models = $cars->filter(function ($item) {
                 $sales = $item->old_price;
