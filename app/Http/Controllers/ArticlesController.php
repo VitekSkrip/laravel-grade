@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ArticleRequest;
 use Illuminate\Http\Request;
 use App\Models\Article;
+use App\Models\Tag;
 
 class ArticlesController extends Controller
 {
@@ -37,7 +38,20 @@ class ArticlesController extends Controller
      */
     public function store(ArticleRequest $request)
     {
-        Article::create($request->validated());
+        $article = Article::create($request->validated());
+
+        $tagToAttach = collect(explode(',', request('tags')))->keyBy(function  ($item) { return $item; });
+
+        $syncIds = [];
+
+        foreach ($tagToAttach as $tag) {
+            $tag = Tag::firstOrCreate(['name' => $tag]);
+
+            $syncIds[] = $tag->id;
+        }
+
+        $article->tags()->sync($syncIds);
+
         return back()->with('success_message', 'Новость успешно создана');
     }
 
