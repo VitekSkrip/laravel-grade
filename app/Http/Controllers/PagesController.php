@@ -31,11 +31,11 @@ class PagesController extends Controller
 
             $cars->where('price', $cars->max('price'))->toArray(),
         
-            $salonsCol = $cars->groupBy('salon')->keys()->toArray(),
+            $cars->pluck('salon')->unique(),
 
-            $enginesNames = $cars->groupBy('engine.name')->keys()->sort()->toArray(),
+            $cars->pluck('engine.name')->unique()->sort(),
 
-            $classesNames = $cars->groupBy('carClass.name')->sort(),
+            $cars->pluck('carClass.name')->unique()->keyBy(function ($item) { return $item; })->sort(),
 
             $models = $cars->filter(function ($item) {
                 $sales = $item->old_price;
