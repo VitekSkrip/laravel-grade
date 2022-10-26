@@ -16,6 +16,11 @@ class TagSeeder extends Seeder
      */
     public function run()
     {
-        Tag::factory()->count(10)->create();
+        $tags = Tag::factory()->count(10)->create();
+
+       foreach (Article::get() as $article) {
+           /** @var Article $article */
+           $article->tags()->saveMany($tags->random(rand(0, 3)));
+       }
     }
 }
