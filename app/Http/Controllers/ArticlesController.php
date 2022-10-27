@@ -3,11 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ArticleRequest;
+use App\Http\Requests\TagsRequest;
 use Illuminate\Http\Request;
 use App\Models\Article;
+use App\Services\TagsSynchronizer;
 
 class ArticlesController extends Controller
 {
+    private $tagsSynchronizer;
+
+    public function __construct(TagsSynchronizer $tagsSynchronizer)
+    {
+        $this->tagsSynchronizer = $tagsSynchronizer;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -35,9 +44,12 @@ class ArticlesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ArticleRequest $request)
+    public function store(ArticleRequest $request, TagsRequest $tagsRequest)
     {
-        Article::create($request->validated());
+        $article = Article::create($request->validated());
+
+        $this->tagsSynchronizer->sync($tagsRequest->tags, $article);
+
         return back()->with('success_message', 'Новость успешно создана');
     }
 
@@ -70,9 +82,12 @@ class ArticlesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ArticleRequest $request, Article $article)
+    public function update(ArticleRequest $request, Article $article, TagsRequest $tagsRequest)
     {
         $article->update($request->validated());
+
+        $this->tagsSynchronizer->sync($tagsRequest->tags, $article);
+
         return redirect(route('articles.index'))->with('success_message', 'Новость успешно обновлена');
     }
 

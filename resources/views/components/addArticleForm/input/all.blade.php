@@ -17,3 +17,7 @@
 <div class="block">
     <x-addArticleForm.input.checkbox id="is_published" name="is_published" type="checkbox" checked="{{ old('is_published', $article->published_at) }}"/>
 </div>
+
+<x-addArticleForm.input.group for="tags" nameTitle="Теги новости">
+    <x-addArticleForm.input.text id="tags" name="tags" type="text" value="{{ old('tags', $article->tags->pluck('name')->implode(',')) }}" error="{{ $errors->first('tags') }}"/>
+</x-addArticleForm.input.group>

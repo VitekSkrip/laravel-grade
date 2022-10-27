@@ -10,10 +10,7 @@
 
             <img src="/assets/pictures/car_new_stinger.png" alt="" title="">
 
-            <div>
-                <span class="text-sm text-white italic rounded bg-orange px-2">Это</span>
-                <span class="text-sm text-white italic rounded bg-orange px-2">Теги</span>
-            </div>
+            <x-tags.tags :tags="$article->tags"/>
 
             <p></p>
             {!! $article->body !!}
