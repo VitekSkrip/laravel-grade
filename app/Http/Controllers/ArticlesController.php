@@ -6,9 +6,7 @@ use App\Http\Requests\ArticleRequest;
 use App\Http\Requests\TagsRequest;
 use Illuminate\Http\Request;
 use App\Models\Article;
-use App\Models\Tag;
 use App\Services\TagsSynchronizer;
-use App\Services\HasTags;
 
 class ArticlesController extends Controller
 {
