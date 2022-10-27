@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Services\HasTags;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Article extends Model implements HasTags
 {
@@ -16,7 +17,7 @@ class Article extends Model implements HasTags
       * Получить все теги новости.
       */
       
-      public function tags()
+      public function tags(): MorphToMany
       {
         return $this->morphToMany(Tag::class, 'taggable');
       }
