@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ArticlesController;
+use App\Http\Controllers\CarsController;
 use App\Http\Controllers\PagesController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,10 +28,8 @@ Route::get('/contacts', [PagesController::class, 'contacts'])->name('contacts');
 
 Route::get('/finances', [PagesController::class, 'finances'])->name('finances');
 
-Route::get('/articles', [ArticlesController::class, 'index'])->name('articles');
+Route::resource('articles', ArticlesController::class)->scoped(['article' => 'slug']);
 
-Route::get('/articles/create', [ArticlesController::class, 'create'])->name('create');
+Route::get('/catalog', [CarsController::class, 'index']);
 
-Route::post('/articles', [ArticlesController::class, 'store'])->name('store');
-
-Route::get('/articles/{article:slug}', [ArticlesController::class, 'show'])->name('article');
+Route::get('/products/{car:id}', [CarsController::class, 'show'])->name('product');

@@ -3,11 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ArticleRequest;
+use App\Http\Requests\TagsRequest;
 use Illuminate\Http\Request;
 use App\Models\Article;
+use App\Services\TagsSynchronizer;
 
 class ArticlesController extends Controller
 {
+    private $tagsSynchronizer;
+
+    public function __construct(TagsSynchronizer $tagsSynchronizer)
+    {
+        $this->tagsSynchronizer = $tagsSynchronizer;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +25,7 @@ class ArticlesController extends Controller
     public function index()
     {
         $allArticles = Article::latest('published_at')->get();
-        return view('pages.articles', ['allArticles' => $allArticles]);
+        return view('pages.articles', compact('allArticles'));
     }
 
     /**
@@ -24,9 +33,9 @@ class ArticlesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Article $article)
     {
-        return view('pages.create');
+        return view('pages.create', compact('article'));
     }
 
     /**
@@ -35,9 +44,12 @@ class ArticlesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ArticleRequest $request)
+    public function store(ArticleRequest $request, TagsRequest $tagsRequest)
     {
-        Article::create($request->validated());
+        $article = Article::create($request->validated());
+
+        $this->tagsSynchronizer->sync($tagsRequest->tags, $article);
+
         return back()->with('success_message', 'Новость успешно создана');
     }
 
@@ -49,7 +61,7 @@ class ArticlesController extends Controller
      */
     public function show(Article $article)
     {
-        return view('pages.article', ['article' => $article]);
+        return view('pages.article', compact('article'));
     }
 
     /**
@@ -58,9 +70,9 @@ class ArticlesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Article $article)
     {
-        //
+        return view('pages.edit', compact('article'));
     }
 
     /**
@@ -70,9 +82,13 @@ class ArticlesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ArticleRequest $request, Article $article, TagsRequest $tagsRequest)
     {
-        //
+        $article->update($request->validated());
+
+        $this->tagsSynchronizer->sync($tagsRequest->tags, $article);
+
+        return redirect(route('articles.index'))->with('success_message', 'Новость успешно обновлена');
     }
 
     /**
@@ -81,8 +97,9 @@ class ArticlesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Article $article)
     {
-        //
+        $article->delete();
+        return redirect(route('articles.index'))->with('success_message', 'Новость удалена');
     }
 }
