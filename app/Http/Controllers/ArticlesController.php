@@ -7,12 +7,13 @@ use App\Http\Requests\TagsRequest;
 use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Services\TagsSynchronizer;
+use App\Contracts\Repositories\ArticlesRepositoryContract;
 
 class ArticlesController extends Controller
 {
     private $tagsSynchronizer;
 
-    public function __construct(TagsSynchronizer $tagsSynchronizer)
+    public function __construct(private readonly ArticlesRepositoryContract $articlesRepository, TagsSynchronizer $tagsSynchronizer)
     {
         $this->tagsSynchronizer = $tagsSynchronizer;
     }
@@ -24,7 +25,7 @@ class ArticlesController extends Controller
      */
     public function index()
     {
-        $allArticles = Article::latest('published_at')->get();
+        $allArticles = $this->articlesRepository->getLatestArticles();
         return view('pages.articles', compact('allArticles'));
     }
 
