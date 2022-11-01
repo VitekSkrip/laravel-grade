@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Contracts\Services\TagsSynchronizerServiceContract;
+use App\Services\TagsSynchronizerService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -14,6 +16,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(RepositoriesServiceProvider::class);
+        $this->app->singleton(TagsSynchronizerServiceContract::class, TagsSynchronizerService::class);
     }
 
     /**

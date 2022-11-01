@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services;
+namespace App\Contracts\Services;
 
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
-interface HasTags
+interface HasTagsContract
 {
     public function tags(): MorphToMany;
 }

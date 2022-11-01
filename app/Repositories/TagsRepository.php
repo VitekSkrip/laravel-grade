@@ -5,21 +5,32 @@ namespace App\Repositories;
 use App\Contracts\Repositories\TagsRepositoryContract;
 use App\Models\Tag;
 use Illuminate\Support\Collection;
+use App\Contracts\Services\HasTagsContract;
 
 class TagsRepository implements TagsRepositoryContract
 {
-    public function __construct(private Tag $tag)
+    public function __construct(private Tag $model)
     {
         
     }
 
-    public function findAll(): Collection
+    public function getModel(): Tag
     {
-        return $this->getTag()->get();
+        return $this->model;
     }
 
-    public function getTag(): Tag
+    public function getFirstOrCreate(string $name): Tag
     {
-        return $this->tag;
+        return $this->getModel()->firstOrCreate(['name' => $name]);
+    }
+
+    public function syncTags(HasTagsContract $model, array $tags)
+    {
+        $model->tags()->sync($tags);
+    }
+
+    public function deleteUnusedTags()
+    {
+        $this->getModel()->whereDoesntHave('articles')->delete();
     }
 }

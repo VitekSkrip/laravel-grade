@@ -14,15 +14,16 @@ class CarsController extends Controller
 
     }
     
-    public function index(): View
+    public function index(Request $request): View
     {
-        $cars = $this->carsRepository->findAll();
-        return view('pages.catalog', ['cars' => $cars]);
+        $cars = $this->carsRepository->paginateForCatalog(16, ['*'], 'page', $request->get('page', 1));
+
+        return view('pages.catalog', compact('cars'));
     }
 
     public function show(int $id): View
     {
         $car = $this->carsRepository->getById($id);
-        return view('pages.product', ['car' => $car]);
+        return view('pages.product', compact('car'));
     }
 }

@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Contracts\Repositories\ArticlesRepositoryContract;
 use App\Models\Article;
 use Illuminate\Support\Collection;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class ArticlesRepository implements ArticlesRepositoryContract
 {
@@ -54,5 +55,10 @@ class ArticlesRepository implements ArticlesRepositoryContract
     public function delete(string $slug): Void
     {
         $this->getModel()->where('slug', $slug)->delete();
+    }
+
+    public function paginateForArticlesList(int $perPage = 10, array $fields = ['*'], string $pageName = 'page', int $page = 1): LengthAwarePaginator
+    {
+        return $this->getModel()->paginate($perPage, $fields, $pageName, $page);
     }
 }

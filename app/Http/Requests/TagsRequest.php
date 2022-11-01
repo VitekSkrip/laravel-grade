@@ -18,13 +18,12 @@ class TagsRequest extends FormRequest
 
     protected function prepareForValidation()
     {
-        // dd($this->get('tags'));
         $tags = collect(explode(',', $this->get('tags')));
         $tags = $tags
            ->map(fn ($item) => preg_replace('/[^\w\-_]+/u', '', $item))
            ->filter(fn ($item) => !empty($item))
         ;
-        $this->merge(['tags' => $tags]);
+        $this->merge(['tags' => $tags->all()]);
     }
 
     /**

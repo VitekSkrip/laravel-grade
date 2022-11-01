@@ -4,18 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ArticleRequest;
 use App\Http\Requests\TagsRequest;
-use Illuminate\Http\Request;
 use App\Models\Article;
-use App\Services\TagsSynchronizer;
+use Illuminate\Http\Request;
 use App\Contracts\Repositories\ArticlesRepositoryContract;
+use App\Contracts\Services\TagsSynchronizerServiceContract;
+use App\Services\TagsSynchronizerService;
 
 class ArticlesController extends Controller
 {
-    private $tagsSynchronizer;
-
-    public function __construct(private ArticlesRepositoryContract $articlesRepository, TagsSynchronizer $tagsSynchronizer)
+    public function __construct(private ArticlesRepositoryContract $articlesRepository)
     {
-        $this->tagsSynchronizer = $tagsSynchronizer;
+
     }
 
     /**
@@ -23,9 +22,10 @@ class ArticlesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $allArticles = $this->articlesRepository->getLatest();
+        $allArticles = $this->articlesRepository->paginateForArticlesList(5, ['*'], 'page', $request->get('page', 1));
+
         return view('pages.articles', compact('allArticles'));
     }
 
@@ -46,11 +46,11 @@ class ArticlesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ArticleRequest $request, TagsRequest $tagsRequest)
+    public function store(ArticleRequest $request, TagsRequest $tagsRequest, TagsSynchronizerServiceContract $tagsSynchronizerService)
     {
         $article = $this->articlesRepository->create($request->validated());
 
-        $this->tagsSynchronizer->sync($tagsRequest->tags, $article);
+        $tagsSynchronizerService->sync($article, $tagsRequest->get('tags'));
 
         return back()->with('success_message', 'Новость успешно создана');
     }
@@ -86,11 +86,11 @@ class ArticlesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ArticleRequest $request, string $slug, TagsRequest $tagsRequest)
+    public function update(ArticleRequest $request, string $slug, TagsRequest $tagsRequest, TagsSynchronizerServiceContract $tagsSynchronizerService)
     {
         $article = $this->articlesRepository->update($slug, $request->validated());
 
-        $this->tagsSynchronizer->sync($tagsRequest->tags, $article);
+        $tagsSynchronizerService->sync($article, $tagsRequest->get('tags'));
 
         return redirect(route('articles.index'))->with('success_message', 'Новость успешно обновлена');
     }
