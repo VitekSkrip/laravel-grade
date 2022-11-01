@@ -8,7 +8,7 @@ use Illuminate\Support\Collection;
 
 class TagsRepository implements TagsRepositoryContract
 {
-    public function __construct(private readonly Tag $tag)
+    public function __construct(private Tag $tag)
     {
         
     }

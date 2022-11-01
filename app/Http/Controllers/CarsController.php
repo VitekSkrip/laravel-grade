@@ -9,9 +9,9 @@ use App\Models\Car;
 
 class CarsController extends Controller
 {
-    public function __construct(private readonly CarsRepositoryContract $carsRepository)
+    public function __construct(private CarsRepositoryContract $carsRepository)
     {
-        
+
     }
     
     public function index(): View
@@ -20,8 +20,9 @@ class CarsController extends Controller
         return view('pages.catalog', ['cars' => $cars]);
     }
 
-    public function show(Car $car): View
+    public function show(int $id): View
     {
+        $car = $this->carsRepository->getById($id);
         return view('pages.product', ['car' => $car]);
     }
 }

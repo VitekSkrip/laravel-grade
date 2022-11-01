@@ -13,7 +13,7 @@ class ArticlesController extends Controller
 {
     private $tagsSynchronizer;
 
-    public function __construct(private readonly ArticlesRepositoryContract $articlesRepository, TagsSynchronizer $tagsSynchronizer)
+    public function __construct(private ArticlesRepositoryContract $articlesRepository, TagsSynchronizer $tagsSynchronizer)
     {
         $this->tagsSynchronizer = $tagsSynchronizer;
     }
@@ -25,7 +25,7 @@ class ArticlesController extends Controller
      */
     public function index()
     {
-        $allArticles = $this->articlesRepository->getLatestArticles();
+        $allArticles = $this->articlesRepository->getLatest();
         return view('pages.articles', compact('allArticles'));
     }
 
@@ -34,8 +34,9 @@ class ArticlesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Article $article)
+    public function create()
     {
+        $article = $this->articlesRepository->getModel();
         return view('pages.create', compact('article'));
     }
 
@@ -47,7 +48,7 @@ class ArticlesController extends Controller
      */
     public function store(ArticleRequest $request, TagsRequest $tagsRequest)
     {
-        $article = Article::create($request->validated());
+        $article = $this->articlesRepository->create($request->validated());
 
         $this->tagsSynchronizer->sync($tagsRequest->tags, $article);
 
@@ -60,8 +61,9 @@ class ArticlesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Article $article)
+    public function show(string $slug)
     {
+        $article = $this->articlesRepository->findBySlug($slug);
         return view('pages.article', compact('article'));
     }
 
@@ -71,8 +73,9 @@ class ArticlesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Article $article)
+    public function edit(string $slug)
     {
+        $article = $this->articlesRepository->findBySlug($slug);
         return view('pages.edit', compact('article'));
     }
 
@@ -83,9 +86,9 @@ class ArticlesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ArticleRequest $request, Article $article, TagsRequest $tagsRequest)
+    public function update(ArticleRequest $request, string $slug, TagsRequest $tagsRequest)
     {
-        $article->update($request->validated());
+        $article = $this->articlesRepository->update($slug, $request->validated());
 
         $this->tagsSynchronizer->sync($tagsRequest->tags, $article);
 
@@ -98,9 +101,10 @@ class ArticlesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Article $article)
+    public function destroy(string $slug)
     {
-        $article->delete();
+        $this->articlesRepository->delete($slug);
+
         return redirect(route('articles.index'))->with('success_message', 'Новость удалена');
     }
 }

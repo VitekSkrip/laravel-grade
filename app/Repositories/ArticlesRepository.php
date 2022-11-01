@@ -8,29 +8,51 @@ use Illuminate\Support\Collection;
 
 class ArticlesRepository implements ArticlesRepositoryContract
 {
-    public function __construct(private readonly Article $article)
+    public function __construct(private Article $article)
     {
         
     }
 
     public function findAll(): Collection
     {
-        return $this->getArticle()->get();
+        return $this->getModel()->get();
     }
 
-    public function getArticle(): Article
+    public function getModel(): Article
     {
         return $this->article;
     }
 
-    public function getLatestArticles(): Collection
+    public function getLatest(): Collection
     {
-        return $this->getArticle()->latest('published_at')->get();
+        return $this->getModel()->latest('published_at')->get();
     }
 
-    // public function create(array $fields, array $tags = []): Article
-    // {
-    //     $article = $this->getArticle()->create($fields);
-    // }
+    public function findBySlug(string $slug): Article
+    {
+        return $this->getModel()->where('slug', $slug)->firstOrFail();
+    }
 
+    public function findForHomePage(int $limit): Collection
+    {
+        return $this->getModel()->whereNotNull('published_at')->latest('published_at')->limit($limit)->get();
+    }
+
+    public function create(array $fields): Article
+    {
+        return $this->getModel()::create($fields);
+    }
+
+    public function update(string $slug, array $fields): Article
+    {
+        $article = $this->findBySlug($slug);
+        $article->update($fields);
+        
+        return $article;
+    }
+
+    public function delete(string $slug): Void
+    {
+        $this->getModel()->where('slug', $slug)->delete();
+    }
 }
