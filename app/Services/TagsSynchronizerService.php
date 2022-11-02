@@ -10,7 +10,7 @@ use App\Contracts\Services\TagsSynchronizerServiceContract;
 
 class TagsSynchronizerService implements TagsSynchronizerServiceContract
 {
-    public function __construct(private TagsRepositoryContract $tagsRepository)
+    public function __construct(private readonly TagsRepositoryContract $tagsRepository)
     {
         
     }
