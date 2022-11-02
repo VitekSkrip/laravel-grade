@@ -19,9 +19,9 @@ class CarsRepository implements CarsRepositoryContract
         return $this->getModel()->get();
     }
 
-    public function findForHomePage($limit): Collection
+    public function findForHomePage(int $limit): Collection
     {
-        return $this->getModel()->where('is_new', true)->limit(4)->get();
+        return $this->getModel()->where('is_new', true)->limit($limit)->get();
     }
 
     public function getModel(): Car
