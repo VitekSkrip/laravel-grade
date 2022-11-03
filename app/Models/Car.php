@@ -36,4 +36,9 @@ class Car extends Model implements HasTagsContract
       {
         return $this->morphToMany(Tag::class, 'taggable');
       }
+
+      public function categories(): BelongsToMany
+      {
+          return $this->belongsToMany(Category::class);
+      }
 }
