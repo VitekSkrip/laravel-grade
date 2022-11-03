@@ -4,10 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Services\HasTags;
+use App\Contracts\Services\HasTagsContract;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
-class Article extends Model implements HasTags
+class Article extends Model implements HasTagsContract
 {
     use HasFactory;
     protected $dates = ['published_at'];

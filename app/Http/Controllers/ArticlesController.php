@@ -4,17 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ArticleRequest;
 use App\Http\Requests\TagsRequest;
-use Illuminate\Http\Request;
 use App\Models\Article;
-use App\Services\TagsSynchronizer;
+use Illuminate\Http\Request;
+use App\Contracts\Repositories\ArticlesRepositoryContract;
+use App\Contracts\Services\TagsSynchronizerServiceContract;
+use App\Services\TagsSynchronizerService;
 
 class ArticlesController extends Controller
 {
-    private $tagsSynchronizer;
-
-    public function __construct(TagsSynchronizer $tagsSynchronizer)
+    public function __construct(private ArticlesRepositoryContract $articlesRepository)
     {
-        $this->tagsSynchronizer = $tagsSynchronizer;
+
     }
 
     /**
@@ -22,9 +22,10 @@ class ArticlesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $allArticles = Article::latest('published_at')->get();
+        $allArticles = $this->articlesRepository->paginateForArticlesList(5, ['*'], 'page', $request->get('page', 1));
+
         return view('pages.articles', compact('allArticles'));
     }
 
@@ -33,8 +34,9 @@ class ArticlesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Article $article)
+    public function create()
     {
+        $article = $this->articlesRepository->getModel();
         return view('pages.create', compact('article'));
     }
 
@@ -44,11 +46,11 @@ class ArticlesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ArticleRequest $request, TagsRequest $tagsRequest)
+    public function store(ArticleRequest $request, TagsRequest $tagsRequest, TagsSynchronizerServiceContract $tagsSynchronizerService)
     {
-        $article = Article::create($request->validated());
+        $article = $this->articlesRepository->create($request->validated());
 
-        $this->tagsSynchronizer->sync($tagsRequest->tags, $article);
+        $tagsSynchronizerService->sync($article, $tagsRequest->get('tags'));
 
         return back()->with('success_message', 'Новость успешно создана');
     }
@@ -59,8 +61,9 @@ class ArticlesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Article $article)
+    public function show(string $slug)
     {
+        $article = $this->articlesRepository->findBySlug($slug);
         return view('pages.article', compact('article'));
     }
 
@@ -70,8 +73,9 @@ class ArticlesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Article $article)
+    public function edit(string $slug)
     {
+        $article = $this->articlesRepository->findBySlug($slug);
         return view('pages.edit', compact('article'));
     }
 
@@ -82,11 +86,11 @@ class ArticlesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ArticleRequest $request, Article $article, TagsRequest $tagsRequest)
+    public function update(ArticleRequest $request, string $slug, TagsRequest $tagsRequest, TagsSynchronizerServiceContract $tagsSynchronizerService)
     {
-        $article->update($request->validated());
+        $article = $this->articlesRepository->update($slug, $request->validated());
 
-        $this->tagsSynchronizer->sync($tagsRequest->tags, $article);
+        $tagsSynchronizerService->sync($article, $tagsRequest->get('tags'));
 
         return redirect(route('articles.index'))->with('success_message', 'Новость успешно обновлена');
     }
@@ -97,9 +101,10 @@ class ArticlesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Article $article)
+    public function destroy(string $slug)
     {
-        $article->delete();
+        $this->articlesRepository->delete($slug);
+
         return redirect(route('articles.index'))->with('success_message', 'Новость удалена');
     }
 }

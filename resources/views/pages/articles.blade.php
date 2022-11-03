@@ -13,4 +13,7 @@
                 <x-articlesPage.allArticles :allArticles="$allArticles"/>
             
             </div>
+
+            <x-panels.pagination :paginator="$allArticles"/>
+
 @endsection

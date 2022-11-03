@@ -2,20 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\Repositories\CarsRepositoryContract;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Models\Car;
 
 class CarsController extends Controller
 {
-    public function index(): View
+    public function __construct(private CarsRepositoryContract $carsRepository)
     {
-        $cars = Car::get();
-        return view('pages.catalog', ['cars' => $cars]);
+
+    }
+    
+    public function index(Request $request): View
+    {
+        $cars = $this->carsRepository->paginateForCatalog(16, ['*'], 'page', $request->get('page', 1));
+
+        return view('pages.catalog', compact('cars'));
     }
 
-    public function show(Car $car): View
+    public function show(int $id): View
     {
-        return view('pages.product', ['car' => $car]);
+        $car = $this->carsRepository->getById($id);
+        return view('pages.product', compact('car'));
     }
 }
