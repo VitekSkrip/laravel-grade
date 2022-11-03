@@ -15,10 +15,17 @@ return new class extends Migration
     public function up()
     {
         Schema::create('categories', function (Blueprint $table) {
-            $table->id();
+            $table->string('name');
+            $table->string('slug')->unique();
             $table->nestedSet();
             $table->timestamps();
         });
+
+        Schema::create('car_category', function (Blueprint $table) {
+            $table->foreignId('car_id')->references('id')->on('cars');
+            $table->foreignId('category_id')->references('id')->on('categories');
+            $table->primary(['category_id', 'car_id']);
+        }); 
     }
 
     /**
@@ -28,6 +35,7 @@ return new class extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('car_category');
         Schema::dropIfExists('categories');
     }
 };

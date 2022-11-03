@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Services\HasTags;
+use App\Contracts\Services\HasTagsContract;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
-class Car extends Model implements HasTags
+class Car extends Model implements HasTagsContract
 {
     use HasFactory;
     protected $fillable = ['name', 'engine_id', 'class_id', 'body_id'];
@@ -35,5 +35,10 @@ class Car extends Model implements HasTags
       public function tags(): MorphToMany
       {
         return $this->morphToMany(Tag::class, 'taggable');
+      }
+
+      public function categories(): BelongsToMany
+      {
+          return $this->belongsToMany(Category::class);
       }
 }

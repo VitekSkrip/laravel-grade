@@ -56,5 +56,4 @@ class CategorySeeder extends Seeder
 
        return $categories;
    }
-
 }
