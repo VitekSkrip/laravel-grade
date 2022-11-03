@@ -34,8 +34,15 @@ class CarsRepository implements CarsRepositoryContract
         return $this->getModel()->findOrFail($id);
     }
 
-    public function paginateForCatalog(int $perPage = 10, array $fields = ['*'], string $pageName = 'page', int $page = 1): LengthAwarePaginator
+    public function paginateForCatalog(array $allCategories, int $perPage = 10, array $fields = ['*'], string $pageName = 'page', int $page = 1): LengthAwarePaginator
     {
-        return $this->getModel()->paginate($perPage, $fields, $pageName, $page);
+        return $this->catalogQuery($allCategories)->paginate($perPage, $fields, $pageName, $page);
     }
+
+    private function catalogQuery(array $allCategories)
+    {
+        return $this->getModel()->when($allCategories, fn($query) => $query->whereHas('categories', fn($query) => $query->whereIn('id', $allCategories)));
+    }
+
+    
 }

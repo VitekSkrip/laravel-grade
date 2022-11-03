@@ -2,6 +2,7 @@
 
 namespace App\View\Components\Panels;
 
+use App\Contracts\Repositories\CategoriesRepositoryContract;
 use App\Models\Category;
 use Closure;
 use Illuminate\Contracts\View\View;
@@ -12,14 +13,14 @@ class CategoryMenu extends Component
 {
     private ?Category $currentCategory;
 
-    public function __construct()
+    public function __construct(private CategoriesRepositoryContract $categoriesRepository)
     {   
         $this->currentCategory = Route::current()->category?->load('ancestors');
     }
 
     public function render(): View|string|Closure
     {
-        $categories = Category::withDepth()->having('depth', '<=', 2)->get()->toTree();
+        $categories  =  $this->categoriesRepository->getTree(2);
 
         return view('components.panels.category-menu', compact('categories'));
     }

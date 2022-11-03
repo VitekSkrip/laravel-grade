@@ -23,8 +23,7 @@ class CarsController extends Controller
             $allCategories = $category->descendants->pluck('id')->push($category->id)->all();
         }
 
-        $cars = $this->carsRepository->paginateForCatalog(16, ['*'], 'page', $request->get('page', 1))->when($category, fn ($query) => $query->whereHas('categories', fn ($query) => $query->whereIn('id', $allCategories)))
-        ->get();
+        $cars = $this->carsRepository->paginateForCatalog($allCategories, 16, ['*'], 'page', $request->get('page', 1));
 
         return view('pages.catalog', ['cars' => $cars, 'currentCategory' => $category]);
     }

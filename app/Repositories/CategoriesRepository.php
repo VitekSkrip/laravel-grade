@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Contracts\Repositories\CategoriesRepositoryContract;
 use App\Models\Category;
 use Illuminate\Support\Collection;
+use Kalnoy\Nestedset\NodeTrait;
 
 class CategoriesRepository implements CategoriesRepositoryContract
 {
@@ -21,7 +22,7 @@ class CategoriesRepository implements CategoriesRepositoryContract
     public function getTree(?int $maxDepth = null): Collection
     {
         return $this->getModel()
-            ->getModel()
+            ->withDepth()
             ->when($maxDepth, fn ($query) => $query->having('depth', '<=', $maxDepth))
             ->get()
             ->toTree()
