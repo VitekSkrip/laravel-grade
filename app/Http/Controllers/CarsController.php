@@ -17,7 +17,7 @@ class CarsController extends Controller
     
     public function index(Request $request, ?Category $category = null): View
     {
-        $allCategories = collect();
+        $allCategories = collect()->all();
         
         if ($category) {
             $allCategories = $category->descendants->pluck('id')->push($category->id)->all();

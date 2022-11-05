@@ -8,6 +8,7 @@ use App\Models\CarBody,
       App\Models\CarClass,
       App\Models\CarEngine,
       App\Models\Car;
+use App\Models\Category;
 use Doctrine\DBAL\Schema\Sequence;
 
 class CarSeeder extends Seeder
@@ -22,8 +23,9 @@ class CarSeeder extends Seeder
         $carEngines = CarEngine::get();
         $carClasses = CarClass::get();
         $carBodies = CarBody::get();
+        $categories = Category::get();
 
-        Car::factory()
+        $cars = Car::factory()
             ->count(20)
             ->sequence( fn ($sequence) => 
                 [
@@ -32,6 +34,11 @@ class CarSeeder extends Seeder
                     'body_id' => $carBodies->random()
                 ]
             )
-            ->create();
+            ->create()
+        ;
+
+        foreach ($cars as $car) {
+            $car->categories()->attach($categories->random(rand(1, 3)));
+        }
     }
 }

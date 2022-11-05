@@ -9,11 +9,6 @@ use Illuminate\Support\Str;
 
 class CategorySeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
         $categories = [
@@ -46,14 +41,15 @@ class CategorySeeder extends Seeder
     }
 
     private function categoriesSlug(array $categories): array
-   {
-       array_walk($categories, function (&$category) {
-           if (isset($category['children'])) {
-               $category['children'] = $this->categoriesSlug($category['children']);
-           }
-           $category['slug'] = Str::slug($category['name']);
-       });
+    {
+        array_walk($categories, function (&$category) {
+            if (isset($category['children'])) {
+                $category['children'] = $this->categoriesSlug($category['children']);
+            }
+            $category['slug'] = Str::slug($category['name']);
+        });
 
-       return $categories;
-   }
+        return $categories;
+    }
+
 }

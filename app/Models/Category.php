@@ -12,8 +12,6 @@ class Category extends Model
     use HasFactory;
     use NodeTrait;
 
-    protected $fillable = ['name', 'slug']; 
-
     public function getRouteKeyName(): string
     {
         return 'slug';

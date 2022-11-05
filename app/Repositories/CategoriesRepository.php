@@ -23,7 +23,9 @@ class CategoriesRepository implements CategoriesRepositoryContract
     {
         return $this->getModel()
             ->withDepth()
-            ->when($maxDepth, fn ($query) => $query->having('depth', '<=', $maxDepth))
+            ->when($maxDepth, function ($query, $maxDepth) { 
+                $query->having('depth', '<=', $maxDepth);
+            })
             ->get()
             ->toTree()
         ;
