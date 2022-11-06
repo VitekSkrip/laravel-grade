@@ -20,12 +20,13 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-        $this->call(ArticleSeeder::class);
         $this->call([
             CarClassSeeder::class,
             CarEngineSeeder::class,
             CarBodySeeder::class,
+            ImageSeeder::class,
         ]);
+        $this->call(ArticleSeeder::class);
         $this->call(CarSeeder::class);
         $this->call(TagSeeder::class);
     }

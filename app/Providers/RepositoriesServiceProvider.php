@@ -2,13 +2,15 @@
 
 namespace App\Providers;
 
-use App\Contracts\Repositories\ArticlesRepositoryContract;
-use App\Contracts\Repositories\CarsRepositoryContract;
-use App\Contracts\Repositories\TagsRepositoryContract;
+use App\Contracts\Repositories\ArticlesRepositoryContract,
+    App\Contracts\Repositories\CarsRepositoryContract,
+    App\Contracts\Repositories\TagsRepositoryContract,
+    App\Contracts\Repositories\ImagesRepositoryContract;
 
-use App\Repositories\CarsRepository;
-use App\Repositories\ArticlesRepository;
-use App\Repositories\TagsRepository;
+use App\Repositories\CarsRepository,
+    App\Repositories\ArticlesRepository,
+    App\Repositories\TagsRepository,
+    App\Repositories\ImagesRepository;
 
 
 use Illuminate\Support\ServiceProvider;
@@ -25,6 +27,7 @@ class RepositoriesServiceProvider extends ServiceProvider
         $this->app->singleton(CarsRepositoryContract::class, CarsRepository::class);
         $this->app->singleton(ArticlesRepositoryContract::class, ArticlesRepository::class);
         $this->app->singleton(TagsRepositoryContract::class, TagsRepository::class);
+        $this->app->singleton(ImagesRepositoryContract::class, ImagesRepository::class);
     }
 
     /**

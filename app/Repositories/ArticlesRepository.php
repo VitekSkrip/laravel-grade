@@ -6,10 +6,11 @@ use App\Contracts\Repositories\ArticlesRepositoryContract;
 use App\Models\Article;
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use App\Contracts\Repositories\ImagesRepositoryContract;
 
 class ArticlesRepository implements ArticlesRepositoryContract
 {
-    public function __construct(private Article $article)
+    public function __construct(private Article $article, private ImagesRepositoryContract $imagesRepository)
     {
         
     }
@@ -41,12 +42,23 @@ class ArticlesRepository implements ArticlesRepositoryContract
 
     public function create(array $fields): Article
     {
+        $image = $this->imagesRepository->create($fields['image']);
+
+        $fields['image_id'] = $image->id;
+        unset($fields['image']);
+
         return $this->getModel()::create($fields);
     }
 
     public function update(string $slug, array $fields): Article
     {
         $article = $this->findBySlug($slug);
+
+        $image = $this->imagesRepository->create($fields['image']);
+
+        $fields['image_id'] = $image->id;
+        unset($fields['image']);
+        
         $article->update($fields);
         
         return $article;

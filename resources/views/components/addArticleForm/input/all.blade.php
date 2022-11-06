@@ -21,3 +21,7 @@
 <x-addArticleForm.input.group for="tags" nameTitle="Теги новости">
     <x-addArticleForm.input.text id="tags" name="tags" type="text" value="{{ old('tags', $article->tags->pluck('name')->implode(',')) }}" error="{{ $errors->first('tags') }}"/>
 </x-addArticleForm.input.group>
+
+<div class="block">
+    <input type="file" name="image">
+</div>
