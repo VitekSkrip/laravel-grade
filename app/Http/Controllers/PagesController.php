@@ -21,7 +21,7 @@ class PagesController extends Controller
 
         $cars = $this->carsRepositoryContract->findForHomePage(4);
 
-        $banners = $this->bannersRepository->getAll();
+        $banners = $this->bannersRepository->getBanners(3);
 
         return view('pages.homepage', [
             'homeNews' => $homeNews,

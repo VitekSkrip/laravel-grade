@@ -18,8 +18,8 @@ class BannersRepository implements BannersRepositoryContract
         return $this->model;
     }
 
-    public function getAll(): Collection
+    public function getBanners(int $count): Collection
     {
-        return $this->getModel()->get();
+        return $this->getModel()->limit($count)->get();
     }
 }

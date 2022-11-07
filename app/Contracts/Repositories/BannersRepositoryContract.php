@@ -7,5 +7,5 @@ use App\Models\Banner;
 
 interface BannersRepositoryContract
 {
-    public function getAll(): Collection;
+    public function getBanners(int $count): Collection;
 }
