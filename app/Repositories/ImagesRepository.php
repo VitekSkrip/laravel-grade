@@ -19,17 +19,17 @@ class ImagesRepository implements ImagesRepositoryContract
         return $this->model;
     }
 
-    public function create(File | string $file): Image
+    public function create(string $dir, File | string $file): Image
     {
-        return $this->getModel()->create(['path' => $this->save($file)]);
+        return $this->getModel()->create(['path' => $this->save($dir, $file)]);
     }
 
-    public function save(File | string $file): String
+    public function save(string $dir, File | string $file,): String
     {
         if (! $file instanceof File) {
             $file = new File($file);
         };
 
-        return Storage::disk('public')->putFile('articles', $file);
+        return Storage::disk('public')->putFile($dir, $file);
     }
 }

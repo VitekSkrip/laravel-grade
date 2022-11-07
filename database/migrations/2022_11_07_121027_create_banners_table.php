@@ -13,11 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('car_image', function (Blueprint $table) {
-            $table->foreignId('car_id')->references('id')->on('cars')->cascadeOnDelete();
-            $table->foreignId('image_id')->unique()->references('id')->on('images')->cascadeOnDelete();
-
-            $table->primary(['car_id', 'image_id']);
+        Schema::create('banners', function (Blueprint $table) {
+            $table->id();
+            $table->string('title');
+            $table->text('description');
+            $table->string('url')->nullable();
+            $table->foreignId('image_id')->unique()->references('id')->on('images');
+            $table->timestamps();
         });
     }
 
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('car_image');
+        Schema::dropIfExists('banners');
     }
 };

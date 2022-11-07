@@ -6,13 +6,15 @@ use App\Contracts\Repositories\ArticlesRepositoryContract,
     App\Contracts\Repositories\CarsRepositoryContract,
     App\Contracts\Repositories\TagsRepositoryContract,
     App\Contracts\Repositories\ImagesRepositoryContract,
-    App\Contracts\Repositories\CategoriesRepositoryContract;
+    App\Contracts\Repositories\CategoriesRepositoryContract,
+    App\Contracts\Repositories\BannersRepositoryContract;
 
 use App\Repositories\CarsRepository,
     App\Repositories\ArticlesRepository,
     App\Repositories\TagsRepository,
     App\Repositories\ImagesRepository,
-    App\Repositories\CategoriesRepository;
+    App\Repositories\CategoriesRepository,
+    App\Repositories\BannersRepository;
 
 
 use Illuminate\Support\ServiceProvider;
@@ -31,6 +33,8 @@ class RepositoriesServiceProvider extends ServiceProvider
         $this->app->singleton(TagsRepositoryContract::class, TagsRepository::class);
         $this->app->singleton(ImagesRepositoryContract::class, ImagesRepository::class);
         $this->app->singleton(CategoriesRepositoryContract::class, CategoriesRepository::class);
+        $this->app->singleton(CategoriesRepositoryContract::class, CategoriesRepository::class);
+        $this->app->singleton(BannersRepositoryContract::class, BannersRepository::class);
     }
 
     /**
