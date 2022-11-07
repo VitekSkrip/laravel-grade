@@ -6,13 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Contracts\Services\HasTagsContract;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Car extends Model implements HasTagsContract
 {
     use HasFactory;
-    protected $fillable = ['name', 'engine_id', 'class_id', 'body_id'];
+    protected $fillable = ['name', 'engine_id', 'class_id', 'body_id', 'image_id'];
     
     public function carClass(): BelongsTo
     {
@@ -29,13 +29,19 @@ class Car extends Model implements HasTagsContract
         return $this->belongsTo(CarBody::class, 'body_id');
     }
 
-    /**
-     * Получить все теги машины.
-    */
-      
     public function tags(): MorphToMany
     {
-    return $this->morphToMany(Tag::class, 'taggable');
+        return $this->morphToMany(Tag::class, 'taggable');
+    }
+
+    public function image(): BelongsTo
+    {
+        return $this->belongsTo(Image::class);
+    }
+
+    public function imagesCatalog(): BelongsToMany
+    {
+        return $this->belongsToMany(Image::class); 
     }
 
     public function categories(): BelongsToMany

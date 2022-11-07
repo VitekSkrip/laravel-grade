@@ -14,7 +14,7 @@ class TagsRepository implements TagsRepositoryContract
         
     }
 
-    public function getModel(): Tag
+    private function getModel(): Tag
     {
         return $this->model;
     }

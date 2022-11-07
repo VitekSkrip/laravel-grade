@@ -24,7 +24,7 @@ class CarsRepository implements CarsRepositoryContract
         return $this->getModel()->where('is_new', true)->limit($limit)->get();
     }
 
-    public function getModel(): Car
+    private function getModel(): Car
     {
         return $this->model;
     }

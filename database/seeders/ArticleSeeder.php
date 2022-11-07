@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 use App\Models\Article;
+use App\Models\Image;
 
 class ArticleSeeder extends Seeder
 {
@@ -17,6 +18,17 @@ class ArticleSeeder extends Seeder
 
     public function run()
     {
-        Article::factory()->count(5)->create(['published_at' => now()]);
+        $carImages = Image::get();
+
+        Article::factory()
+            ->count(5)
+            ->sequence( fn ($sequence) =>
+                [
+                    'image_id' => $carImages->random(),
+                    'published_at' => now()
+                ]
+            )
+            ->create()
+        ;
     }
 }

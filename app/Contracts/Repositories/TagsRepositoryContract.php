@@ -8,8 +8,6 @@ use App\Contracts\Services\HasTagsContract;
 
 interface TagsRepositoryContract
 {
-    public function getModel(): Tag;
-
     public function getFirstOrCreate(string $name): Tag;
 
     public function syncTags(HasTagsContract $model, array $tags);
