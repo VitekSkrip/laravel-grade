@@ -9,5 +9,6 @@ use Illuminate\Http\File;
 interface ImagesRepositoryContract
 {
     public function create(File | string $file): Image;
+
+    public function save(File | string $file): String;
 }
-    
