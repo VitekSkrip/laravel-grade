@@ -30,6 +30,6 @@ Route::get('/finances', [PagesController::class, 'finances'])->name('finances');
 
 Route::resource('articles', ArticlesController::class)->scoped(['article' => 'slug']);
 
-Route::get('/catalog', [CarsController::class, 'index']);
+Route::get('/catalog/{category?}', [CarsController::class, 'index'])->name('catalog');
 
 Route::get('/products/{car:id}', [CarsController::class, 'show'])->name('product');

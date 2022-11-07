@@ -6,6 +6,7 @@ use App\Contracts\Repositories\CarsRepositoryContract;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Models\Car;
+use App\Models\Category;
 
 class CarsController extends Controller
 {
@@ -14,11 +15,17 @@ class CarsController extends Controller
 
     }
     
-    public function index(Request $request): View
+    public function index(Request $request, ?Category $category = null): View
     {
-        $cars = $this->carsRepository->paginateForCatalog(16, ['*'], 'page', $request->get('page', 1));
+        $allCategories = collect()->all();
+        
+        if ($category) {
+            $allCategories = $category->descendants->pluck('id')->push($category->id)->all();
+        }
 
-        return view('pages.catalog', compact('cars'));
+        $cars = $this->carsRepository->paginateForCatalog($allCategories, 16, ['*'], 'page', $request->get('page', 1));
+
+        return view('pages.catalog', ['cars' => $cars, 'currentCategory' => $category]);
     }
 
     public function show(int $id): View

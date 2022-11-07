@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Contracts\Services\HasTagsContract;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Car extends Model implements HasTagsContract
 {
@@ -28,12 +29,17 @@ class Car extends Model implements HasTagsContract
         return $this->belongsTo(CarBody::class, 'body_id');
     }
 
-      /**
-      * Получить все теги машины.
-      */
+    /**
+     * Получить все теги машины.
+    */
       
-      public function tags(): MorphToMany
-      {
-        return $this->morphToMany(Tag::class, 'taggable');
-      }
+    public function tags(): MorphToMany
+    {
+    return $this->morphToMany(Tag::class, 'taggable');
+    }
+
+    public function categories(): BelongsToMany
+    {
+        return $this->belongsToMany(Category::class);
+    }
 }
