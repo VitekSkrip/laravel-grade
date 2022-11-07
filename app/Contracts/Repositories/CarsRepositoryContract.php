@@ -15,6 +15,7 @@ interface CarsRepositoryContract
     public function getById(int $id): Car;
 
     public function paginateForCatalog(
+        array $allCategories,
         int $perPage = 10,
         array $fields = ['*'],
         string $pageName = 'page',

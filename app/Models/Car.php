@@ -43,4 +43,9 @@ class Car extends Model implements HasTagsContract
     {
         return $this->belongsToMany(Image::class); 
     }
+
+    public function categories(): BelongsToMany
+    {
+        return $this->belongsToMany(Category::class);
+    }
 }

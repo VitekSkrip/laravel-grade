@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -25,6 +26,7 @@ class DatabaseSeeder extends Seeder
             CarEngineSeeder::class,
             CarBodySeeder::class,
             ImageSeeder::class,
+            CategorySeeder::class,
         ]);
         $this->call(ArticleSeeder::class);
         $this->call(CarSeeder::class);
