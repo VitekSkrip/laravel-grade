@@ -3,15 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\View\View;
-use App\Models\Article;
-use App\Models\Car;
 use Illuminate\Support\Str;
 use App\Contracts\Repositories\ArticlesRepositoryContract;
+use App\Contracts\Repositories\BannersRepositoryContract;
 use App\Contracts\Repositories\CarsRepositoryContract;
 
 class PagesController extends Controller
 {
-    public function __construct(private ArticlesRepositoryContract $articlesRepository, private CarsRepositoryContract $carsRepositoryContract)
+    public function __construct(private ArticlesRepositoryContract $articlesRepository, private CarsRepositoryContract $carsRepositoryContract, private BannersRepositoryContract $bannersRepository)
     {
         
     }
@@ -22,9 +21,12 @@ class PagesController extends Controller
 
         $cars = $this->carsRepositoryContract->findForHomePage(4);
 
+        $banners = $this->bannersRepository->getBanners(3);
+
         return view('pages.homepage', [
             'homeNews' => $homeNews,
             'cars' => $cars,
+            'banners' => $banners,
         ]);
     }
 

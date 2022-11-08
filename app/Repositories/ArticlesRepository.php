@@ -42,7 +42,7 @@ class ArticlesRepository implements ArticlesRepositoryContract
 
     public function create(array $fields): Article
     {
-        $image = $this->imagesRepository->create($fields['image']);
+        $image = $this->imagesRepository->create('articles', $fields['image']);
 
         $fields['image_id'] = $image->id;
         unset($fields['image']);
@@ -54,7 +54,7 @@ class ArticlesRepository implements ArticlesRepositoryContract
     {
         $article = $this->findBySlug($slug);
 
-        $image = $this->imagesRepository->create($fields['image']);
+        $image = $this->imagesRepository->create('articles', $fields['image']);
 
         $fields['image_id'] = $image->id;
         unset($fields['image']);
