@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Contracts\Repositories\BannersRepositoryContract;
 use App\Models\Banner;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 
 class BannersRepository implements BannersRepositoryContract
 {
@@ -20,6 +21,8 @@ class BannersRepository implements BannersRepositoryContract
 
     public function getBanners(int $count): Collection
     {
-        return $this->getModel()->limit($count)->get();
+        return Cache::tags(['banners', 'images'])->remember('homePageBanners|$count', 3600, fn () => 
+            $this->getModel()->with('image')->limit($count)->get()
+        );
     }
 }
