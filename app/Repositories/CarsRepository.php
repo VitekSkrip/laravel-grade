@@ -5,24 +5,27 @@ namespace App\Repositories;
 use App\Contracts\Repositories\CarsRepositoryContract;
 use App\Models\Car;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
 class CarsRepository implements CarsRepositoryContract
 {
+    use FlushesCache;
+    
     public function __construct(private Car $model)
     {
         
     }
 
-    public function findAll(): Collection
+    protected function cacheTags(): array
     {
-        return $this->getModel()->get();
+        return ['cars'];
     }
 
     public function findForHomePage(int $limit): Collection
     {
-        return Cache::tags(['cars', 'images'])->remember("homePageCars|$limit", 3600, fn () =>
+        return Cache::tags(['cars', 'images'])->remember("homePageCars|$limit", Carbon::now()->addHours(1), fn () =>
             $this->getModel()->with('image')->where('is_new', true)->limit($limit)->get()
         );
     }
@@ -34,8 +37,8 @@ class CarsRepository implements CarsRepositoryContract
 
     public function getById(int $id): Car
     {
-        return Cache::tags(['cars', 'images'])->remember("carById|$id", 3600, fn () =>
-            $this->getModel()->findOrFail($id)
+        return Cache::tags(['cars', 'images'])->remember("carById|$id", Carbon::now()->addHours(1), fn () =>
+            $this->getModel()->with(['carClass', 'engine', 'carBody', 'imagesCatalog'])->findOrFail($id)
         );
     }
 
@@ -49,8 +52,8 @@ class CarsRepository implements CarsRepositoryContract
                 'page' => $page,
         ]);
 
-        return Cache::tags(['cars', 'images'])->remember("paginateForCatalog|$params", 3600, fn () => 
-            $this->catalogBuilder($allCategories)->paginate($perPage, $fields, $pageName, $page)
+        return Cache::tags(['cars', 'images'])->remember("paginateForCatalog|$params", Carbon::now()->addHours(1), fn () => 
+            $this->catalogBuilder($allCategories)->with(['image'])->paginate($perPage, $fields, $pageName, $page)
         );
     }
 

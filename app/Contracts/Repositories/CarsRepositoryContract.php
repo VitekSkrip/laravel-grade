@@ -7,9 +7,7 @@ use App\Models\Car;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 interface CarsRepositoryContract
-{    
-    public function findAll(): Collection;
-
+{
     public function findForHomePage(int $limit): Collection;
 
     public function getById(int $id): Car;

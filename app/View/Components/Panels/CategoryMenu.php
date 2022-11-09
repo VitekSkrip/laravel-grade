@@ -6,6 +6,8 @@ use App\Contracts\Repositories\CategoriesRepositoryContract;
 use App\Models\Category;
 use Closure;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\View\Component;
 use Illuminate\Support\Facades\Route;
 
@@ -14,8 +16,10 @@ class CategoryMenu extends Component
     private ?Category $currentCategory;
 
     public function __construct(private CategoriesRepositoryContract $categoriesRepository)
-    {   
-        $this->currentCategory = Route::current()->category?->load('ancestors');
+    {
+        $categorySlug = Route::current()->slug;
+
+        $this->currentCategory = $categorySlug ? $this->categoriesRepository->getBySlug($categorySlug, ['ancestors']) : null;
     }
 
     public function render(): View|string|Closure

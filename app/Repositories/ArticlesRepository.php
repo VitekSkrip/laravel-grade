@@ -7,6 +7,7 @@ use App\Models\Article;
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use App\Contracts\Repositories\ImagesRepositoryContract;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 
 class ArticlesRepository implements ArticlesRepositoryContract
@@ -40,15 +41,15 @@ class ArticlesRepository implements ArticlesRepositoryContract
 
     public function findBySlug(string $slug): Article
     {
-        return Cache::tags(['articles', 'images', 'tags'])->remember("articleBySlug|$slug", 3600, fn () =>
-            $this->getModel()->where('slug', $slug)->firstOrFail()
+        return Cache::tags(['articles', 'images', 'tags'])->remember("articleBySlug|$slug", Carbon::now()->addHours(1), fn () =>
+            $this->getModel()->with(['image', 'tags'])->where('slug', $slug)->firstOrFail()
         );
     }
 
     public function findForHomePage(int $limit): Collection
     {
-        return Cache::tags(['articles', 'images', 'tags'])->remember("homePageArticles|$limit", 3600, fn () => 
-            $this->getModel()->with('image')->whereNotNull('published_at')->latest('published_at')->limit($limit)->get()
+        return Cache::tags(['articles', 'images', 'tags'])->remember("homePageArticles|$limit", Carbon::now()->addHours(1), fn () => 
+            $this->getModel()->with(['image', 'tags'])->whereNotNull('published_at')->latest('published_at')->limit($limit)->get()
         );
     }
 
@@ -96,8 +97,8 @@ class ArticlesRepository implements ArticlesRepositoryContract
             'page' => $page,
         ]);
 
-        return Cache::tags(['articles', 'images', 'tags'])->remember("pagForArticlesList|$params", 3600, fn () => 
-            $this->getModel()->paginate($perPage, $fields, $pageName, $page)
+        return Cache::tags(['articles', 'images', 'tags'])->remember("pagForArticlesList|$params", Carbon::now()->addHours(1), fn () => 
+            $this->getModel()->with(['image', 'tags'])->paginate($perPage, $fields, $pageName, $page)
         );
     }
 }

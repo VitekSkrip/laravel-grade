@@ -9,9 +9,16 @@ use Illuminate\Http\File;
 
 class ImagesRepository implements ImagesRepositoryContract
 {
+    use FlushesCache;
+    
     public function __construct(private Image $model)
     {
         
+    }
+
+    protected function cacheTags(): array
+    {
+        return ['images'];
     }
 
     private function getModel(): Image

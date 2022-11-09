@@ -6,6 +6,7 @@ use App\Contracts\Repositories\TagsRepositoryContract;
 use App\Models\Tag;
 use Illuminate\Support\Collection;
 use App\Contracts\Services\HasTagsContract;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 
 class TagsRepository implements TagsRepositoryContract
@@ -29,7 +30,7 @@ class TagsRepository implements TagsRepositoryContract
 
     public function getFirstOrCreate(string $name): Tag
     {
-        return Cache::tags(['tags'])->remember("tagByName|$name", 3600, fn () =>
+        return Cache::tags(['tags'])->remember("tagByName|$name", Carbon::now()->addHours(1), fn () =>
             $this->getModel()->firstOrCreate(['name' => $name])
         );
     }
@@ -42,5 +43,6 @@ class TagsRepository implements TagsRepositoryContract
     public function deleteUnusedTags()
     {
         $this->getModel()->whereDoesntHave('articles')->delete();
+        $this->flushCache();
     }
 }
