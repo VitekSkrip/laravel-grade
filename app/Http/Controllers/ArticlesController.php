@@ -7,8 +7,8 @@ use App\Http\Requests\TagsRequest;
 use App\Models\Article;
 use Illuminate\Http\Request;
 use App\Contracts\Repositories\ArticlesRepositoryContract;
-use App\Contracts\Services\TagsSynchronizerServiceContract;
-use App\Services\TagsSynchronizerService;
+use App\Contracts\Services\CreateArticleServiceContract;
+use App\Contracts\Services\UpdateArticleServiceContract;
 
 class ArticlesController extends Controller
 {
@@ -30,11 +30,11 @@ class ArticlesController extends Controller
         return view('pages.create', compact('article'));
     }
 
-    public function store(ArticleRequest $request, TagsRequest $tagsRequest, TagsSynchronizerServiceContract $tagsSynchronizerService)
+    public function store(
+        ArticleRequest $request,
+        TagsRequest $tagsRequest, CreateArticleServiceContract $createArticleService)
     {
-        $article = $this->articlesRepository->create($request->validated());
-
-        $tagsSynchronizerService->sync($article, $tagsRequest->get('tags'));
+        $createArticleService->create($request->validated(), $tagsRequest->get('tags'));
 
         return back()->with('success_message', 'Новость успешно создана');
     }
@@ -51,13 +51,15 @@ class ArticlesController extends Controller
         return view('pages.edit', compact('article'));
     }
 
-    public function update(ArticleRequest $request, string $slug, TagsRequest $tagsRequest, TagsSynchronizerServiceContract $tagsSynchronizerService)
+    public function update(
+        ArticleRequest $request,
+        string $slug,
+        TagsRequest $tagsRequest,
+        UpdateArticleServiceContract $updateArticleService)
     {
-        $article = $this->articlesRepository->update($slug, $request->validated());
+        $article = $updateArticleService->update($slug, $request->validated(), $tagsRequest->get('tags'));
 
-        $tagsSynchronizerService->sync($article, $tagsRequest->get('tags'));
-
-        return redirect(route('articles.index'))->with('success_message', 'Новость успешно обновлена');
+        return redirect(route('articles.edit', ['article' => $article]))->with('success_message', 'Новость успешно обновлена');
     }
 
     public function destroy(string $slug)
