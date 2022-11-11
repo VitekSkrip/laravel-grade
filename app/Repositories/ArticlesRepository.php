@@ -7,12 +7,21 @@ use App\Models\Article;
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use App\Contracts\Repositories\ImagesRepositoryContract;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
 
 class ArticlesRepository implements ArticlesRepositoryContract
 {
+    use FlushesCache;
+
     public function __construct(private Article $article, private ImagesRepositoryContract $imagesRepository)
     {
         
+    }
+
+    protected function cacheTags(): array
+    {
+        return ['articles'];
     }
 
     public function findAll(): Collection
@@ -32,12 +41,16 @@ class ArticlesRepository implements ArticlesRepositoryContract
 
     public function findBySlug(string $slug): Article
     {
-        return $this->getModel()->where('slug', $slug)->firstOrFail();
+        return Cache::tags(['articles', 'images', 'tags'])->remember("articleBySlug|$slug", Carbon::now()->addHours(1), fn () =>
+            $this->getModel()->with(['image', 'tags'])->where('slug', $slug)->firstOrFail()
+        );
     }
 
     public function findForHomePage(int $limit): Collection
     {
-        return $this->getModel()->whereNotNull('published_at')->latest('published_at')->limit($limit)->get();
+        return Cache::tags(['articles', 'images', 'tags'])->remember("homePageArticles|$limit", Carbon::now()->addHours(1), fn () => 
+            $this->getModel()->with(['image', 'tags'])->whereNotNull('published_at')->latest('published_at')->limit($limit)->get()
+        );
     }
 
     public function create(array $fields): Article
@@ -46,6 +59,8 @@ class ArticlesRepository implements ArticlesRepositoryContract
 
         $fields['image_id'] = $image->id;
         unset($fields['image']);
+
+        $this->flushCache();
 
         return $this->getModel()::create($fields);
     }
@@ -60,6 +75,8 @@ class ArticlesRepository implements ArticlesRepositoryContract
         unset($fields['image']);
         
         $article->update($fields);
+
+        $this->flushCache();
         
         return $article;
     }
@@ -67,10 +84,21 @@ class ArticlesRepository implements ArticlesRepositoryContract
     public function delete(string $slug): Void
     {
         $this->getModel()->where('slug', $slug)->delete();
+        
+        $this->flushCache();
     }
 
     public function paginateForArticlesList(int $perPage = 10, array $fields = ['*'], string $pageName = 'page', int $page = 1): LengthAwarePaginator
     {
-        return $this->getModel()->paginate($perPage, $fields, $pageName, $page);
+        $params = serialize([
+            'perPage' => $perPage,
+            'fields' => $fields,
+            'pageName' => $pageName,
+            'page' => $page,
+        ]);
+
+        return Cache::tags(['articles', 'images', 'tags'])->remember("pagForArticlesList|$params", Carbon::now()->addHours(1), fn () => 
+            $this->getModel()->with(['image', 'tags'])->paginate($perPage, $fields, $pageName, $page)
+        );
     }
 }

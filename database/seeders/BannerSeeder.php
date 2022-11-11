@@ -18,7 +18,7 @@ class BannerSeeder extends Seeder
         foreach ($this->imagesPath() as $imagePath) {
             $bannerImage = $imagesRepository->create('banners', resource_path($imagePath));
 
-           $imageId = $bannerImage->id; 
+            $imageId = $bannerImage->id; 
 
             Banner::factory()->create(['image_id' => $imageId]);        
         }

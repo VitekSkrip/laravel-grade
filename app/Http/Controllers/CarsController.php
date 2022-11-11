@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Contracts\Repositories\CarsRepositoryContract;
+use App\Contracts\Repositories\CategoriesRepositoryContract;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Models\Car;
@@ -15,11 +16,13 @@ class CarsController extends Controller
 
     }
     
-    public function index(Request $request, ?Category $category = null): View
+    public function index(Request $request, CategoriesRepositoryContract $categoriesRepository, ?string $slug = null): View
     {
         $allCategories = collect()->all();
+        $category = null;
         
-        if ($category) {
+        if ($slug) {
+            $category = $categoriesRepository->getBySlug($slug, ['descendants']);
             $allCategories = $category->descendants->pluck('id')->push($category->id)->all();
         }
 
