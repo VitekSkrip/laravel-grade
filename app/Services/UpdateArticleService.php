@@ -6,6 +6,7 @@ use App\Contracts\Repositories\ArticlesRepositoryContract;
 use App\Contracts\Services\TagsSynchronizerServiceContract;
 use App\Contracts\Services\UpdateArticleServiceContract;
 use App\Models\Article;
+use Illuminate\Support\Facades\DB;
 
 class UpdateArticleService implements UpdateArticleServiceContract
 {
@@ -14,12 +15,14 @@ class UpdateArticleService implements UpdateArticleServiceContract
         
     }
 
-    public function update(string $slug, array $fields, array $tags): Article
+    public function update(string $slug, array $fields, array $tags)
     {
-        $article = $this->articlesRepository->update($slug, $fields);
+        return DB::transaction(function () use ($slug, $fields, $tags) {
+            $article = $this->articlesRepository->update($slug, $fields);
 
-        $this->tagsSynchronizerService->sync($article, $tags);
-        
-        return $article;
+            $this->tagsSynchronizerService->sync($article, $tags);
+
+            return $article;
+        });
     }
 }

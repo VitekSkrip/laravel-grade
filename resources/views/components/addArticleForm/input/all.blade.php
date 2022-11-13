@@ -25,7 +25,7 @@
 <div class="block">
     <span class="ml-2">Основное изображение</span>
     <label class="inline-flex items-center cursor-pointer">
-        <input type="file" name="image" value="{{ $article->image->getUrl() }}">
+        <input type="file" name="image">
     </label>
 </div>
 

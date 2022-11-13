@@ -29,7 +29,7 @@ class BannersRepository implements BannersRepositoryContract
 
     public function getBanners(int $count): Collection
     {
-        return Cache::tags(['banners', 'images'])->remember('homePageBanners|$count', Carbon::now()->addHours(1), fn () => 
+        return Cache::tags(['banners', 'images'])->remember("homePageBanners|$count", Carbon::now()->addHours(1), fn () => 
             $this->getModel()->with('image')->limit($count)->get()
         );
     }

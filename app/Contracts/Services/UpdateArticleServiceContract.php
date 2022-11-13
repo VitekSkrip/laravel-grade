@@ -6,5 +6,5 @@ use App\Models\Article;
 
 interface UpdateArticleServiceContract
 {
-    public function update(string $slug, array $fields, array $tags): Article;
+    public function update(string $slug, array $fields, array $tags);
 }

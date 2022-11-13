@@ -57,8 +57,8 @@ class ArticlesController extends Controller
         TagsRequest $tagsRequest,
         UpdateArticleServiceContract $updateArticleService)
     {
-        $article = $updateArticleService->update($slug, $request->validated(), $tagsRequest->get('tags'));
-
+        $article =  $updateArticleService->update($slug, $request->validated(), $tagsRequest->get('tags'));
+        
         return redirect(route('articles.edit', ['article' => $article]))->with('success_message', 'Новость успешно обновлена');
     }
 
