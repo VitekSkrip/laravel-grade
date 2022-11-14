@@ -40,7 +40,8 @@ class ArticleRequest extends FormRequest
                 'description' => 'required|max:255',
                 'body' => 'required',
                 'slug' => "required|unique:articles,slug,{$id}",
-                'published_at' => 'nullable'
+                'published_at' => 'nullable',
+                'image' => 'required|image',
         ];
     }
 }

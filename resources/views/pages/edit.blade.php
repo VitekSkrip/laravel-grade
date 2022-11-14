@@ -12,7 +12,7 @@
 
         <x-addArticleForm.result.result/>
         
-        <x-addArticleForm.form action="{{ route('articles.update', $article) }}" method="POST">
+        <x-addArticleForm.form action="{{ route('articles.update', $article) }}" method="POST" enctype="multipart/form-data">
                 @method('PATCH')
 
                 <x-addArticleForm.input.all :article="$article"/>

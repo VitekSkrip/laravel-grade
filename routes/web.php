@@ -4,6 +4,7 @@ use App\Http\Controllers\ArticlesController;
 use App\Http\Controllers\CarsController;
 use App\Http\Controllers\PagesController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,6 @@ Route::get('/finances', [PagesController::class, 'finances'])->name('finances');
 
 Route::resource('articles', ArticlesController::class)->scoped(['article' => 'slug']);
 
-Route::get('/catalog', [CarsController::class, 'index']);
+Route::get('/catalog/{slug?}', [CarsController::class, 'index'])->name('catalog');
 
 Route::get('/products/{car:id}', [CarsController::class, 'show'])->name('product');

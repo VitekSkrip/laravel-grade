@@ -12,4 +12,6 @@
 
         <x-carsCatalog.catalog :cars="$cars"/>
     </div>
+
+    <x-panels.pagination :paginator="$cars"/>
 @endsection

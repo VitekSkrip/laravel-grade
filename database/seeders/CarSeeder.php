@@ -2,13 +2,14 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App;
 use Illuminate\Database\Seeder;
 use App\Models\CarBody,
       App\Models\CarClass,
       App\Models\CarEngine,
-      App\Models\Car;
-use Doctrine\DBAL\Schema\Sequence;
+      App\Models\Car,
+      App\Models\Image,
+      App\Models\Category;
 
 class CarSeeder extends Seeder
 {
@@ -22,16 +23,25 @@ class CarSeeder extends Seeder
         $carEngines = CarEngine::get();
         $carClasses = CarClass::get();
         $carBodies = CarBody::get();
+        $carImages = Image::get();
+        $categories = Category::get();
 
-        Car::factory()
+        $cars = Car::factory()
             ->count(20)
             ->sequence( fn ($sequence) => 
                 [
                     'class_id' => $carClasses->random(),
                     'engine_id' => $carEngines->random(),
-                    'body_id' => $carBodies->random()
+                    'body_id' => $carBodies->random(),
+                    'image_id' => $carImages->random()
                 ]
             )
-            ->create();
+            ->create()
+        ;
+
+        foreach ($cars as $car) {
+            $car->imagesCatalog()->attach(Image::factory()->count(rand(0, 3))->create());
+            $car->categories()->attach($categories->random(rand(1, 3)));
+        }
     }
 }

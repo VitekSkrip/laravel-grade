@@ -8,7 +8,7 @@
 
         <a class="text-sm" href="{{ route('articles.edit', $article) }}"><span class="text-sm text-white italic rounded bg-orange px-2">Редактировать новость</span></a>
 
-            <img src="/assets/pictures/car_new_stinger.png" alt="" title="">
+            <img src="{{ $article->image->getUrl() }}" alt="" title="">
 
             <x-tags.tags :tags="$article->tags"/>
 

@@ -3,26 +3,36 @@
 namespace App\Http\Controllers;
 
 use Illuminate\View\View;
-use App\Models\Article;
-use App\Models\Car;
 use Illuminate\Support\Str;
+use App\Contracts\Repositories\ArticlesRepositoryContract;
+use App\Contracts\Repositories\BannersRepositoryContract;
+use App\Contracts\Repositories\CarsRepositoryContract;
 
 class PagesController extends Controller
 {
+    public function __construct(private ArticlesRepositoryContract $articlesRepository, private CarsRepositoryContract $carsRepositoryContract, private BannersRepositoryContract $bannersRepository)
+    {
+        
+    }
+
     public function homepage(): View
     {
-        $homeNews = Article::whereNotNull('published_at')->latest('published_at')->take(3)->get();
-        $cars = Car::where('is_new', true)->take(4)->get();
+        $homeNews = $this->articlesRepository->findForHomePage(3);
+
+        $cars = $this->carsRepositoryContract->findForHomePage(4);
+
+        $banners = $this->bannersRepository->getBanners(3);
 
         return view('pages.homepage', [
             'homeNews' => $homeNews,
             'cars' => $cars,
+            'banners' => $banners,
         ]);
     }
 
     public function clients(): View
     {
-        $cars = Car::get();
+        $cars = $this->carsRepositoryContract->findAll();
 
         dump(
             $cars->avg('price'),
