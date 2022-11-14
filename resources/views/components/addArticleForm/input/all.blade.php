@@ -23,5 +23,9 @@
 </x-addArticleForm.input.group>
 
 <div class="block">
-    <input type="file" name="image">
+    <span class="ml-2">Основное изображение</span>
+    <label class="inline-flex items-center cursor-pointer">
+        <input type="file" name="image">
+    </label>
 </div>
+
