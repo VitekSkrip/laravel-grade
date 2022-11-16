@@ -84,4 +84,9 @@ class PagesController extends Controller
     {
         return view('pages.sales');
     }
+
+    public function profile(): View
+    {
+        return view('pages.profile');
+    }
 }
