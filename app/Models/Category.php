@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Kalnoy\Nestedset\NodeTrait;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Category extends Model
 {
@@ -17,8 +17,8 @@ class Category extends Model
         return 'slug';
     }
 
-    public function cars(): BelongsToMany
+    public function cars(): HasMany
     {
-        return $this->belongsToMany(Car::class);
+        return $this->hasMany(Car::class);
     }
 }

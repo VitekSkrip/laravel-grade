@@ -34,6 +34,7 @@ class CarsController extends Controller
     public function show(int $id): View
     {
         $car = $this->carsRepository->getById($id);
+        dd($car);
         return view('pages.product', compact('car'));
     }
 }

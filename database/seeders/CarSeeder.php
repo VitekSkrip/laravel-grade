@@ -33,7 +33,8 @@ class CarSeeder extends Seeder
                     'class_id' => $carClasses->random(),
                     'engine_id' => $carEngines->random(),
                     'body_id' => $carBodies->random(),
-                    'image_id' => $carImages->random()
+                    'image_id' => $carImages->random(),
+                    'category_id' => $categories->random(),
                 ]
             )
             ->create()
@@ -41,7 +42,7 @@ class CarSeeder extends Seeder
 
         foreach ($cars as $car) {
             $car->imagesCatalog()->attach(Image::factory()->count(rand(0, 3))->create());
-            $car->categories()->attach($categories->random(rand(1, 3)));
+            // $car->categories()->attach($categories->random(rand(1, 3)));
         }
     }
 }

@@ -3,6 +3,11 @@
 @section('page-title', "$article->title")
 @section('title', "$article->title")
 
+@section('breadcrumbs')
+    <x-panels.breadcrumbs/>
+    {{ Breadcrumbs::render('article', $article) }}
+@endsection
+
 @section('inner-content')        
         <div class="space-y-4">
 
