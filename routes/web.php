@@ -34,3 +34,7 @@ Route::resource('articles', ArticlesController::class)->scoped(['article' => 'sl
 Route::get('/catalog/{slug?}', [CarsController::class, 'index'])->name('catalog');
 
 Route::get('/products/{car:id}', [CarsController::class, 'show'])->name('product');
+
+Route::get('/account', [PagesController::class, 'profile'])->middleware('auth')->name('profile');
+
+require __DIR__ . '/auth.php';
