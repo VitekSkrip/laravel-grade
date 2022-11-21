@@ -10,12 +10,7 @@
     <script src="/assets/js/vendor/product.js"></script>
 @endpush
 
-@section('breadcrumbs')
-    
-    <!-- <x-panels.breadcrumbs/> -->
-    {{ Breadcrumbs::render('car', $car) }}
-
-@endsection
+{{ Breadcrumbs::setCurrentRoute('product', $car) }}
 
 @section('content')
     <div class="p-4">

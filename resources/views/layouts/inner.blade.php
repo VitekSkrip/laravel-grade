@@ -4,10 +4,6 @@
     <link href="/assets/css/inner_page_template_styles.css" rel="stylesheet">
 @endpush
 
-@section('breadcrumbs')
-
-@endsection
-
 @section('content')
     <div class="flex-1 grid grid-cols-4 lg:grid-cols-5 border-b">
 

@@ -46,19 +46,18 @@ Breadcrumbs::register('category', function ($breadcrumbs, $category) {
     $breadcrumbs->push($category->name, route('catalog', ['slug' => $category->slug]));
 });
 
-Breadcrumbs::register('car', function ($breadcrumbs, $car) {
-    // dd($car);
+Breadcrumbs::register('product', function ($breadcrumbs, $car) {
     $breadcrumbs->parent('category', $car->category);
     $breadcrumbs->push($car->name, route('product', $car));
 });
 
-Breadcrumbs::register('articles', function ($breadcrumbs) {
+Breadcrumbs::for('articles.index', function ($breadcrumbs) {
     $breadcrumbs->parent('home');
     $breadcrumbs->push('Новости', route('articles.index'));
 });
 
-Breadcrumbs::register('article', function ($breadcrumbs, $article) {
-    $breadcrumbs->parent('articles');
+Breadcrumbs::for('articles.show', function ($breadcrumbs, $article) {
+    $breadcrumbs->parent('articles.index');
     $breadcrumbs->push($article->title, route('articles.show', $article->slug));
 });
 

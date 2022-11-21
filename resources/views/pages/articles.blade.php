@@ -3,11 +3,6 @@
 @section('page-title', 'Все новости')
 @section('title', 'Все новости')
 
-@section('breadcrumbs')
-    <x-panels.breadcrumbs/>
-    {{ Breadcrumbs::render('articles') }}
-@endsection
-
 @section('inner-content')
             <div class="space-y-4">
                 

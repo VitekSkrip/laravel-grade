@@ -6,16 +6,11 @@
     <link href="/assets/css/inner_page_template_styles.css" rel="stylesheet">
 @endpush
 
-@section('breadcrumbs')
-
-    <x-panels.breadcrumbs/>
-    @if($currentCategory)
-        {{ Breadcrumbs::render('category', $currentCategory) }}
-    @else
-        {{ Breadcrumbs::render('catalog') }}
-    @endif
-    
-@endsection
+@if ($currentCategory)
+    {{ Breadcrumbs::setCurrentRoute('category', $currentCategory) }}
+@else
+    {{ Breadcrumbs::setCurrentRoute('catalog') }}
+@endif
 
 @section('content')
     <div class="p-4">

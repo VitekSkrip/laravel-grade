@@ -3,10 +3,7 @@
 @section('page-title', "$article->title")
 @section('title', "$article->title")
 
-@section('breadcrumbs')
-    <x-panels.breadcrumbs/>
-    {{ Breadcrumbs::render('article', $article) }}
-@endsection
+{{ Breadcrumbs::setCurrentRoute('articles.show', $article) }}
 
 @section('inner-content')        
         <div class="space-y-4">
