@@ -10,6 +10,8 @@
     <script src="/assets/js/vendor/product.js"></script>
 @endpush
 
+{{ Breadcrumbs::setCurrentRoute('product', $car) }}
+
 @section('content')
     <div class="p-4">
         <h1 class="text-black text-3xl font-bold mb-4">{{ $car->title }}</h1>

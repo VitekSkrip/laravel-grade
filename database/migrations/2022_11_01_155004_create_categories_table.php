@@ -22,11 +22,17 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('car_category', function (Blueprint $table) {
-            $table->foreignId('car_id')->references('id')->on('cars');
+        Schema::table('cars', function (Blueprint $table) {
             $table->foreignId('category_id')->references('id')->on('categories');
-            $table->primary(['category_id', 'car_id']);
-        }); 
+        });
+
+        // Schema::create('car_category', function (Blueprint $table) {
+        //     $table->foreignId('car_id')->references('id')->on('cars');
+        //     $table->foreignId('category_id')->references('id')->on('categories');
+        //     $table->primary(['category_id', 'car_id']);
+        // });
+
+
     }
 
     /**
