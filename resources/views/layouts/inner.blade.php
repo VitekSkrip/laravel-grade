@@ -5,7 +5,7 @@
 @endpush
 
 @section('breadcrumbs')
-    <!-- <x-panels.breadcrumbs/> -->
+
 @endsection
 
 @section('content')

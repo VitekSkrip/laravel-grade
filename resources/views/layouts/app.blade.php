@@ -22,7 +22,7 @@
 
     <x-panels.header/>
 
-    @yield('breadcrumbs')
+    <x-panels.breadcrumbs :bread="about"/>
     
     <main class="flex-1 container mx-auto bg-white">
         @yield('content')
