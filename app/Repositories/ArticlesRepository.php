@@ -7,8 +7,10 @@ use App\Models\Article;
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use App\Contracts\Repositories\ImagesRepositoryContract;
+use App\Events\ArticleDeletedEvent;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Event;
 
 class ArticlesRepository implements ArticlesRepositoryContract
 {
@@ -86,6 +88,8 @@ class ArticlesRepository implements ArticlesRepositoryContract
         $this->getModel()->where('slug', $slug)->delete();
         
         $this->flushCache();
+
+        Event::dispatch(new ArticleDeletedEvent($slug));
     }
 
     public function paginateForArticlesList(int $perPage = 10, array $fields = ['*'], string $pageName = 'page', int $page = 1): LengthAwarePaginator
