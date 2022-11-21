@@ -26,6 +26,8 @@ class SendMailOnArticleDeletedListener
      */
     public function handle(ArticleDeletedEvent $event): void
     {
-        Mail::to(config('mail.from.address'))->send(new ArticleDeletedMail($event->slug));
+        if ($email = config('mail.from.address')) {
+            Mail::to($email)->send(new ArticleDeletedMail($event->slug));
+        }
     }
 }

@@ -26,6 +26,8 @@ class SendMailOnNewArticleCreatedListener
      */
     public function handle(ArticleCreatedEvent $event): void
     {
-        Mail::to(config('mail.from.address'))->send(new NewArticleCreatedMail($event->article));
+        if ($email = config('mail.from.address')) {
+            Mail::to($email)->send(new NewArticleCreatedMail($event->article));
+        }
     }
 }

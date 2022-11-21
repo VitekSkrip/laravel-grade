@@ -26,6 +26,8 @@ class SendMailOnArticleUpdatedListener
      */
     public function handle(ArticleUpdatedEvent $event): void
     {
-        Mail::to(config('mail.from.address'))->send(new ArticleUpdatedMail($event->article));
+        if ($email = config('mail.from.address')) {
+            Mail::to($email)->send(new ArticleUpdatedMail($event->article));
+        }
     }
 }
