@@ -16,9 +16,6 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
-        $user = User::factory()->create([
-            'email' => config('mail.from.address'),
-            'role_id' => Role::factory()->create(['name' => 'admin']),
-        ]);
+        //
     }
 }

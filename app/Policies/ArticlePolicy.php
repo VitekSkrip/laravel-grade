@@ -10,34 +10,6 @@ class ArticlePolicy
 {
     use HandlesAuthorization;
 
-    private function isAdmin(User $user): bool
-    {
-        return $user->role->name == 'admin';
-    }
-
-    /**
-     * Determine whether the user can view any models.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function viewAny(User $user)
-    {
-        return true;
-    }
-
-    /**
-     * Determine whether the user can view the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Article  $article
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function view(User $user, Article $article)
-    {
-        return true;
-    }
-
     /**
      * Determine whether the user can create models.
      *
@@ -46,7 +18,7 @@ class ArticlePolicy
      */
     public function create(User $user)
     {
-        return $this->isAdmin($user);
+        return $user->isAdmin();
     }
 
     /**
@@ -56,9 +28,9 @@ class ArticlePolicy
      * @param  \App\Models\Article  $article
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Article $article)
+    public function update(User $user)
     {
-        return $this->isAdmin($user);
+        return $user->isAdmin();
     }
 
     /**
@@ -68,8 +40,8 @@ class ArticlePolicy
      * @param  \App\Models\Article  $article
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Article $article)
+    public function delete(User $user)
     {
-        return $this->isAdmin($user);
+        return $user->isAdmin();
     }
 }
