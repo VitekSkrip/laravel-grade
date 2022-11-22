@@ -12,6 +12,8 @@ use Illuminate\Support\ServiceProvider;
 use Faker\Factory;
 use Faker\Generator;
 use QSchool\FakerImageProvider\FakerImageProvider;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Gate;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -43,6 +45,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Blade::if('admin', fn () => Gate::allows('admin'));
     }
 }

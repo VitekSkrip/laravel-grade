@@ -61,4 +61,22 @@ Breadcrumbs::for('articles.show', function ($breadcrumbs, $article) {
     $breadcrumbs->push($article->title, route('articles.show', $article->slug));
 });
 
+Breadcrumbs::for('articles.create', function ($breadcrumbs) {
+    $breadcrumbs->parent('articles.index');
+    $breadcrumbs->push('Создание', route('articles.create'));
+});
 
+Breadcrumbs::for('articles.edit', function ($breadcrumbs, $article) {
+    $breadcrumbs->parent('articles.show', $article);
+    $breadcrumbs->push('Редактирование', route('articles.edit', $article->slug));
+});
+
+Breadcrumbs::for('login', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('Авторизация', route('login'));
+});
+
+Breadcrumbs::for('register', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('Регистрация', route('register'));
+});

@@ -8,7 +8,9 @@
 @section('inner-content')        
         <div class="space-y-4">
 
-        <a class="text-sm" href="{{ route('articles.edit', $article) }}"><span class="text-sm text-white italic rounded bg-orange px-2">Редактировать новость</span></a>
+        @admin()
+            <a class="text-sm" href="{{ route('articles.edit', $article) }}"><span class="text-sm text-white italic rounded bg-orange px-2">Редактировать новость</span></a>
+        @endadmin
 
             <img src="{{ $article->image->getUrl() }}" alt="" title="">
 

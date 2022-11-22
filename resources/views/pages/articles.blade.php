@@ -8,7 +8,9 @@
                 
                 <x-addArticleForm.result.result/>
 
-                <a class="text-orange" href="{{ route('articles.create') }}"><span class="text-sm text-white italic rounded bg-black px-2">Создать новость</span></a>
+                @admin()
+                    <a class="text-orange" href="{{ route('articles.create') }}"><span class="text-sm text-white italic rounded bg-black px-2">Создать новость</span></a>
+                @endadmin
 
                 <x-articlesPage.allArticles :allArticles="$allArticles"/>
             

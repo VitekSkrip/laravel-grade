@@ -6,6 +6,8 @@
     <link href="/assets/css/inner_page_template_styles.css" rel="stylesheet">
 @endpush
 
+{{ Breadcrumbs::setCurrentRoute('articles.edit', $article) }}
+
 @section('content')
     <div class="p-4">
         <h1 class="text-black text-3xl font-bold mb-4">Веб-форма</h1>
