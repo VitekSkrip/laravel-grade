@@ -4,7 +4,7 @@
 <link href="/assets/css/main_page_template_styles.css" rel="stylesheet">
 @endpush
 
-@section('page-title', 'Главная страница')
+@section('page-title')
 
 @section('header-logo')
     <span class="inline-block sm:inline">
