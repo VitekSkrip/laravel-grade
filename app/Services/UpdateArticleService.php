@@ -5,8 +5,10 @@ namespace App\Services;
 use App\Contracts\Repositories\ArticlesRepositoryContract;
 use App\Contracts\Services\TagsSynchronizerServiceContract;
 use App\Contracts\Services\UpdateArticleServiceContract;
+use App\Events\ArticleUpdatedEvent;
 use App\Models\Article;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 
 class UpdateArticleService implements UpdateArticleServiceContract
 {
@@ -21,6 +23,8 @@ class UpdateArticleService implements UpdateArticleServiceContract
             $article = $this->articlesRepository->update($slug, $fields);
 
             $this->tagsSynchronizerService->sync($article, $tags);
+
+            Event::dispatch(new ArticleUpdatedEvent($article));
 
             return $article;
         });
