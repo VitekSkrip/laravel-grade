@@ -13,4 +13,8 @@ interface TagsRepositoryContract
     public function syncTags(HasTagsContract $model, array $tags);
 
     public function deleteUnusedTags();
+
+    public function getMostPopularTag(): Collection;
+
+    public function getAvgArticlesTag(): float;
 }

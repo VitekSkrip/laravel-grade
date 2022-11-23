@@ -105,4 +105,19 @@ class ArticlesRepository implements ArticlesRepositoryContract
             $this->getModel()->with(['image', 'tags'])->paginate($perPage, $fields, $pageName, $page)
         );
     }
+
+    public function getCount(): int
+    {
+        return $this->getModel()->count();
+    }
+
+    public function getArticleWithShortestOrLongestBody(string $order = 'asc'): Collection
+    {
+        return Article::selectRaw('LENGTH(body) as length_of_body, id, title')->orderBy('length_of_body', $order)->limit(1)->get();
+    }
+
+    public function getMostTaggableArticle(): Collection
+    {
+        return $this->getModel()->select(['title', 'id'])->withCount('tags')->orderByDesc('tags_count')->limit(1)->get();
+    }
 }

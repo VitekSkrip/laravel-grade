@@ -19,4 +19,6 @@ interface CarsRepositoryContract
         string $pageName = 'page',
         int $page = 1,
     ): LengthAwarePaginator;
+
+    public function getCount(): int;
 }

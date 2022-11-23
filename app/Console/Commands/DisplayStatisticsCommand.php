@@ -2,9 +2,13 @@
 
 namespace App\Console\Commands;
 
+use App\Contracts\Repositories\ArticlesRepositoryContract;
+use App\Contracts\Repositories\CarsRepositoryContract;
+use App\Contracts\Repositories\TagsRepositoryContract;
 use App\Models\Article;
 use App\Models\Car;
 use App\Models\Tag;
+use App\Services\StatisticsCommandService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -30,40 +34,16 @@ class DisplayStatisticsCommand extends Command
      *
      * @return int
      */
-    public function handle()
+    public function handle(StatisticsCommandService $statService)
     {
         /**
-     * The console command description.
-     *
-     * Общее количество машин.
-     * Общее количество новостей.
-     * Тег, у которого больше всего новостей на сайте.
-     * Самая длинная новость — название, id новости и длина новости в символах.
-     * Самая короткая новость — название, id новости и длина новости в символах.
-     * Средние количество новостей у тега, из учета исключить теги без новостей.
-     * Самая тегированная новость — название, id новости и количество тегов этой новости
-     */
+         * The console command description.
+         *
+         */
         
-        // $articles_count = Article::count();
-        // $cars_count = Car::count();
+        $results = $statService->getStatistics();
 
-        // $most_popular_tag = Tag::withCount('articles')-> orderByDesc('articles_count')->limit(1)->get()->toArray();
-
-        // dd($most_popular_tag);
-
-        //$longest_article = DB::table('articles')->selectRaw('LENGTH(body) as length_of_body, id, title')->orderBy('length_of_body', 'desc')->limit(1)->get();
-
-        //$shortest_article = DB::table('articles')->groupBy('id')->selectRaw('LENGTH(body) as length_of_body, id, title')->orderBy('length_of_body', 'asc')->limit(1)->get();
-
-        // $avg_articles_tag = Tag::withCount('articles')->has('articles')->withAvg('articles', 'articles_count')->get();
-
-        // dd($avg_articles_tag);
-
-        // $most_taggable_article = Article::select(['title', 'id'])->withCount('tags')->orderByDesc('tags_count')->limit(1)->get()->toArray();
-
-        // dd($most_taggable_article);
-
-        // $this->table(['cars_count', 'articles_count', 'most_popular_tag', 'longest_article', 'shortest_article', 'avg_articles_tag', 'most_taggable_article'], $cars);
+        $this->table(['articles_count', 'cars_count', 'mostPopularTag', 'longest_article', 'shortest_article', 'avg_articles_tag', 'most_taggable_article', 'most_taggable_article'], $results);
 
         return Command::SUCCESS;
 
