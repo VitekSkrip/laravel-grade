@@ -47,18 +47,21 @@ class DisplayStatisticsCommand extends Command
         // $articles_count = Article::count();
         // $cars_count = Car::count();
 
-        $most_popular_tag = Tag::select(['name'])->withCount('articles')->orderBy('articles_count', 'desc')->limit(1)->get();
+        // $most_popular_tag = Tag::withCount('articles')-> orderByDesc('articles_count')->limit(1)->get()->toArray();
 
-
-        // foreach ($tags as $tag) {
-        //     echo $tag->name . ' ' . $tag->articles_count . ' ' . $tag->id . PHP_EOL;
-        // }
+        // dd($most_popular_tag);
 
         //$longest_article = DB::table('articles')->selectRaw('LENGTH(body) as length_of_body, id, title')->orderBy('length_of_body', 'desc')->limit(1)->get();
 
         //$shortest_article = DB::table('articles')->groupBy('id')->selectRaw('LENGTH(body) as length_of_body, id, title')->orderBy('length_of_body', 'asc')->limit(1)->get();
 
-        //dd($articles_count, $cars_count, $longest_article, $shortest_article);
+        // $avg_articles_tag = Tag::withCount('articles')->has('articles')->withAvg('articles', 'articles_count')->get();
+
+        // dd($avg_articles_tag);
+
+        // $most_taggable_article = Article::select(['title', 'id'])->withCount('tags')->orderByDesc('tags_count')->limit(1)->get()->toArray();
+
+        // dd($most_taggable_article);
 
         // $this->table(['cars_count', 'articles_count', 'most_popular_tag', 'longest_article', 'shortest_article', 'avg_articles_tag', 'most_taggable_article'], $cars);
 
