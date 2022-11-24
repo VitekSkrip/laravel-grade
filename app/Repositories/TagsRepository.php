@@ -45,4 +45,14 @@ class TagsRepository implements TagsRepositoryContract
         $this->getModel()->whereDoesntHave('articles')->delete();
         $this->flushCache();
     }
+
+    public function getMostPopularTag(): Collection
+    {
+        return $this->getModel()->select(['name'])->withCount('articles')->orderByDesc('articles_count')->limit(1)->get();
+    }
+
+    public function getAvgArticlesTag(): float
+    {
+        return $this->getModel()->withCount('articles')->has('articles')->pluck('articles_count')->avg();
+    }
 }

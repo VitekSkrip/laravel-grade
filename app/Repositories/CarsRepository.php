@@ -63,4 +63,9 @@ class CarsRepository implements CarsRepositoryContract
             ->when($allCategories, fn($query) => $query->whereHas('category', fn($query) => $query->whereIn('id', $allCategories)))
         ;
     }
+
+    public function getCount(): int
+    {
+        return $this->getModel()->count();
+    }
 }
