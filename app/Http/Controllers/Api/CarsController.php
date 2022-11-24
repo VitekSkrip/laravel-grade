@@ -2,63 +2,58 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Contracts\Repositories\CarsRepositoryContract;
+use App\Contracts\Repositories\CategoriesRepositoryContract;
 use App\Http\Controllers\Controller;
 use App\Models\Car;
 use Illuminate\Http\Request;
 
 class CarsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(
+        Request $request,
+        CategoriesRepositoryContract $categoriesRepository,
+        CarsRepositoryContract $carsRepository,
+        ?string $slug = null
+    )
     {
-        //
+        // планирую рефакторинг с DTO
+
+        $allCategories = collect()->all();
+        $category = null;
+        
+        if ($slug) {
+            $category = $categoriesRepository->getBySlug($slug, ['descendants']);
+            $allCategories = $category->descendants->pluck('id')->push($category->id)->all();
+        }
+
+        return $this->carsRepository->paginateForCatalog(
+            $allCategories,
+            16,
+            ['id', 'name', 'price', 'old_price', 'image_id'], 'page',
+            $request->get('page', 1))
+        ;
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store()
     {
-        //
+        // return $carCreationService->create(...);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Car  $car
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Car $car)
+    public function show(
+        int $id,
+        CarsRepositoryContract $carsRepository
+    )
     {
-        //
+        return $carsRepository->getById($id);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Car  $car
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Car $car)
+    public function update()
     {
-        //
+        // return $carUpdateService->update(...);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Car  $car
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Car $car)
+    public function destroy()
     {
         //
     }
