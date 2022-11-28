@@ -68,4 +68,21 @@ class CarsRepository implements CarsRepositoryContract
     {
         return $this->getModel()->count();
     }
+
+    public function create(array $fields): Car
+    {
+        return $this->getModel()::create($fields);
+    }
+
+    public function update(Car $car, array $fields): Car
+    {
+        $car->update($fields);
+
+        return $car;
+    }
+
+    public function delete(int $id)
+    {
+        $this->getById($id)->delete();
+    }
 }

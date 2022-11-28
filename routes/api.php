@@ -19,4 +19,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// Route::apiResource('cars', CarsController::class, ['middleware' => 'shield']);
+
 Route::apiResource('cars', CarsController::class);
