@@ -3,9 +3,11 @@
 namespace App\Providers;
 
 use App\Contracts\Services\CreateArticleServiceContract;
+use App\Contracts\Services\SalonsClientServiceContract;
 use App\Contracts\Services\TagsSynchronizerServiceContract;
 use App\Contracts\Services\UpdateArticleServiceContract;
 use App\Services\CreateArticleService;
+use App\Services\SalonsClientService;
 use App\Services\TagsSynchronizerService;
 use App\Services\UpdateArticleService;
 use Illuminate\Support\ServiceProvider;
@@ -35,6 +37,10 @@ class AppServiceProvider extends ServiceProvider
             $faker->addProvider(new FakerImageProvider($faker));
             
             return $faker;
+        });
+
+        $this->app->singleton(SalonsClientServiceContract::class, function () {
+            return $this->app->make(SalonsClientService::class, ['baseUrl' => config('services.salonsApi.url')]);
         });
     }
 

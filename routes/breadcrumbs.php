@@ -80,3 +80,8 @@ Breadcrumbs::for('register', function ($breadcrumbs) {
     $breadcrumbs->parent('home');
     $breadcrumbs->push('Регистрация', route('register'));
 });
+
+Breadcrumbs::for('salons.index', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('Салоны', route('salons.index'));
+});
