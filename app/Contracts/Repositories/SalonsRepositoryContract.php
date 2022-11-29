@@ -5,5 +5,7 @@ use Illuminate\Support\Collection;
 
 interface SalonsRepositoryContract
 {
-    public function find(): Collection;
+    public function findAll(): Collection;
+
+    public function findSomeRandoms(int $limit, bool $isRandom): Collection;
 }

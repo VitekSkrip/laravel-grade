@@ -15,7 +15,6 @@ class SalonsController extends Controller
 
     public function index()
     {
-        $salons = collect([]);
-        return view('pages.salons', ['salons' => $this->salonsRepository->find()]);
+        return view('pages.salons', ['salons' => $this->salonsRepository->findAll()]);
     }
 }

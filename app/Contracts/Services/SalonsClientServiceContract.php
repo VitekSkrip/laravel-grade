@@ -4,7 +4,7 @@ namespace App\Contracts\Services;
 
 interface SalonsClientServiceContract
 {
-    public function find(): array;
+    public function findAll(): array;
 
-    // public function findById(int $id): array;
+    public function findSomeRandoms(int $limit, bool $isRandom): array;
 }
