@@ -42,7 +42,6 @@ class CarSeeder extends Seeder
 
         foreach ($cars as $car) {
             $car->imagesCatalog()->attach(Image::factory()->count(rand(0, 3))->create());
-            // $car->categories()->attach($categories->random(rand(1, 3)));
         }
     }
 }

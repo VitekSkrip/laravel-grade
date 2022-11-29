@@ -21,4 +21,10 @@ interface CarsRepositoryContract
     ): LengthAwarePaginator;
 
     public function getCount(): int;
+
+    public function create(array $fields): Car;
+
+    public function update(Car $car, array $fields): Car;
+
+    public function delete(int $id);
 }
