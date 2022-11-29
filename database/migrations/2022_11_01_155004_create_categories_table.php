@@ -23,7 +23,7 @@ return new class extends Migration
         });
 
         Schema::table('cars', function (Blueprint $table) {
-            $table->foreignId('category_id')->references('id')->on('categories');
+            $table->foreignId('category_id')->nullable()->references('id')->on('categories');
         });
     }
 

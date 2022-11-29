@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\CarEngine;
 use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -21,7 +22,7 @@ return new class extends Migration
         });
 
         Schema::table('cars', function (Blueprint $table) {
-            $table->foreignId('engine_id')->references('id')->on('car_engines');
+            $table->foreignId('engine_id')->nullable()->references('id')->on('car_engines');
         });
     }
 
