@@ -2,14 +2,6 @@
 
 @section('page-title', $car->title)
 
-@push('styles')
-    <link href="/assets/css/inner_page_template_styles.css" rel="stylesheet">
-@endpush
-
-@push('scripts')
-    <script src="/assets/js/vendor/product.js"></script>
-@endpush
-
 {{ Breadcrumbs::setCurrentRoute('product', $car) }}
 
 @section('content')
