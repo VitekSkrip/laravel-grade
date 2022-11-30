@@ -7,9 +7,11 @@ use App\Contracts\Services\CarRemoverServiceContract;
 use App\Contracts\Services\CarUpdateServiceContract;
 use App\Services\CarsService;
 use App\Contracts\Services\CreateArticleServiceContract;
+use App\Contracts\Services\SalonsClientServiceContract;
 use App\Contracts\Services\TagsSynchronizerServiceContract;
 use App\Contracts\Services\UpdateArticleServiceContract;
 use App\Services\CreateArticleService;
+use App\Services\SalonsClientService;
 use App\Services\TagsSynchronizerService;
 use App\Services\UpdateArticleService;
 use Illuminate\Support\ServiceProvider;
@@ -42,6 +44,9 @@ class AppServiceProvider extends ServiceProvider
             return $faker;
         });
 
+        $this->app->singleton(SalonsClientServiceContract::class, function () {
+            return $this->app->make(SalonsClientService::class, ['baseUrl' => config('services.salonsApi.url'), 'login' => config('services.salonsApi.login'), 'password' => config('services.salonsApi.password')]);
+        });
         $this->app->singleton(CarCreationServiceContract::class, CarsService::class);
         $this->app->singleton(CarUpdateServiceContract::class, CarsService::class);
         $this->app->singleton(CarRemoverServiceContract::class, CarsService::class);

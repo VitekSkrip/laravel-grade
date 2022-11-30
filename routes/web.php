@@ -3,6 +3,7 @@
 use App\Http\Controllers\ArticlesController;
 use App\Http\Controllers\CarsController;
 use App\Http\Controllers\PagesController;
+use App\Http\Controllers\SalonsController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
@@ -38,3 +39,5 @@ Route::get('/products/{car:id}', [CarsController::class, 'show'])->name('product
 Route::get('/account', [PagesController::class, 'profile'])->middleware('auth')->name('profile');
 
 require __DIR__ . '/auth.php';
+
+Route::get('/salons', [SalonsController::class, 'index'])->name('salons.index');
