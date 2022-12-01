@@ -1,9 +1,5 @@
 @extends('layouts.app')
 
-@push('styles')
-<link href="/assets/css/main_page_template_styles.css" rel="stylesheet">
-@endpush
-
 @section('page-title')
 
 @section('header-logo')
