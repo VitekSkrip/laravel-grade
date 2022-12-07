@@ -85,3 +85,13 @@ Breadcrumbs::for('salons.index', function ($breadcrumbs) {
     $breadcrumbs->parent('home');
     $breadcrumbs->push('Салоны', route('salons.index'));
 });
+
+Breadcrumbs::for('reports', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('Отчеты', route('reports'));
+});
+
+Breadcrumbs::for('statistics', function ($breadcrumbs) {
+    $breadcrumbs->parent('reports');
+    $breadcrumbs->push('Отчет по статистике', route('statistics'));
+});

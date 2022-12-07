@@ -89,4 +89,9 @@ class PagesController extends Controller
     {
         return view('pages.profile');
     }
+
+    public function reports(): View
+    {
+        return view('pages.reports');
+    }
 }

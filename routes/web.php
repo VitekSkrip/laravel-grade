@@ -41,3 +41,8 @@ Route::get('/account', [PagesController::class, 'profile'])->middleware('auth')-
 require __DIR__ . '/auth.php';
 
 Route::get('/salons', [SalonsController::class, 'index'])->name('salons.index');
+
+Route::get('/reports', [PagesController::class, 'reports'])->middleware(['auth', 'role'])->name('reports');
+
+// 1.группировка маршрутов
+Route::view('/reports/statistics', 'pages.statistics')->middleware(['auth', 'role'])->name('statistics');
