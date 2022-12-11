@@ -42,7 +42,8 @@ require __DIR__ . '/auth.php';
 
 Route::get('/salons', [SalonsController::class, 'index'])->name('salons.index');
 
-Route::get('/reports', [PagesController::class, 'reports'])->middleware(['auth', 'role'])->name('reports');
-
-// 1.группировка маршрутов
-Route::view('/reports/statistics', 'pages.statistics')->middleware(['auth', 'role'])->name('statistics');
+Route::middleware(['auth', 'role'])->prefix('reports')->group(function () {
+    Route::get('/', [PagesController::class, 'reports'])->name('reports');
+    Route::view('/statistics', 'pages.statistics')->name('statistics');
+    Route::post('/statistics', [PagesController::class, 'generateStat'])->name('generate.stat');
+});

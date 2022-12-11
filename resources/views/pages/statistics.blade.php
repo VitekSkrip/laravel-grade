@@ -12,16 +12,19 @@
 
 <div class="p-4">
     <h1 class="text-black text-3xl font-bold mb-4">Генерация отчета по статистике</h1>
-    <x-addArticleForm.form action="{{ route('articles.store') }}" method="post" enctype="multipart/form-data">
+    <x-addArticleForm.form action="{{ route('generate.stat') }}" method="post" id="generateStatForm">
             @method('POST')
 
             <div class="block">
-                <label for="field5" class="text-gray-700 font-bold">Выбор вариантов</label>
-                <select id="field5" class="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                    <option>Corporate event</option>
-                    <option>Wedding</option>
-                    <option>Birthday</option>
-                    <option>Other</option>
+                <label for="selected_fields" class="text-gray-700 font-bold">Выбор вариантов</label>
+                <select id="selected_fields" name="selected_fields[]" multiple="multiple" class="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                    <option value="cars_count">Общее количество машин</option>
+                    <option value="articles_count">Общее количество новостей</option>
+                    <option value="mostPopularTag">Тег, у которого больше всего новостей на сайте</option>
+                    <option value="longest_article">Самая длинная новость</option>
+                    <option value="shortest_article">Самая короткая новость</option>
+                    <option value="avgArticlesTag">Средние количество новостей у тега</option>
+                    <option value="mostTaggableArticle">Самая тегированная новость</option>
                 </select>
             </div>
 

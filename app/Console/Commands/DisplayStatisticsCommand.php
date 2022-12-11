@@ -41,9 +41,9 @@ class DisplayStatisticsCommand extends Command
          *
          */
         
-        $results = $statService->getStatistics();
+        $results = $statService->getStatistics(['articles_count', 'cars_count', 'mostPopularTag', 'longest_article', 'shortest_article', 'avgArticlesTag', 'mostTaggableArticle']);
 
-        $this->table(['articles_count', 'cars_count', 'mostPopularTag', 'longest_article', 'shortest_article', 'avg_articles_tag', 'most_taggable_article', 'most_taggable_article'], $results);
+        $this->table(['articles_count', 'cars_count', 'mostPopularTag', 'longest_article', 'shortest_article', 'avg_articles_tag', 'most_taggable_article'], $results);
 
         return Command::SUCCESS;
 

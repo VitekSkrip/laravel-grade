@@ -7,6 +7,10 @@ use Illuminate\Support\Str;
 use App\Contracts\Repositories\ArticlesRepositoryContract;
 use App\Contracts\Repositories\BannersRepositoryContract;
 use App\Contracts\Repositories\CarsRepositoryContract;
+use App\Services\CalculateStatisticsService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
 
 class PagesController extends Controller
 {
@@ -30,6 +34,7 @@ class PagesController extends Controller
         ]);
     }
 
+    /*
     public function clients(): View
     {
         $cars = $this->carsRepositoryContract->findAll();
@@ -64,6 +69,7 @@ class PagesController extends Controller
 
         return view('pages.clients');
     }
+    */
 
     public function about(): View
     {
@@ -93,5 +99,11 @@ class PagesController extends Controller
     public function reports(): View
     {
         return view('pages.reports');
+    }
+
+    public function generateStat(Request $request)
+    {
+        \App\Jobs\GenerateReport::dispatchNow($request->input('selected_fields'), $request->user());
+        return back();
     }
 }

@@ -14,32 +14,34 @@ class CalculateStatisticsService
         
     }
 
-    public function getStatistics(): array
+    public function getStatistics(array $whatToCalculate): array
     {
-        $articles_count = $this->articlesRepository->getCount();
-        $cars_count = $this->carsRepository->getCount();
+        $result = [];
+        foreach ($whatToCalculate as $stat) {
+            if ($stat == 'articles_count') {
+                $result[] = $this->articlesRepository->getCount();
+            }
+            if ($stat == 'cars_count') {
+                $result[] = $this->carsRepository->getCount();
+            }
+            if ($stat == 'mostPopularTag') {
+                $result[] = $this->implode($this->tagsRepository->getMostPopularTag());
+            }
+            if ($stat == 'longest_article') {
+                $result[] = $this->implode($this->articlesRepository->getArticleWithShortestOrLongestBody('desc'));
+            }
+            if ($stat == 'shortest_article') {
+                $result[] = $this->implode($this->articlesRepository->getArticleWithShortestOrLongestBody());
+            }
+            if ($stat == 'avgArticlesTag') {
+                $result[] = $this->tagsRepository->getAvgArticlesTag();
+            }
+            if ($stat == 'mostTaggableArticle') {
+                $result[] = $this->implode($this->articlesRepository->getMostTaggableArticle());
+            }
+        }
 
-        $mostPopularTag = $this->implode($this->tagsRepository->getMostPopularTag());
-
-        $longest_article = $this->implode($this->articlesRepository->getArticleWithShortestOrLongestBody('desc'));
-
-        $shortest_article = $this->implode($this->articlesRepository->getArticleWithShortestOrLongestBody());
-
-        $avgArticlesTag = $this->tagsRepository->getAvgArticlesTag();
-
-        $mostTaggableArticle = $this->implode($this->articlesRepository->getMostTaggableArticle());
-
-        return [
-            [
-                $articles_count, 
-                $cars_count,
-                $mostPopularTag,
-                $longest_article,
-                $shortest_article,
-                $avgArticlesTag,
-                $mostTaggableArticle,
-            ],
-        ];
+        return $result;
     }
 
     private function implode(Collection $collection): string
