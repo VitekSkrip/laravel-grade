@@ -17,5 +17,4 @@
             </div>
 
             <x-panels.pagination :paginator="$allArticles"/>
-
 @endsection

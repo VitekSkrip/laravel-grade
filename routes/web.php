@@ -41,3 +41,9 @@ Route::get('/account', [PagesController::class, 'profile'])->middleware('auth')-
 require __DIR__ . '/auth.php';
 
 Route::get('/salons', [SalonsController::class, 'index'])->name('salons.index');
+
+Route::middleware(['auth', 'role'])->prefix('reports')->group(function () {
+    Route::get('/', [PagesController::class, 'reports'])->name('reports');
+    Route::view('/statistics', 'pages.statistics')->name('statistics');
+    Route::post('/statistics', [PagesController::class, 'generateStat'])->name('generate.stat');
+});

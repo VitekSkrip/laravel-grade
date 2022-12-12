@@ -2,10 +2,6 @@
 
 @section('page-title', 'Редактирование новости')
 
-@push('styles')
-    <link href="/assets/css/inner_page_template_styles.css" rel="stylesheet">
-@endpush
-
 {{ Breadcrumbs::setCurrentRoute('articles.edit', $article) }}
 
 @section('content')

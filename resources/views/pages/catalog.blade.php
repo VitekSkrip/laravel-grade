@@ -2,10 +2,6 @@
 
 @section('page-title', 'Каталог машин')
 
-@push('styles')
-    <link href="/assets/css/inner_page_template_styles.css" rel="stylesheet">
-@endpush
-
 @if ($currentCategory)
     {{ Breadcrumbs::setCurrentRoute('category', $currentCategory) }}
 @else

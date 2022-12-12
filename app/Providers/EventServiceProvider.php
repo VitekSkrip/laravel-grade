@@ -5,11 +5,11 @@ namespace App\Providers;
 use App\Events\ArticleCreatedEvent;
 use App\Events\ArticleDeletedEvent;
 use App\Events\ArticleUpdatedEvent;
-
+use App\Events\ReportGeneratedEvent;
 use App\Listeners\SendMailOnArticleDeletedListener;
 use App\Listeners\SendMailOnArticleUpdatedListener;
 use App\Listeners\SendMailOnNewArticleCreatedListener;
-
+use App\Listeners\SendMailOnReportGeneratedMailListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -34,6 +34,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         ArticleDeletedEvent::class => [
             SendMailOnArticleDeletedListener::class,
+        ],
+        ReportGeneratedEvent::class => [
+            SendMailOnReportGeneratedMailListener::class,
         ],
     ];
 
