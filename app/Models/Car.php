@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 class Car extends Model implements HasTagsContract
 {
     use HasFactory;
-    protected $fillable = ['name', 'engine_id', 'class_id', 'body_id', 'image_id'];
+    protected $fillable = ['name', 'price', 'old_price', 'body', 'engine_id', 'class_id', 'body_id', 'image_id', 'category_id'];
     
     public function carClass(): BelongsTo
     {
@@ -44,8 +44,8 @@ class Car extends Model implements HasTagsContract
         return $this->belongsToMany(Image::class); 
     }
 
-    public function categories(): BelongsToMany
+    public function category(): BelongsTo
     {
-        return $this->belongsToMany(Category::class);
+        return $this->belongsTo(Category::class);
     }
 }

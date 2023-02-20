@@ -3,6 +3,7 @@
 use App\Http\Controllers\ArticlesController;
 use App\Http\Controllers\CarsController;
 use App\Http\Controllers\PagesController;
+use App\Http\Controllers\SalonsController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
@@ -34,3 +35,15 @@ Route::resource('articles', ArticlesController::class)->scoped(['article' => 'sl
 Route::get('/catalog/{slug?}', [CarsController::class, 'index'])->name('catalog');
 
 Route::get('/products/{car:id}', [CarsController::class, 'show'])->name('product');
+
+Route::get('/account', [PagesController::class, 'profile'])->middleware('auth')->name('profile');
+
+require __DIR__ . '/auth.php';
+
+Route::get('/salons', [SalonsController::class, 'index'])->name('salons.index');
+
+Route::middleware(['auth', 'role'])->prefix('reports')->group(function () {
+    Route::get('/', [PagesController::class, 'reports'])->name('reports');
+    Route::view('/statistics', 'pages.statistics')->name('statistics');
+    Route::post('/statistics', [PagesController::class, 'generateStat'])->name('generate.stat');
+});

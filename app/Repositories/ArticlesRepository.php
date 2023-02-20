@@ -7,8 +7,10 @@ use App\Models\Article;
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use App\Contracts\Repositories\ImagesRepositoryContract;
+use App\Events\ArticleDeletedEvent;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Event;
 
 class ArticlesRepository implements ArticlesRepositoryContract
 {
@@ -86,6 +88,8 @@ class ArticlesRepository implements ArticlesRepositoryContract
         $this->getModel()->where('slug', $slug)->delete();
         
         $this->flushCache();
+
+        Event::dispatch(new ArticleDeletedEvent($slug));
     }
 
     public function paginateForArticlesList(int $perPage = 10, array $fields = ['*'], string $pageName = 'page', int $page = 1): LengthAwarePaginator
@@ -100,5 +104,20 @@ class ArticlesRepository implements ArticlesRepositoryContract
         return Cache::tags(['articles', 'images', 'tags'])->remember("pagForArticlesList|$params", Carbon::now()->addHours(1), fn () => 
             $this->getModel()->with(['image', 'tags'])->paginate($perPage, $fields, $pageName, $page)
         );
+    }
+
+    public function getCount(): int
+    {
+        return $this->getModel()->count();
+    }
+
+    public function getArticleWithShortestOrLongestBody(string $order = 'asc'): Collection
+    {
+        return Article::selectRaw('LENGTH(body) as length_of_body, id, title')->orderBy('length_of_body', $order)->limit(1)->get();
+    }
+
+    public function getMostTaggableArticle(): Collection
+    {
+        return $this->getModel()->select(['title', 'id'])->withCount('tags')->orderByDesc('tags_count')->limit(1)->get();
     }
 }

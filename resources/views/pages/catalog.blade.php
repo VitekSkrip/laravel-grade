@@ -2,9 +2,11 @@
 
 @section('page-title', 'Каталог машин')
 
-@push('styles')
-    <link href="/assets/css/inner_page_template_styles.css" rel="stylesheet">
-@endpush
+@if ($currentCategory)
+    {{ Breadcrumbs::setCurrentRoute('category', $currentCategory) }}
+@else
+    {{ Breadcrumbs::setCurrentRoute('catalog') }}
+@endif
 
 @section('content')
     <div class="p-4">

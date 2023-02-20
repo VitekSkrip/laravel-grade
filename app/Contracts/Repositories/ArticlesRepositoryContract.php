@@ -30,4 +30,10 @@ interface ArticlesRepositoryContract
         string $pageName = 'page',
         int $page = 1,
     ): LengthAwarePaginator;
+
+    public function getCount(): int;
+
+    public function getArticleWithShortestOrLongestBody(string $order = 'asc'): Collection;
+
+    public function getMostTaggableArticle(): Collection;
 }

@@ -19,4 +19,12 @@ interface CarsRepositoryContract
         string $pageName = 'page',
         int $page = 1,
     ): LengthAwarePaginator;
+
+    public function getCount(): int;
+
+    public function create(array $fields): Car;
+
+    public function update(Car $car, array $fields): Car;
+
+    public function delete(int $id);
 }

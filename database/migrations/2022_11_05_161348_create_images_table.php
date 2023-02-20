@@ -20,7 +20,7 @@ return new class extends Migration
         });
 
         Schema::table('cars', function (Blueprint $table) {
-            $table->foreignId('image_id')->references('id')->on('images');
+            $table->foreignId('image_id')->nullable()->references('id')->on('images');
         });
 
         Schema::table('articles', function (Blueprint $table) {

@@ -3,15 +3,11 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="/assets/css/form.min.css" rel="stylesheet">
-    <link href="/assets/css/tailwind.css" rel="stylesheet">
-    <link href="/assets/css/base.css" rel="stylesheet">
-    @stack('styles')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <script src="/assets/js/vendor/jquery-3.6.0.min.js"></script>
-    <link href="/assets/js/vendor/slick.css" rel="stylesheet">
-    <script src="/assets/js/vendor/slick.min.js"></script>
-    <script src="/assets/js/script.js"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
+    @stack('styles')
     @stack('scripts')
     
     <title>Рога и Сила - @section('page-title')Главная страница@show</title>
@@ -22,7 +18,7 @@
 
     <x-panels.header/>
 
-    @yield('breadcrumbs')
+    {{ Breadcrumbs::render() }}
     
     <main class="flex-1 container mx-auto bg-white">
         @yield('content')

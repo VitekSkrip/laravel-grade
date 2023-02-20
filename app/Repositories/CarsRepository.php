@@ -38,7 +38,7 @@ class CarsRepository implements CarsRepositoryContract
     public function getById(int $id): Car
     {
         return Cache::tags(['cars', 'images'])->remember("carById|$id", Carbon::now()->addHours(1), fn () =>
-            $this->getModel()->with(['carClass', 'engine', 'carBody', 'imagesCatalog'])->findOrFail($id)
+            $this->getModel()->with(['carClass', 'engine', 'carBody', 'imagesCatalog', 'category'])->findOrFail($id)
         );
     }
 
@@ -53,14 +53,36 @@ class CarsRepository implements CarsRepositoryContract
         ]);
 
         return Cache::tags(['cars', 'images'])->remember("paginateForCatalog|$params", Carbon::now()->addHours(1), fn () => 
-            $this->catalogBuilder($allCategories)->with(['image'])->paginate($perPage, $fields, $pageName, $page)
+            $this->catalogBuilder($allCategories)->with(['image', 'category'])->paginate($perPage, $fields, $pageName, $page)
         );
     }
 
     private function catalogBuilder(array $allCategories)
     {
         return $this->getModel()
-            ->when($allCategories, fn($query) => $query->whereHas('categories', fn($query) => $query->whereIn('id', $allCategories)))
+            ->when($allCategories, fn($query) => $query->whereHas('category', fn($query) => $query->whereIn('id', $allCategories)))
         ;
+    }
+
+    public function getCount(): int
+    {
+        return $this->getModel()->count();
+    }
+
+    public function create(array $fields): Car
+    {
+        return $this->getModel()::create($fields);
+    }
+
+    public function update(Car $car, array $fields): Car
+    {
+        $car->update($fields);
+
+        return $car;
+    }
+
+    public function delete(int $id)
+    {
+        $this->getById($id)->delete();
     }
 }

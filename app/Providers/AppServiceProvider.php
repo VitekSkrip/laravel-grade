@@ -2,16 +2,25 @@
 
 namespace App\Providers;
 
+use App\Contracts\Services\CarCreationServiceContract;
+use App\Contracts\Services\CarRemoverServiceContract;
+use App\Contracts\Services\CarUpdateServiceContract;
+use App\Services\CarsService;
 use App\Contracts\Services\CreateArticleServiceContract;
+use App\Contracts\Services\SalonsClientServiceContract;
 use App\Contracts\Services\TagsSynchronizerServiceContract;
 use App\Contracts\Services\UpdateArticleServiceContract;
 use App\Services\CreateArticleService;
+use App\Services\SalonsClientService;
 use App\Services\TagsSynchronizerService;
 use App\Services\UpdateArticleService;
 use Illuminate\Support\ServiceProvider;
 use Faker\Factory;
 use Faker\Generator;
 use QSchool\FakerImageProvider\FakerImageProvider;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Route;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -34,6 +43,13 @@ class AppServiceProvider extends ServiceProvider
             
             return $faker;
         });
+
+        $this->app->singleton(SalonsClientServiceContract::class, function () {
+            return $this->app->make(SalonsClientService::class, ['baseUrl' => config('services.salonsApi.url'), 'login' => config('services.salonsApi.login'), 'password' => config('services.salonsApi.password')]);
+        });
+        $this->app->singleton(CarCreationServiceContract::class, CarsService::class);
+        $this->app->singleton(CarUpdateServiceContract::class, CarsService::class);
+        $this->app->singleton(CarRemoverServiceContract::class, CarsService::class);
     }
 
     /**
@@ -43,6 +59,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Blade::if('admin', fn () => Gate::allows('admin'));
+
+        // $this->routes(function () {
+        //     Route::middleware('api')
+        //         ->prefix('api/v1')
+        //         ->group(base_path('routes/api.php'));   
+        // });
     }
 }
