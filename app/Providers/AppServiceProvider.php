@@ -40,12 +40,18 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(Generator::class, function () {
             $faker = Factory::create(config('app.faker_locale', 'en_US'));
             $faker->addProvider(new FakerImageProvider($faker));
-            
+
             return $faker;
         });
 
-        $this->app->singleton(SalonsClientServiceContract::class, function () {
-            return $this->app->make(SalonsClientService::class, ['baseUrl' => config('services.salonsApi.url'), 'login' => config('services.salonsApi.login'), 'password' => config('services.salonsApi.password')]);
+        $this->app->singleton(SalonsClientServiceContract::class,
+            function () {
+            return $this->app->make(
+                SalonsClientService::class, [
+                    'baseUrl' => config('services.salonsApi.url'),
+                    'login' => config('services.salonsApi.login'),
+                    'password' => config('services.salonsApi.password')
+            ]);
         });
         $this->app->singleton(CarCreationServiceContract::class, CarsService::class);
         $this->app->singleton(CarUpdateServiceContract::class, CarsService::class);
@@ -64,7 +70,7 @@ class AppServiceProvider extends ServiceProvider
         // $this->routes(function () {
         //     Route::middleware('api')
         //         ->prefix('api/v1')
-        //         ->group(base_path('routes/api.php'));   
+        //         ->group(base_path('routes/api.php'));
         // });
     }
 }

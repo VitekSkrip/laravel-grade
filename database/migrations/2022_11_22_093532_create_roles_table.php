@@ -21,8 +21,15 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        Role::factory()->create(['name' => 'client']);
+
         Schema::table('users', function (Blueprint $table) {
-            $table->foreignId('role_id')->references('id')->on('roles')->cascadeOnDelete();
+            $table->foreignId('role_id')
+                ->default('1')
+                ->references('id')
+                ->on('roles')
+                ->cascadeOnDelete()
+            ;
         });
 
         User::factory()->create([

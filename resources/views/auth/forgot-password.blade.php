@@ -1,4 +1,4 @@
-@extends('layouts.inner')
+@extends('layouts.auth-template')
 
 @section('page-title', 'Восстановление пароля')
 @section('title', 'Восстановление пароля')

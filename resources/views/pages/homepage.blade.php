@@ -10,8 +10,8 @@
 
 @section('content')
 
-    <x-bannersSection.banners :banners="$banners"/> 
-    
+    <x-bannersSection.banners :banners="$banners"/>
+
     <section class="pb-4 px-6">
         <p class="inline-block text-3xl text-black font-bold mb-4">Модели недели</p>
             @if ($cars)
@@ -25,7 +25,10 @@
         </div>
 
         <x-homeArticles.homeNews :homeNews="$homeNews"/>
-        
+
+        <example-component />
+
     </section>
+
 
 @endsection

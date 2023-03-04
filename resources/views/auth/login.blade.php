@@ -1,4 +1,4 @@
-@extends('layouts.inner')
+@extends('layouts.auth-template')
 
 @section('page-title', 'Авторизация')
 @section('title', 'Авторизация')
@@ -34,5 +34,5 @@
         </div>
 
     </x-addArticleForm.form>
-    
+
 @endsection

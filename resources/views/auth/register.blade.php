@@ -1,4 +1,4 @@
-@extends('layouts.inner')
+@extends('layouts.auth-template')
 
 @section('page-title', 'Регистрация')
 @section('title', 'Регистрация')
@@ -10,7 +10,7 @@
     <x-addArticleForm.form method="POST" action="{{ route('register') }}">
 
         <x-addArticleForm.input.group for="name" nameTitle="Имя" error="{{ $errors->first('name') }}">
-            <x-addArticleForm.input.text id="name" name="name" type="text" placeholder="Василий Иваныч" value="{{ old('name') }}" required autofocus error="{{ $errors->first('name') }}"/>
+            <x-addArticleForm.input.text id="name" name="name" type="text" placeholder="Ваше ФИО" value="{{ old('name') }}" required autofocus error="{{ $errors->first('name') }}"/>
         </x-addArticleForm.input.group>
 
         <x-addArticleForm.input.group for="email" nameTitle="Почта" error="{{ $errors->first('email') }}">
