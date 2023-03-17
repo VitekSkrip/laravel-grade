@@ -2,9 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Article;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use Illuminate\Validation\Rule;
 
 class ArticleRequest extends FormRequest
 {
@@ -33,13 +35,14 @@ class ArticleRequest extends FormRequest
      */
     public function rules()
     {
-        $id = $this->article->id ?? '';
+//        $id = $this->article->id ?? '';
 
         return [
                 'title' => 'required|min:5|max:100',
                 'description' => 'required|max:255',
                 'body' => 'required',
-                'slug' => "required|unique:articles,slug,{$id}",
+//                'slug' => "required|unique:articles,slug,{$id}",
+                'slug' => ['required', Rule::unique(Article::class)->ignore($this->slug)],
                 'published_at' => 'nullable',
                 'image' => 'required|image',
         ];

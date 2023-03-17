@@ -25,6 +25,10 @@
             <x-addArticleForm.input.text id="password_confirmation" name="password_confirmation" type="password" value="{{ old('password_confirmation') }}" placeholder="***********" required error="{{ $errors->first('password_confirmation') }}"/>
         </x-addArticleForm.input.group>
 
+        <x-addArticleForm.input.group for="telegram_id" nameTitle="Telegram ID для уведомлений" hrefForMore="https://ru.botostore.com/c/getmyid_bot/?do=open_bot" error="{{ $errors->first('telegram') }}">
+            <x-addArticleForm.input.text id="telegram_id" name="telegram_id" type="text" placeholder="Ваш Telegram ID - это набор цифр" value="{{ old('telegram_id') }}" autofocus error="{{ $errors->first('telegram_id') }}"/>
+        </x-addArticleForm.input.group>
+
         <div class="space-x-4">
             <x-addArticleForm.buttons.submit>
                 Регистрация

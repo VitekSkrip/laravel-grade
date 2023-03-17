@@ -5,7 +5,6 @@ use App\Http\Controllers\CarsController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\SalonsController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,4 +45,8 @@ Route::middleware(['auth', 'role'])->prefix('reports')->group(function () {
     Route::get('/', [PagesController::class, 'reports'])->name('reports');
     Route::view('/statistics', 'pages.statistics')->name('statistics');
     Route::post('/statistics', [PagesController::class, 'generateStat'])->name('generate.stat');
+});
+
+Route::get('/test', function () {
+    return view('test');
 });

@@ -11,6 +11,9 @@
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     @stack('styles')
 
+    <script src="{{ mix('js/app.js') }}"></script>
+    @stack('scripts')
+
     <title>Рога и Сила - @section('page-title')Главная страница@show</title>
     <link href="/assets/favicon.ico" rel="shortcut icon" type="image/x-icon">
 </head>
@@ -31,9 +34,6 @@
 
     </div>
 </div>
-
-<script src="{{ mix('js/app.js') }}"></script>
-@stack('scripts')
 
 </body>
 </html>

@@ -1,9 +1,7 @@
 @import "slick-carousel/slick/slick";
 @import "slick-carousel/slick/slick-theme";
 
-@import "./form.min.css";
-@import "./tailwind.css";
-@import "./base.css";
-
-@import "./inner_page_template_styles.css";
-@import "./main_page_template_styles.css";
+@import "./bootstrap.css";
+@import "./bootstrap.rtl.min.css";
+@import "./bootstrap-grid.css";
+@import "./bootstrap-reboot.css";

@@ -23,7 +23,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role_id'
+        'role_id',
+        'telegram_id',
     ];
 
     /**
@@ -54,4 +55,15 @@ class User extends Authenticatable
     {
         return $this->role()->where('name', 'admin')->exists();
     }
+
+    /**
+     * Route notifications for the Telegram channel.
+     *
+     * @return int
+     */
+    public function routeNotificationForTelegram(): int
+    {
+        return $this->telegram_id;
+    }
+
 }
