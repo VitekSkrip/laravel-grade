@@ -37,13 +37,6 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->singleton(UpdateArticleServiceContract::class, UpdateArticleService::class);
 
-        $this->app->singleton(Generator::class, function () {
-            $faker = Factory::create(config('app.faker_locale', 'en_US'));
-            $faker->addProvider(new FakerImageProvider($faker));
-
-            return $faker;
-        });
-
         $this->app->singleton(SalonsClientServiceContract::class,
             function () {
             return $this->app->make(

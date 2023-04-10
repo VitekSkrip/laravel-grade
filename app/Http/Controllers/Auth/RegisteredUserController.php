@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Notifications\Telegram;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -12,6 +11,7 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use NotificationChannels\Telegram\Telegram;
 
 class RegisteredUserController extends Controller
 {
@@ -39,7 +39,7 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'. User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'telegram_id' => ['sometimes', 'unique:users'],
+            'telegram_id' => ['sometimes'],
         ]);
 
 
