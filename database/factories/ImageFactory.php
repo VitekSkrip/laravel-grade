@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Image;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
