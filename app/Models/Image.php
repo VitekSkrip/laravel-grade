@@ -24,9 +24,9 @@ class Image extends Model
         return $this->HasMany(Article::class);
     }
 
-    public function getUrl(): String
+    public function getUrl(): string
     {
-        return Storage::disk('public')->url($this->path);
+        return "/storage/{$this->path}";
     }
 
     public function banner(): HasOne
