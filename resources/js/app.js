@@ -1,12 +1,11 @@
-require('./bootstrap');
-require('./bootstrap.bundle')
-require('./script')
+require('bootstrap');
 
 import $ from 'jquery'
-
 import 'slick-carousel'
 
 window.jQuery = window.$ = $;
+
+require('./script')
 
 window.Vue = require('vue').default;
 
