@@ -36,4 +36,9 @@ return [
         'login' => env('SALONS_API_SERVICE_LOGIN'),
         'password' => env('SALONS_API_SERVICE_PASSWORD'),
     ],
+
+    'telegram-bot-api' => [
+        'token' => env('TELEGRAM_BOT_TOKEN'),
+    ],
+
 ];
