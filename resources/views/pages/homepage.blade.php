@@ -1,22 +1,19 @@
-@extends('layouts.app')
+<x-layouts.app>
+    <x-slot name="title">Главная страница</x-slot>
 
-@section('page-title')
-
-@section('header-logo')
-    <span class="inline-block sm:inline">
+    @section('header-logo')
+        <span class="inline-block sm:inline">
         <img src="/assets/images/logo.png" width="222" height="30" alt="">
     </span>
-@endsection
-
-@section('content')
+    @endsection
 
     <x-bannersSection.banners :banners="$banners"/>
 
     <section class="pb-4 px-6">
         <p class="inline-block text-3xl text-black font-bold mb-4">Модели недели</p>
-            @if ($cars)
-                <x-carsCatalog.catalog :cars="$cars"/>
-            @endif
+        @if ($cars)
+            <x-carsCatalog.catalog :cars="$cars"/>
+        @endif
     </section>
     <section class="news-block-inverse px-6 py-4">
         <div>
@@ -25,10 +22,6 @@
         </div>
 
         <x-homeArticles.homeNews :homeNews="$homeNews"/>
-
-        <example-component />
-
     </section>
+</x-layouts.app>
 
-
-@endsection

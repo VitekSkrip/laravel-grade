@@ -1,5 +1,7 @@
 require('bootstrap');
 
+import Alpine from 'alpinejs';
+
 import $ from 'jquery'
 import 'slick-carousel'
 
@@ -7,10 +9,6 @@ window.jQuery = window.$ = $;
 
 require('./script')
 
-window.Vue = require('vue').default;
+window.Alpine = Alpine;
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-
-const app = new Vue({
-    el: '#app'
-})
+Alpine.start();

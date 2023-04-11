@@ -3,6 +3,7 @@
 use App\Http\Controllers\ArticlesController;
 use App\Http\Controllers\CarsController;
 use App\Http\Controllers\PagesController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SalonsController;
 use Illuminate\Support\Facades\Route;
 
@@ -12,8 +13,8 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 |
 | Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
 |
 */
 
@@ -35,10 +36,6 @@ Route::get('/catalog/{slug?}', [CarsController::class, 'index'])->name('catalog'
 
 Route::get('/products/{car:id}', [CarsController::class, 'show'])->name('product');
 
-Route::get('/account', [PagesController::class, 'profile'])->middleware('auth')->name('profile');
-
-require __DIR__ . '/auth.php';
-
 Route::get('/salons', [SalonsController::class, 'index'])->name('salons.index');
 
 Route::middleware(['auth', 'role'])->prefix('reports')->group(function () {
@@ -47,6 +44,10 @@ Route::middleware(['auth', 'role'])->prefix('reports')->group(function () {
     Route::post('/statistics', [PagesController::class, 'generateStat'])->name('generate.stat');
 });
 
-Route::get('/test', function () {
-    return view('test');
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+require __DIR__.'/auth.php';

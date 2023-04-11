@@ -1,9 +1,9 @@
-@extends('layouts.inner')
+<x-layouts.inner>
+    <x-slot name="title">Отчеты по статистике</x-slot>
 
-@section('page-title', 'Отчеты')
+    @section('title', 'Отчеты по статистике')
 
-@section('title', 'Отчеты')
-
-@section('inner-content')
-    <a class="text-orange" href="{{ route('statistics') }}"><span class="text-sm text-white italic rounded bg-black px-2">Статистика</span></a>
-@endsection
+    @section('inner-content')
+        <a class="text-orange" href="{{ route('statistics') }}"><span class="text-sm text-white italic rounded bg-black px-2">Статистика</span></a>
+    @endsection
+</x-layouts.inner>

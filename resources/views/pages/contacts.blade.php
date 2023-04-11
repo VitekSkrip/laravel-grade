@@ -1,9 +1,9 @@
-@extends('layouts.inner')
+<x-layouts.inner>
+    <x-slot name="title">Контактная информация</x-slot>
 
-@section('page-title', 'Контактная информация')
+    @section('title', 'Контактная информация')
 
-@section('title', 'Контактная информация')
-
-@section('inner-content')
-    <x-panels.example-content/>
-@endsection
+    @section('inner-content')
+        <x-panels.example-content/>
+    @endsection
+</x-layouts.inner>

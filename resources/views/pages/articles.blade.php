@@ -1,20 +1,21 @@
-@extends('layouts.inner')
+<x-layouts.inner>
+    <x-slot name="title">Все новости</x-slot>
 
-@section('page-title', 'Все новости')
-@section('title', 'Все новости')
+    @section('title', 'Все новости')
 
-@section('inner-content')
-            <div class="space-y-4">
-                
-                <x-addArticleForm.result.result/>
+    @section('inner-content')
+        <div class="space-y-4">
 
-                @admin()
-                    <a class="text-orange" href="{{ route('articles.create') }}"><span class="text-sm text-white italic rounded bg-black px-2">Создать новость</span></a>
-                @endadmin
+            <x-addArticleForm.result.result/>
 
-                <x-articlesPage.allArticles :allArticles="$allArticles"/>
-            
-            </div>
+            @admin()
+            <a class="text-orange" href="{{ route('articles.create') }}"><span class="text-sm text-white italic rounded bg-black px-2">Создать новость</span></a>
+            @endadmin
 
-            <x-panels.pagination :paginator="$allArticles"/>
-@endsection
+            <x-articlesPage.allArticles :allArticles="$allArticles"/>
+
+        </div>
+
+        <x-panels.pagination :paginator="$allArticles"/>
+    @endsection
+</x-layouts.inner>
