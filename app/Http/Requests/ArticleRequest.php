@@ -35,16 +35,24 @@ class ArticleRequest extends FormRequest
      */
     public function rules()
     {
-//        $id = $this->article->id ?? '';
-
         return [
                 'title' => 'required|min:5|max:100',
                 'description' => 'required|max:255',
                 'body' => 'required',
-//                'slug' => "required|unique:articles,slug,{$id}",
                 'slug' => ['required', Rule::unique(Article::class)->ignore($this->slug)],
                 'published_at' => 'nullable',
                 'image' => 'required|image',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'title.required' => 'Заголовок новости должен быть заполнен',
+            'description.required' => 'Краткое описание новости должно быть заполнено',
+            'body.required' => 'Содержание новости должно быть заполнено',
+            'image.required' => 'Превью новости должно быть загружено',
+            'image.image' => 'Превью новости должно быть изображением'
         ];
     }
 }

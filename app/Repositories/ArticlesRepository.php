@@ -18,7 +18,7 @@ class ArticlesRepository implements ArticlesRepositoryContract
 
     public function __construct(private Article $article, private ImagesRepositoryContract $imagesRepository)
     {
-        
+
     }
 
     protected function cacheTags(): array
@@ -50,7 +50,7 @@ class ArticlesRepository implements ArticlesRepositoryContract
 
     public function findForHomePage(int $limit): Collection
     {
-        return Cache::tags(['articles', 'images', 'tags'])->remember("homePageArticles|$limit", Carbon::now()->addHours(1), fn () => 
+        return Cache::tags(['articles', 'images', 'tags'])->remember("homePageArticles|$limit", Carbon::now()->addHours(1), fn () =>
             $this->getModel()->with(['image', 'tags'])->whereNotNull('published_at')->latest('published_at')->limit($limit)->get()
         );
     }
@@ -75,18 +75,18 @@ class ArticlesRepository implements ArticlesRepositoryContract
 
         $fields['image_id'] = $image->id;
         unset($fields['image']);
-        
+
         $article->update($fields);
 
         $this->flushCache();
-        
+
         return $article;
     }
 
     public function delete(string $slug): Void
     {
         $this->getModel()->where('slug', $slug)->delete();
-        
+
         $this->flushCache();
 
         Event::dispatch(new ArticleDeletedEvent($slug));
@@ -101,7 +101,7 @@ class ArticlesRepository implements ArticlesRepositoryContract
             'page' => $page,
         ]);
 
-        return Cache::tags(['articles', 'images', 'tags'])->remember("pagForArticlesList|$params", Carbon::now()->addHours(1), fn () => 
+        return Cache::tags(['articles', 'images', 'tags'])->remember("pagForArticlesList|$params", Carbon::now()->addHours(1), fn () =>
             $this->getModel()->with(['image', 'tags'])->paginate($perPage, $fields, $pageName, $page)
         );
     }

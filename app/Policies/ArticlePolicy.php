@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Contracts\Services\RolesServiceContract;
 use App\Models\Article;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -9,6 +10,21 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 class ArticlePolicy
 {
     use HandlesAuthorization;
+
+    public function __construct(private readonly RolesServiceContract $rolesService)
+    {
+    }
+
+    /**
+     * Determine whether the user can view any models.
+     *
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function viewAny(User $user)
+    {
+        return $this->rolesService->userIsAdmin($user->id);
+    }
 
     /**
      * Determine whether the user can create models.
@@ -18,7 +34,7 @@ class ArticlePolicy
      */
     public function create(User $user)
     {
-        return $user->isAdmin();
+        return $this->rolesService->userIsAdmin($user->id);
     }
 
     /**
@@ -28,9 +44,9 @@ class ArticlePolicy
      * @param  \App\Models\Article  $article
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user)
+    public function update(User $user, Article|int $car)
     {
-        return $user->isAdmin();
+        return $this->rolesService->userIsAdmin($user->id);
     }
 
     /**
@@ -40,8 +56,8 @@ class ArticlePolicy
      * @param  \App\Models\Article  $article
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user)
+    public function delete(User $user, Article|int $car)
     {
-        return $user->isAdmin();
+        return $this->rolesService->userIsAdmin($user->id);
     }
 }

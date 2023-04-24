@@ -4,6 +4,6 @@
     @section('title', 'Финансовый отдел')
 
     @section('inner-content')
-        <x-panels.example-content/>
+        <x-panels.static_demo_content />
     @endsection
 </x-layouts.inner>

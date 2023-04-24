@@ -2,29 +2,40 @@
 
 namespace App\Contracts\Repositories;
 
-use Illuminate\Support\Collection;
+use App\DTO\CatalogFilterDTO;
 use App\Models\Car;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
-interface CarsRepositoryContract
+interface CarsRepositoryContract extends FlushCacheRepositoryContract
 {
-    public function findForHomePage(int $limit): Collection;
+    public function getModel(): Car;
 
-    public function getById(int $id): Car;
+    public function findAll(): Collection;
+
+    public function findForMainPage(int $limit): Collection;
+
+    public function findForCatalog(
+        CatalogFilterDTO $catalogFilterDTO,
+        array $fields = ['*'],
+    ): Collection;
 
     public function paginateForCatalog(
-        array $allCategories,
-        int $perPage = 10,
+        CatalogFilterDTO $catalogFilterDTO,
         array $fields = ['*'],
-        string $pageName = 'page',
+        int $perPage = 10,
         int $page = 1,
+        string $pageName = 'page',
+        array $relations = [],
     ): LengthAwarePaginator;
 
-    public function getCount(): int;
+    public function getById(int $id, array $relations = []): Car;
 
     public function create(array $fields): Car;
 
+    public function syncCategories(Car $car, array $categories): Car;
+
     public function update(Car $car, array $fields): Car;
 
-    public function delete(int $id);
+    public function delete(int $id): void;
 }

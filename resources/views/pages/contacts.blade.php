@@ -1,9 +1,6 @@
-<x-layouts.inner>
-    <x-slot name="title">Контактная информация</x-slot>
-
-    @section('title', 'Контактная информация')
-
-    @section('inner-content')
-        <x-panels.example-content/>
-    @endsection
-</x-layouts.inner>
+<x-layouts.inner_two_columns
+    page-title="Контактная информация"
+    title="Контактная информация"
+>
+    <x-panels.static_demo_content />
+</x-layouts.inner_two_columns>

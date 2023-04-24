@@ -21,21 +21,17 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Role::factory()->create(['name' => 'client']);
-
-        Schema::table('users', function (Blueprint $table) {
-            $table->foreignId('role_id')
-                ->default('1')
-                ->references('id')
-                ->on('roles')
-                ->cascadeOnDelete()
-            ;
+        Schema::create('role_user', function (Blueprint $table) {
+            $table->foreignId('role_id')->references('id')->on('roles')->cascadeOnDelete();
+            $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->boolean('active')->default(true);
+            $table->timestamps();
         });
 
-        User::factory()->create([
-            'email' => config('mail.from.address'),
-            'role_id' => Role::factory()->create(['name' => 'admin']),
-        ]);
+        /** @var User $user */
+        $user = User::factory()->create(['email' => 'admin@localhost']);
+        $role = Role::factory()->create(['name' => 'admin']);
+        $user->roles()->attach($role);
     }
 
     /**
@@ -45,6 +41,7 @@ return new class extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('role_user');
         Schema::dropIfExists('roles');
     }
 };

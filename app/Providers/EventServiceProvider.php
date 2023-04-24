@@ -5,11 +5,15 @@ namespace App\Providers;
 use App\Events\ArticleCreatedEvent;
 use App\Events\ArticleDeletedEvent;
 use App\Events\ArticleUpdatedEvent;
+use App\Events\CarCreatedEvent;
 use App\Events\ReportGeneratedEvent;
 use App\Listeners\SendMailOnArticleDeletedListener;
 use App\Listeners\SendMailOnArticleUpdatedListener;
 use App\Listeners\SendMailOnNewArticleCreatedListener;
+use App\Listeners\SendMailOnNewCarCreatedListener;
 use App\Listeners\SendMailOnReportGeneratedMailListener;
+use App\Models\Image;
+use App\Observers\ImageObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -23,9 +27,6 @@ class EventServiceProvider extends ServiceProvider
      * @var array<class-string, array<int, class-string>>
      */
     protected $listen = [
-        Registered::class => [
-            SendEmailVerificationNotification::class,
-        ],
         ArticleCreatedEvent::class => [
             SendMailOnNewArticleCreatedListener::class,
         ],
@@ -38,6 +39,12 @@ class EventServiceProvider extends ServiceProvider
         ReportGeneratedEvent::class => [
             SendMailOnReportGeneratedMailListener::class,
         ],
+        Registered::class => [
+            SendEmailVerificationNotification::class,
+        ],
+        CarCreatedEvent::class => [
+            SendMailOnNewCarCreatedListener::class,
+        ],
     ];
 
     /**
@@ -47,7 +54,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Image::observe(ImageObserver::class);
     }
 
     /**

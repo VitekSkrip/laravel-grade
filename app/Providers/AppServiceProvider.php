@@ -5,22 +5,34 @@ namespace App\Providers;
 use App\Contracts\Services\CarCreationServiceContract;
 use App\Contracts\Services\CarRemoverServiceContract;
 use App\Contracts\Services\CarUpdateServiceContract;
+use App\Contracts\Services\CatalogDataCollectorServiceContract;
+use App\Contracts\Services\FlashMessageContract;
+use App\Contracts\Services\ImagesServiceContract;
+use App\Contracts\Services\MessageLimiterContract;
+use App\Contracts\Services\RolesServiceContract;
+use App\Contracts\Services\UserNotificationServiceContract;
 use App\Services\CarsService;
 use App\Contracts\Services\CreateArticleServiceContract;
 use App\Contracts\Services\SalonsClientServiceContract;
 use App\Contracts\Services\TagsSynchronizerServiceContract;
 use App\Contracts\Services\UpdateArticleServiceContract;
+use App\Services\CatalogDataCollectorService;
 use App\Services\CreateArticleService;
+use App\Services\FlashMessage;
+use App\Services\ImagesService;
+use Faker\Generator;
+use App\Services\RolesService;
 use App\Services\SalonsClientService;
 use App\Services\TagsSynchronizerService;
 use App\Services\UpdateArticleService;
-use Illuminate\Support\ServiceProvider;
+use App\Services\UserNotificationService;
 use Faker\Factory;
-use Faker\Generator;
-use QSchool\FakerImageProvider\FakerImageProvider;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Collection;
+use QSchool\FakerImageProvider\FakerImageProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -46,9 +58,39 @@ class AppServiceProvider extends ServiceProvider
                     'password' => config('services.salonsApi.password')
             ]);
         });
+
+        $this->app->singleton(Generator::class, function () {
+            $faker = Factory::create(config('app.faker_locale', 'en_US'));
+            $faker->addProvider(new FakerImageProvider($faker));
+
+            return $faker;
+        });
+
+
+
+        $this->app->singleton(FlashMessageContract::class, FlashMessage::class);
+        $this->app->singleton(CatalogDataCollectorServiceContract::class, CatalogDataCollectorService::class);
+        $this->app->singleton(TagsSynchronizerServiceContract::class, TagsSynchronizerService::class);
+        $this->app->singleton(RolesServiceContract::class, RolesService::class);
+        $this->app->singleton(ImagesServiceContract::class, function () {
+            return $this->app->make(ImagesService::class, ['disk' => 'public']);
+        });
+
+        $this->app->singleton(MessageLimiterContract::class, fn () =>
+        new class implements MessageLimiterContract {
+            public function limit(string $message, int $limit = 20, string $end = '...'): string
+            {
+                return $message;
+            }
+        });
+
         $this->app->singleton(CarCreationServiceContract::class, CarsService::class);
         $this->app->singleton(CarUpdateServiceContract::class, CarsService::class);
         $this->app->singleton(CarRemoverServiceContract::class, CarsService::class);
+
+        $this->app->singleton(FlashMessage::class, fn () => new FlashMessage($this->app->make(MessageLimiterContract::class), session()));
+
+        $this->app->singleton(UserNotificationServiceContract::class, UserNotificationService::class);
     }
 
     /**
@@ -58,12 +100,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Collection::macro('trim', fn (int $limit = 100) => $this->map(fn ($value) => Str::limit($value, $limit)));
+
         Blade::if('admin', fn () => Gate::allows('admin'));
 
-        // $this->routes(function () {
-        //     Route::middleware('api')
-        //         ->prefix('api/v1')
-        //         ->group(base_path('routes/api.php'));
-        // });
+        Blade::directive('date', function ($expression) {
+            return "<?php echo ($expression)->format('d M Y'); ?>";
+        });
     }
 }

@@ -6,34 +6,27 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class TagsRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
 
-    protected function prepareForValidation()
-    {
-        $tags = collect(explode(',', $this->get('tags')));
-        $tags = $tags
-           ->map(fn ($item) => preg_replace('/[^\w\-_]+/u', '', $item))
-           ->filter(fn ($item) => !empty($item))
-        ;
-        $this->merge(['tags' => $tags->all()]);
-    }
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, mixed>
-     */
-    public function rules()
+    public function rules(): array
     {
         return [
+            'tags' => '',
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $tags = collect(explode(',', $this->get('tags', '')));
+
+        $tags = $tags
+            ->map(fn ($item) => preg_replace('/[^\w\-_]/', '', $item))
+            ->filter(fn ($item) => !empty($item))
+        ;
+
+        $this->merge(['tags' => $tags->all()]);
     }
 }

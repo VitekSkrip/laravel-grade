@@ -2,23 +2,21 @@
 
 namespace Database\Factories;
 
+use App\Contracts\Services\ImagesServiceContract;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Http\File;
-use Illuminate\Support\Facades\Storage;
 
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Image>
+ */
 class ImageFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
-    public function definition()
+    public function definition(): array
     {
-        $path = Storage::disk('public')->putFile('cars', new File($this->faker->image(width: 1020, height: 498, category: 'car')));
-
+        /** @var ImagesServiceContract $imagesService */
+        $imagesService = app(ImagesServiceContract::class);
+        $image = $this->faker->image(width: 1020, height: 500, category: 'car');
         return [
-            'path' => $path
+            'path' => $image ? $imagesService->saveFile($image) : $this->faker->unique()->slug(),
         ];
     }
 }

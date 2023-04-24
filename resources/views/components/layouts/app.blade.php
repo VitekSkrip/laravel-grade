@@ -6,28 +6,29 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <x-layouts.parts.head :title="isset($title) ? 'Диллерский центр - ' . $title : 'Диллерский центр'"/>
-<body class="font-sans antialiased">
-<div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-    <x-layouts.navigation/>
-
+<body class="bg-white text-gray-600 font-sans leading-normal text-base tracking-normal flex min-h-screen flex-col">
+<div class="wrapper flex flex-1 flex-col">
     <!-- Page Heading -->
-    @isset($header)
-        {{ $header }}
-    @else
-        <x-layouts.parts.header/>
-    @endisset
+
+    <x-layouts.parts.header>
+        @isset($header)
+            {{ $header }}
+        @else
+            <x-panels.navigation />
+        @endisset
+    </x-layouts.parts.header>
+
+    {{ Breadcrumbs::render() }}
 
     <!-- Page Content -->
-    <main>
-        <div class="container mx-auto px-4">
-            {{ $slot ?? ''}}
-        </div>
+    <main class="flex-1 container mx-auto bg-white">
+        {{ $slot ?? ''}}
     </main>
 
     @isset ($footer)
         {{ $footer }}
     @else
-        <x-layouts.parts.footer/>
+        <x-layouts.parts.footer />
     @endisset
 </div>
 </body>

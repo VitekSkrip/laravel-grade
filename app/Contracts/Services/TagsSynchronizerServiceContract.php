@@ -2,10 +2,9 @@
 
 namespace App\Contracts\Services;
 
-use Illuminate\Support\Collection;
-use App\Contracts\Services\HasTagsContract;
+use App\Contracts\HasTagsContract;
 
 interface TagsSynchronizerServiceContract
 {
-   public function sync(HasTagsContract $model, array $tags);
+    public function sync(HasTagsContract $model, array $tags);
 }

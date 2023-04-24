@@ -4,19 +4,21 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Tag extends Model
 {
     use HasFactory;
+
     protected $fillable = ['name'];
 
-    /**
-     * Получить все новости, которым присвоен этот тег.
-     */
+    public function cars(): MorphToMany
+    {
+        return $this->morphedByMany(Car::class, 'taggable');
+    }
 
-    public function articles()
+    public function articles(): MorphToMany
     {
         return $this->morphedByMany(Article::class, 'taggable');
     }
 }
-    
