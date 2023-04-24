@@ -9,12 +9,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class CarEngineFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
-    public function definition()
+    public function definition(): array
     {
         return [
             'name' => sprintf(
@@ -22,7 +17,7 @@ class CarEngineFactory extends Factory
                 number_format(rand(10, 90) / 10, 1, '.'),
                 rand(80, 600),
                 $this->faker->randomElement(['Бензин', 'Дизель', 'Газ', 'Электро'])
-            ), 
+            ),
         ];
     }
 }

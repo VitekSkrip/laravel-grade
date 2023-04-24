@@ -2,19 +2,9 @@
 
 namespace App\Events;
 
-use App\Models\Article;
-use Illuminate\Foundation\Events\Dispatchable; #отвечает за возможность вызвать это событие
+use Illuminate\Foundation\Events\Dispatchable;
 
-class ArticleCreatedEvent
+class ArticleCreatedEvent extends AbstractArticleActionEvent
 {
     use Dispatchable;
-    /**
-     * Create a new event instance.
-     *
-     * @return void
-     */
-    public function __construct(public readonly Article $article)
-    {
-        //
-    }
 }

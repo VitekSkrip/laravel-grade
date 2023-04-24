@@ -1,9 +1,14 @@
 <?php
 
-use App\Http\Controllers\ArticlesController;
-use App\Http\Controllers\CarsController;
+use App\Http\Controllers\Admin\AdminPagesController;
+use App\Http\Controllers\Admin\CarsController;
+use App\Http\Controllers\Admin\ArticlesController;
+use App\Http\Controllers\ArticlesController as BaseArticles;
+use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\PagesController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SalonsController;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,8 +17,8 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 |
 | Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
 |
 */
 
@@ -29,24 +34,33 @@ Route::get('/contacts', [PagesController::class, 'contacts'])->name('contacts');
 
 Route::get('/finances', [PagesController::class, 'finances'])->name('finances');
 
-Route::resource('articles', ArticlesController::class)->scoped(['article' => 'slug']);
-
-Route::get('/catalog/{slug?}', [CarsController::class, 'index'])->name('catalog');
-
-Route::get('/products/{car:id}', [CarsController::class, 'show'])->name('product');
-
-Route::get('/account', [PagesController::class, 'profile'])->middleware('auth')->name('profile');
-
-require __DIR__ . '/auth.php';
+Route::get('/catalog/{slug?}', [CatalogController::class, 'catalog'])->name('catalog');
+Route::get('/products/{car:id}', [CatalogController::class, 'product'])->name('product');
 
 Route::get('/salons', [SalonsController::class, 'index'])->name('salons.index');
 
-Route::middleware(['auth', 'role'])->prefix('reports')->group(function () {
-    Route::get('/', [PagesController::class, 'reports'])->name('reports');
-    Route::view('/statistics', 'pages.statistics')->name('statistics');
-    Route::post('/statistics', [PagesController::class, 'generateStat'])->name('generate.stat');
+Route::get('/basket', function () {
+    return view('pages.basket.basket');
+})->name('basket');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/test', function () {
-    return view('test');
-});
+Route::get('/articles', [BaseArticles::class, 'index'])->name('articles.index');
+Route::get('/articles/{slug}', [BaseArticles::class, 'show'])->name('articles.show');
+
+Route::prefix('admin')
+    ->name('admin.')
+    ->middleware(['auth', 'role:admin'])
+    ->group(function (Router $router) {
+        $router->get('/', [AdminPagesController::class, 'admin'])->name('admin');
+        $router->resource('cars', CarsController::class)->except(['show']);
+        $router->resource('articles', ArticlesController::class)->except(['show']);
+    })
+;
+
+require __DIR__.'/auth.php';

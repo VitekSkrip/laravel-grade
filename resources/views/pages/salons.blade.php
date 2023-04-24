@@ -1,9 +1,9 @@
-@extends('layouts.inner')
+<x-layouts.inner>
+    <x-slot name="title">О компании</x-slot>
 
-@section('page-title', 'Салоны')
+    @section('title', 'Салоны')
 
-@section('title', 'Салоны')
-
-@section('inner-content')
-    <x-salons.index :salons="$salons"/>
-@endsection
+    @section('inner-content')
+        <x-salons.index :salons="$salons"/>
+    @endsection
+</x-layouts.inner>

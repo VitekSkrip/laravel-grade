@@ -1,3 +1,4 @@
+
 <?php
 
 use DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs;
@@ -46,9 +47,9 @@ Breadcrumbs::register('category', function ($breadcrumbs, $category) {
     $breadcrumbs->push($category->name, route('catalog', ['slug' => $category->slug]));
 });
 
-Breadcrumbs::register('product', function ($breadcrumbs, $car) {
-    $breadcrumbs->parent('category', $car->category);
-    $breadcrumbs->push($car->name, route('product', $car));
+Breadcrumbs::register('product', function ($breadcrumbs, $product) {
+    $breadcrumbs->parent('category', $product->category);
+    $breadcrumbs->push($product->name, route('product', $product));
 });
 
 Breadcrumbs::for('articles.index', function ($breadcrumbs) {
@@ -79,6 +80,51 @@ Breadcrumbs::for('login', function ($breadcrumbs) {
 Breadcrumbs::for('register', function ($breadcrumbs) {
     $breadcrumbs->parent('home');
     $breadcrumbs->push('Регистрация', route('register'));
+});
+
+Breadcrumbs::for('profile.edit', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('Личный кабинет', route('profile.edit'));
+});
+
+Breadcrumbs::for('basket', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('Корзина', route('basket'));
+});
+
+Breadcrumbs::for('admin.admin', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('Управление сайтом', route('admin.admin'));
+});
+
+Breadcrumbs::for('admin.cars.index', function ($breadcrumbs) {
+    $breadcrumbs->parent('admin.admin');
+    $breadcrumbs->push('Управление моделями', route('admin.cars.index'));
+});
+
+Breadcrumbs::for('admin.cars.create', function ($breadcrumbs) {
+    $breadcrumbs->parent('admin.admin');
+    $breadcrumbs->push('Управление моделями', route('admin.cars.create'));
+});
+
+Breadcrumbs::for('admin.cars.edit', function ($breadcrumbs, $car) {
+    $breadcrumbs->parent('admin.admin');
+    $breadcrumbs->push('Управление моделями', route('admin.cars.edit', $car));
+});
+
+Breadcrumbs::for('admin.articles.index', function ($breadcrumbs) {
+    $breadcrumbs->parent('admin.admin');
+    $breadcrumbs->push('Управление новостями', route('admin.articles.index'));
+});
+
+Breadcrumbs::for('admin.articles.create', function ($breadcrumbs) {
+    $breadcrumbs->parent('admin.admin');
+    $breadcrumbs->push('Управление новостями', route('admin.articles.create'));
+});
+
+Breadcrumbs::for('admin.articles.edit', function ($breadcrumbs, $article) {
+    $breadcrumbs->parent('admin.admin');
+    $breadcrumbs->push('Управление новостями', route('admin.articles.edit', $article));
 });
 
 Breadcrumbs::for('salons.index', function ($breadcrumbs) {

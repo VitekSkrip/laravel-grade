@@ -2,17 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Models\CarBody;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\CarBody;
 
 class CarBodySeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
         $bodies = [
@@ -26,7 +21,7 @@ class CarBodySeeder extends Seeder
             'Пикап',
             'Кроссовер',
         ];
- 
+
         foreach ($bodies as $body) {
             CarBody::factory()->create(['name' => $body]);
         }

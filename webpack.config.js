@@ -2,7 +2,7 @@ const path = require('path')
 
 module.exports = {
     resolve: {
-        extensions: ['.js', '.json', '.vue'],
+        extensions: ['.js', '.json', '.vue', '.blade.php'],
         alias: {
             '~': path.join(__dirname, 'resources/sass'),
             '@components': path.join(__dirname, 'resources/js/components'),
