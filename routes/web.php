@@ -4,7 +4,9 @@ use App\Http\Controllers\Admin\AdminPagesController;
 use App\Http\Controllers\Admin\CarsController;
 use App\Http\Controllers\Admin\ArticlesController;
 use App\Http\Controllers\ArticlesController as BaseArticles;
+use App\Http\Controllers\BasketController;
 use App\Http\Controllers\CatalogController;
+use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SalonsController;
@@ -39,15 +41,24 @@ Route::get('/products/{car:id}', [CatalogController::class, 'product'])->name('p
 
 Route::get('/salons', [SalonsController::class, 'index'])->name('salons.index');
 
-Route::get('/basket', function () {
-    return view('pages.basket.basket');
-})->name('basket');
+Route::get('/basket', [BasketController::class, 'show'])->name('basket');
+Route::post('/basket', [BasketController::class, 'addProduct'])->name('basket.addProduct');
+Route::delete('/basket/deleteProduct/', [BasketController::class, 'deleteProduct'])->name('basket.deleteProduct');
+Route::delete('/basket/removeProduct', [BasketController::class, 'removeProduct'])->name('basket.removeProduct');
+
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
+    Route::get('/basket', [BasketController::class, 'show'])->name('basket');
+    Route::post('/basket', [BasketController::class, 'addProduct'])->name('basket.addProduct');
+    Route::delete('/basket/deleteProduct/', [BasketController::class, 'deleteProduct'])->name('basket.deleteProduct');
+    Route::delete('/basket/removeProduct', [BasketController::class, 'removeProduct'])->name('basket.removeProduct');
+});
+
+Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::post('/profile/orders', [OrdersController::class, 'store'])->name('orders.create');
 });
 
 Route::get('/articles', [BaseArticles::class, 'index'])->name('articles.index');

@@ -2,13 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ArticleRequest;
-use App\Http\Requests\TagsRequest;
-use App\Models\Article;
 use Illuminate\Http\Request;
 use App\Contracts\Repositories\ArticlesRepositoryContract;
-use App\Contracts\Services\CreateArticleServiceContract;
-use App\Contracts\Services\UpdateArticleServiceContract;
 
 class ArticlesController extends Controller
 {

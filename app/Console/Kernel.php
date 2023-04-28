@@ -26,6 +26,11 @@ class Kernel extends ConsoleKernel
             ->daily()
         ;
 
+        $schedule->command('order:pay')
+            ->withoutOverlapping()
+            ->everyMinute()
+        ;
+
         $schedule->command('telescope:prune --hours=48')->daily();
     }
 

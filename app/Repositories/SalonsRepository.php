@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Contracts\Repositories\SalonsRepositoryContract;
-use App\Contracts\Services\SalonsClientServiceContract;
+use App\Contracts\Services\StudentsApiClientServiceContract;
 use App\DTO\ApiSalonModel;
 use Carbon\Carbon;
 use Illuminate\Http\Client\RequestException;
@@ -15,7 +15,7 @@ class SalonsRepository implements SalonsRepositoryContract
 {
     use FlushesCache;
 
-    public function __construct(private SalonsClientServiceContract $salonsClientService)
+    public function __construct(private StudentsApiClientServiceContract $salonsClientService)
     {
 
     }
@@ -25,11 +25,11 @@ class SalonsRepository implements SalonsRepositoryContract
         try {
             return Cache::tags($this->cacheTags())->remember('salons', Carbon::now()->addHours(1), function () {
                 $salons = collect();
-        
-                foreach($this->salonsClientService->findAll() as $salon) {
+
+                foreach($this->salonsClientService->findAllSalons() as $salon) {
                     $salons->push($this->createModelFromResponseItem($salon));
                 }
-        
+
                 return $salons;
             });
         } catch (RequestException $exception) {
@@ -42,11 +42,11 @@ class SalonsRepository implements SalonsRepositoryContract
         try {
             return Cache::tags($this->cacheTags())->remember('salons|' . serialize(['limit' => $limit, 'isRandom' => $isRandom]), Carbon::now()->addMinutes(5), function () use ($limit, $isRandom) {
                 $salons = collect();
-        
-                foreach($this->salonsClientService->findSomeRandoms($limit, $isRandom) as $salon) {
+
+                foreach($this->salonsClientService->findSomeRandomsSalons($limit, $isRandom) as $salon) {
                     $salons->push($this->createModelFromResponseItem($salon));
                 }
-        
+
                 return $salons;
             });
         } catch (RequestException $exception) {

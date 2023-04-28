@@ -17,7 +17,7 @@
 
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <div class="max-w-xl">
-                    @include('pages.profile.partials.orders.orders-list')
+                    @include('pages.profile.partials.orders.list', ['orders' => $orders])
                 </div>
             </div>
 

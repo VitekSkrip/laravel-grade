@@ -11,18 +11,20 @@ use App\Contracts\Services\ImagesServiceContract;
 use App\Contracts\Services\MessageLimiterContract;
 use App\Contracts\Services\RolesServiceContract;
 use App\Contracts\Services\UserNotificationServiceContract;
+use App\Contracts\Services\UserOrdersServiceContract;
 use App\Services\CarsService;
 use App\Contracts\Services\CreateArticleServiceContract;
-use App\Contracts\Services\SalonsClientServiceContract;
+use App\Contracts\Services\StudentsApiClientServiceContract;
 use App\Contracts\Services\TagsSynchronizerServiceContract;
 use App\Contracts\Services\UpdateArticleServiceContract;
 use App\Services\CatalogDataCollectorService;
 use App\Services\CreateArticleService;
 use App\Services\FlashMessage;
 use App\Services\ImagesService;
+use App\Services\UserOrdersService;
 use Faker\Generator;
 use App\Services\RolesService;
-use App\Services\SalonsClientService;
+use App\Services\StudentsApiClientService;
 use App\Services\TagsSynchronizerService;
 use App\Services\UpdateArticleService;
 use App\Services\UserNotificationService;
@@ -49,13 +51,12 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->singleton(UpdateArticleServiceContract::class, UpdateArticleService::class);
 
-        $this->app->singleton(SalonsClientServiceContract::class,
-            function () {
+        $this->app->singleton(StudentsApiClientServiceContract::class, function () {
             return $this->app->make(
-                SalonsClientService::class, [
-                    'baseUrl' => config('services.salonsApi.url'),
-                    'login' => config('services.salonsApi.login'),
-                    'password' => config('services.salonsApi.password')
+                StudentsApiClientService::class, [
+                    'baseUrl' => config('services.studentsApi.url'),
+                    'login' => config('services.studentsApi.login'),
+                    'password' => config('services.studentsApi.password')
             ]);
         });
 
@@ -91,6 +92,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(FlashMessage::class, fn () => new FlashMessage($this->app->make(MessageLimiterContract::class), session()));
 
         $this->app->singleton(UserNotificationServiceContract::class, UserNotificationService::class);
+        $this->app->singleton(UserOrdersServiceContract::class, UserOrdersService::class);
     }
 
     /**

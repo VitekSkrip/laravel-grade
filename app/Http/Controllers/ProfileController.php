@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Contracts\Services\UserNotificationServiceContract;
+use App\Contracts\Services\UserOrdersServiceContract;
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Services\UserOrdersService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -17,13 +19,18 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
-    public function edit(Request $request, UserNotificationServiceContract $userNotificationServiceContract): Factory|View|Application
-    {
-        $notifications = $userNotificationServiceContract->findNotifications(Auth::user());
+    public function edit(
+        Request $request,
+        UserNotificationServiceContract $userNotificationService,
+        UserOrdersServiceContract $userOrdersService
+    ): Factory|View|Application {
+        $notifications = $userNotificationService->findNotifications(Auth::user());
+        $orders = $userOrdersService->findOrders(Auth::user());
 
         return view('pages.profile.edit', [
             'user' => $request->user(),
-            'notifications' => $notifications
+            'notifications' => $notifications,
+            'orders' => $orders,
         ]);
     }
 
