@@ -21,4 +21,6 @@ interface OrdersRepositoryContract
     public function findWhichNotPaid(): Collection;
 
     public function updateStatus(int $orderId, OrderPaymentStatus $status): Order;
+
+    public function findAll(): Collection;
 }

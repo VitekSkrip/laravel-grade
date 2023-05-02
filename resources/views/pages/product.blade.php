@@ -34,7 +34,7 @@
                             <x-forms.inputs.text type="hidden" name="product_id" value="{{ $product->id }}"/>
                             <x-forms.submit-button>
                                 <x-icons.basket class="inline-block h-6 w-6 mr-2" />
-                                Купить
+                                Добавить в избранное
                             </x-forms.submit-button>
                             <x-panels.messages.flashes />
                         </form>

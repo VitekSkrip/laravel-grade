@@ -39,7 +39,7 @@ class OrdersRepository implements OrdersRepositoryContract
     public function findWhichNotPaid(): Collection
     {
         return $this->getModel()
-            ->whereIn('payment_status', [OrderPaymentStatus::PAYMENT_ERROR->value, OrderPaymentStatus::NOT_PAID->value])
+            ->whereIn('payment_status', [OrderPaymentStatus::PAYMENT_ERROR->value, OrderPaymentStatus::NOT_CHECKED->value])
             ->get()
         ;
     }
@@ -49,5 +49,10 @@ class OrdersRepository implements OrdersRepositoryContract
         $order = $this->findById($orderId);
         $order->update(['payment_status' => $status->value]);
         return $order;
+    }
+
+    public function findAll(): Collection
+    {
+        return $this->getModel()->get();
     }
 }

@@ -11,7 +11,7 @@ use App\Contracts\Services\ImagesServiceContract;
 use App\Contracts\Services\MessageLimiterContract;
 use App\Contracts\Services\RolesServiceContract;
 use App\Contracts\Services\UserNotificationServiceContract;
-use App\Contracts\Services\UserOrdersServiceContract;
+use App\Contracts\Services\OrdersServiceContract;
 use App\Services\CarsService;
 use App\Contracts\Services\CreateArticleServiceContract;
 use App\Contracts\Services\StudentsApiClientServiceContract;
@@ -21,7 +21,7 @@ use App\Services\CatalogDataCollectorService;
 use App\Services\CreateArticleService;
 use App\Services\FlashMessage;
 use App\Services\ImagesService;
-use App\Services\UserOrdersService;
+use App\Services\OrdersService;
 use Faker\Generator;
 use App\Services\RolesService;
 use App\Services\StudentsApiClientService;
@@ -92,7 +92,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(FlashMessage::class, fn () => new FlashMessage($this->app->make(MessageLimiterContract::class), session()));
 
         $this->app->singleton(UserNotificationServiceContract::class, UserNotificationService::class);
-        $this->app->singleton(UserOrdersServiceContract::class, UserOrdersService::class);
+        $this->app->singleton(OrdersServiceContract::class, OrdersService::class);
     }
 
     /**
@@ -105,6 +105,7 @@ class AppServiceProvider extends ServiceProvider
         Collection::macro('trim', fn (int $limit = 100) => $this->map(fn ($value) => Str::limit($value, $limit)));
 
         Blade::if('admin', fn () => Gate::allows('admin'));
+        Blade::if('manager', fn() => Gate::allows('manager'));
 
         Blade::directive('date', function ($expression) {
             return "<?php echo ($expression)->format('d M Y'); ?>";

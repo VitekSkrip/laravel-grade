@@ -82,4 +82,15 @@ class LoginRequest extends FormRequest
     {
         return Str::transliterate(Str::lower($this->input('email')).'|'.$this->ip());
     }
+
+    public function messages(): array
+    {
+        return [
+            'email.required' => 'Почта должна быть заполнена',
+            'email.string' => 'Почта должна быть строкой',
+            'email.email' => 'Почта должна быть адрессом электронной почты',
+            'password.required' => 'Пароль не может быть пустым',
+            'password.string' => 'Пароль должен быть строкой'
+        ];
+    }
 }

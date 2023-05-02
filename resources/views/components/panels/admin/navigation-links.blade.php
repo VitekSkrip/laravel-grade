@@ -1,3 +1,4 @@
+@admin
 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
     <x-panels.nav-link :href=" route('admin.admin') " :active=" request()->routeIs('admin.admin') ">
         {{ __('Админ. панель') }}
@@ -13,6 +14,14 @@
         {{ __('Новости') }}
     </x-panels.nav-link>
 </div>
+@endadmin
+@manager
+<div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+    <x-panels.nav-link :href=" route('manager.manager') " :active=" request()->routeIs('manager.manager') ">
+        {{ __('Управление заявками') }}
+    </x-panels.nav-link>
+</div>
+@endmanager
 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
     <x-panels.nav-link :href=" route('home') " :active=" request()->routeIs('home') ">
         {{ __('На сайт') }}

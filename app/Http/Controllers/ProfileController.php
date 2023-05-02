@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Contracts\Services\UserNotificationServiceContract;
-use App\Contracts\Services\UserOrdersServiceContract;
+use App\Contracts\Services\OrdersServiceContract;
 use App\Http\Requests\ProfileUpdateRequest;
-use App\Services\UserOrdersService;
+use App\Services\OrdersService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -22,7 +22,7 @@ class ProfileController extends Controller
     public function edit(
         Request $request,
         UserNotificationServiceContract $userNotificationService,
-        UserOrdersServiceContract $userOrdersService
+        OrdersServiceContract $userOrdersService
     ): Factory|View|Application {
         $notifications = $userNotificationService->findNotifications(Auth::user());
         $orders = $userOrdersService->findOrders(Auth::user());

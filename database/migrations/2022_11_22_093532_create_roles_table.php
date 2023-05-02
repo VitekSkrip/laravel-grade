@@ -32,6 +32,10 @@ return new class extends Migration
         $user = User::factory()->create(['email' => 'admin@localhost']);
         $role = Role::factory()->create(['name' => 'admin']);
         $user->roles()->attach($role);
+        $user = User::factory()->create(['email' => 'manager@localhost']);
+        $role = Role::factory()->create(['name' => 'manager']);
+        $user->roles()->attach($role);
+
     }
 
     /**

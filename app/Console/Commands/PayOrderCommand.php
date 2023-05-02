@@ -40,7 +40,7 @@ class PayOrderCommand extends Command
     ) {
         try {
             $result = $studentsApiClient->orderPayment($order->id, $order->total_cost);
-            $ordersRepository->updateStatus($order->id, OrderPaymentStatus::PAID);
+            $ordersRepository->updateStatus($order->id, OrderPaymentStatus::CHECKED);
         } catch (RequestException $exception) {
             $ordersRepository->updateStatus($order->id, OrderPaymentStatus::PAYMENT_ERROR);
         }

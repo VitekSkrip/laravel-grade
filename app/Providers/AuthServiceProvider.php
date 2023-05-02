@@ -32,5 +32,9 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('admin', function (User $user) {
             return app(RolesServiceContract::class)->userIsAdmin($user->id);
         });
+
+        Gate::define('manager', function (User $user) {
+            return app(RolesServiceContract::class)->userIsManager($user->id);
+        });
     }
 }

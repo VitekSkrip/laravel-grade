@@ -20,4 +20,9 @@ class RolesService implements RolesServiceContract
     {
         return $this->userHasRole($userId, 'admin');
     }
+
+    public function userIsManager(int $userId): bool
+    {
+        return $this->userHasRole($userId, 'manager');
+    }
 }

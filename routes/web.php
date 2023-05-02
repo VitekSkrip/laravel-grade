@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\ArticlesController;
 use App\Http\Controllers\ArticlesController as BaseArticles;
 use App\Http\Controllers\BasketController;
 use App\Http\Controllers\CatalogController;
+use App\Http\Controllers\Manager\ManagerPagesController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\ProfileController;
@@ -71,6 +72,14 @@ Route::prefix('admin')
         $router->get('/', [AdminPagesController::class, 'admin'])->name('admin');
         $router->resource('cars', CarsController::class)->except(['show']);
         $router->resource('articles', ArticlesController::class)->except(['show']);
+    })
+;
+
+Route::prefix('manager')
+    ->name('manager.')
+    ->middleware(['auth', 'role:manager'])
+    ->group(function (Router $router) {
+        $router->get('/', [ManagerPagesController::class, 'manager'])->name('manager');
     })
 ;
 

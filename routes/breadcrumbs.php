@@ -127,6 +127,11 @@ Breadcrumbs::for('admin.articles.edit', function ($breadcrumbs, $article) {
     $breadcrumbs->push('Управление новостями', route('admin.articles.edit', $article));
 });
 
+Breadcrumbs::for('manager.manager', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('Управление заявками', route('manager.manager'));
+});
+
 Breadcrumbs::for('salons.index', function ($breadcrumbs) {
     $breadcrumbs->parent('home');
     $breadcrumbs->push('Салоны', route('salons.index'));

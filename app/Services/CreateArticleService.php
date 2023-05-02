@@ -11,9 +11,10 @@ use Illuminate\Support\Facades\Event;
 
 class CreateArticleService implements CreateArticleServiceContract
 {
-    public function __construct(private ArticlesRepositoryContract $articlesRepository, private TagsSynchronizerServiceContract $tagsSynchronizerService)
-    {
-        
+    public function __construct(
+        private ArticlesRepositoryContract $articlesRepository,
+        private TagsSynchronizerServiceContract $tagsSynchronizerService
+    ) {
     }
 
     public function create(array $fields, array $tags): void

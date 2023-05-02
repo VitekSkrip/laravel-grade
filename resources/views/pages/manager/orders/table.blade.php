@@ -17,7 +17,7 @@
     </thead>
     <tbody>
     @foreach($orders as $order)
-        @include('pages.profile.partials.orders.element', ['order' => $order])
+        @include('pages.manager.orders.element', ['order' => $order])
     @endforeach
     </tbody>
 </table>

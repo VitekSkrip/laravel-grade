@@ -22,8 +22,8 @@ class Status extends Component
     public function statusStyle(): string
     {
         return match($this->status) {
-            OrderPaymentStatus::NOT_PAID->value => 'bg-orange',
-            OrderPaymentStatus::PAID->value => 'bg-green-500',
+            OrderPaymentStatus::NOT_CHECKED->value => 'bg-orange',
+            OrderPaymentStatus::CHECKED->value => 'bg-green-500',
             OrderPaymentStatus::PAYMENT_ERROR->value => 'bg-red-500'
         };
     }
