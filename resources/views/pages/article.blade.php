@@ -1,24 +1,18 @@
-@extends('layouts.inner')
+<x-layouts.inner>
+    <x-slot name="title">{{ $article->title }}</x-slot>
 
-@section('page-title', "$article->title")
-@section('title', "$article->title")
+    @section('title', "$article->title")
 
-{{ Breadcrumbs::setCurrentRoute('articles.show', $article) }}
+    {{ Breadcrumbs::setCurrentRoute('articles.show', $article) }}
 
-@section('inner-content')        
+    @section('inner-content')
         <div class="space-y-4">
+            <img src="{{ $article->image->url }}" alt="" title="">
 
-        @admin()
-            <a class="text-sm" href="{{ route('articles.edit', $article) }}"><span class="text-sm text-white italic rounded bg-orange px-2">Редактировать новость</span></a>
-        @endadmin
-
-            <img src="{{ $article->image->getUrl() }}" alt="" title="">
-
-            <x-tags.tags :tags="$article->tags"/>
+            <x-panels.tags :tags="$article->tags"/>
 
             <p></p>
             {!! $article->body !!}
-            
         </div>
 
         <div class="mt-4">
@@ -29,4 +23,5 @@
                 К списку новостей
             </a>
         </div>
-@endsection
+    @endsection
+</x-layouts.inner>

@@ -1,17 +1,11 @@
 <?php
 
-use App\Models\CarBody;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('car_bodies', function (Blueprint $table) {
@@ -21,15 +15,10 @@ return new class extends Migration
         });
 
         Schema::table('cars', function (Blueprint $table) {
-            $table->foreignId('body_id')->nullable()->references('id')->on('car_bodies');
+            $table->foreignId('body_id')->references('id')->on('car_bodies');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::table('cars', function (Blueprint $table) {

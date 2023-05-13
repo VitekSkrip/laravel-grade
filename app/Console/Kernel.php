@@ -2,6 +2,8 @@
 
 namespace App\Console;
 
+use App\Models\Car;
+use App\Models\WithoutAncients;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -15,7 +17,19 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->call(function () {
+            Car::withoutGlobalScope(WithoutAncients::class)
+                ->where('created_at', '<=', now()->subYears(10))
+                ->delete()
+            ;
+        })
+            ->daily()
+        ;
+
+        $schedule->command('order:pay')
+            ->withoutOverlapping()
+            ->everyMinute()
+        ;
 
         $schedule->command('telescope:prune --hours=48')->daily();
     }

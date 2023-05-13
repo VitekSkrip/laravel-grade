@@ -10,37 +10,34 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class CreateCarRequest extends FormRequest
 {
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
 
-    public function rules()
+    public function rules(): array
     {
         return [
             'name' => 'required',
             'price' => ['required', 'integer'],
             'old_price' => ['sometimes', 'nullable', 'integer', 'gt:price'],
-            'body' => 'required',
+            'description' => '',
+            'salon' => '',
+            'kpp' => '',
+            'year' => '',
+            'color' => '',
+            'is_new' => 'boolean',
+            'engine_id' => ['required', 'exists:' . CarEngine::class . ',id'],
+            'class_id' => ['required', 'exists:' . CarClass::class . ',id'],
             'body_id' => ['required', 'exists:' . CarBody::class . ',id'],
-            // 'engine_id' => ['required', 'exists:' . CarEngine::class . ',id'],
-            // 'class_id' => ['required', 'exists:' . CarClass::class . ',id'],
-            // 'category_id' => ['sometimes', 'required', 'exists:' . Category::class . ',id'],
+            'categories.*' => ['sometimes', 'required', 'exists:' . Category::class . ',id'],
         ];
     }
 
-    // public function prepareForValidation()
-    // {
-    //     $carEngines = CarEngine::get(['']);
-    //     $carBodies = CarBody::get();
-    //     $carClasses = CarClass::get();
-    //     $categories = Category::get();
-
-    //     $this->merge([
-    //         'body_id' => $carBodies->random(),
-    //         'class_id' =>  $carClasses->random(),
-    //         'engine_id' => $carEngines->random(),
-    //         'category_id' => $categories->random(),
-    //     ]);
-    // }
+    public function prepareForValidation()
+    {
+        $this->merge([
+            'is_new' => $this->has('is_new'),
+        ]);
+    }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\ModelStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,7 +17,7 @@ return new class extends Migration
         Schema::create('cars', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->text('body');
+            $table->text('description');
             $table->unsignedInteger('price');
             $table->unsignedInteger('old_price')->nullable();
             $table->string('salon')->nullable();
@@ -24,6 +25,9 @@ return new class extends Migration
             $table->unsignedInteger('year')->nullable();
             $table->string('color')->nullable();
             $table->boolean('is_new')->nullable();
+            $table->json('characteristics')->nullable();
+            $table->string('status')->default(ModelStatus::SALE->value);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

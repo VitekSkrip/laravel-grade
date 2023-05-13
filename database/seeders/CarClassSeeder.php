@@ -2,17 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Models\CarClass;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\CarClass;
 
 class CarClassSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
         $classes = [

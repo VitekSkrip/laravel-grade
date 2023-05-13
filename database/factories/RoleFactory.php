@@ -9,23 +9,10 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class RoleFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
-    public function definition()
+    public function definition(): array
     {
-        $roles = [
-            'admin',
-            'user',
-            'manager',
-            'content-manager',
-            'support',
-        ];
-
         return [
-            'name' => $this->faker->randomElement($roles),
+            'name' => $this->faker->unique()->word(),
         ];
     }
 }

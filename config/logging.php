@@ -70,6 +70,34 @@ return [
             'days' => 14,
         ],
 
+        'api' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/api/laravel.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'days' => 14,
+        ],
+
+        'carsInfo' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/cars/cars.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'days' => 14,
+        ],
+
+        'imagesInfo' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/images/images.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'days' => 14,
+        ],
+
+        'articlesInfo' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/articles/articles.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'days' => 14,
+        ],
+
         'slack' => [
             'driver' => 'slack',
             'url' => env('LOG_SLACK_WEBHOOK_URL'),
