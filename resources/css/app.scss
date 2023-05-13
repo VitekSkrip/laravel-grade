@@ -1,0 +1,13 @@
+@import "slick-carousel/slick/slick.scss";
+@import "slick-carousel/slick/slick-theme.css";
+
+@import "./form.min.css";
+@import "./tailwind.css";
+@import "./base.css";
+
+@import "./inner_page_template_styles.css";
+@import "./main_page_template_styles.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

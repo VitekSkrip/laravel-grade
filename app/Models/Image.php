@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
+use App\Contracts\Services\ImagesServiceContract;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Support\Facades\Storage;
 
 class Image extends Model
 {
@@ -14,23 +13,10 @@ class Image extends Model
 
     protected $fillable = ['path'];
 
-    public function cars(): HasMany
+    public function url(): Attribute
     {
-        return $this->HasMany(Car::class);
-    }
-
-    public function articles(): HasMany
-    {
-        return $this->HasMany(Article::class);
-    }
-
-    public function getUrl(): String
-    {
-        return Storage::disk('public')->url($this->path);
-    }
-
-    public function banner(): HasOne
-    {
-        return $this->hasOne(Banner::class);
+        /** @var ImagesServiceContract $imagesServiceContract */
+        $imagesServiceContract = app(ImagesServiceContract::class);
+        return Attribute::get(fn () => $this->path ? $imagesServiceContract->url($this->path) : null);
     }
 }

@@ -9,22 +9,10 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class CarClassFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
-    public function definition()
+    public function definition(): array
     {
-        $classes = [
-            'Бюджет',
-            'Бизнес-класс',
-            'Представительский класс',
-            'Люкс',
-        ];
-
         return [
-            'name' => $this->faker->randomElement($classes),
+            'name' => $this->faker->word() . ' - level ' . rand(1, 6),
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Contracts\Repositories;
 
+use App\Contracts\Services\Articles\ArticleRemoverServiceContract;
 use Illuminate\Support\Collection;
 use App\Models\Article;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -20,15 +21,16 @@ interface ArticlesRepositoryContract
 
     public function create(array $fields): Article;
 
-    public function update(string $slug, array $fields): Article;
+    public function update(Article $article, array $fields): Article;
 
-    public function delete(string $slug): Void;
+    public function delete(Article $article): Void;
 
     public function paginateForArticlesList(
         int $perPage = 10,
         array $fields = ['*'],
         string $pageName = 'page',
         int $page = 1,
+        array $withRelations = []
     ): LengthAwarePaginator;
 
     public function getCount(): int;

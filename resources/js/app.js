@@ -1,62 +1,25 @@
-import './bootstrap';
-
 import $ from 'jquery'
 import 'slick-carousel'
+import Vue from 'vue';
+import Dropdown from 'vue-2-dropdown'
+import 'vue-2-dropdown/dist/vue-2-dropdown.css';
+import SsrCarousel from 'vue-ssr-carousel'
+import 'vue-ssr-carousel/index.css'
 
 window.jQuery = window.$ = $;
 
-$(function () {
+require('./script')
 
-    $('[data-slick-carousel]').slick({
-      dots: true,
-    });
-  
-    $('[data-accordion]').each(function () {
-      let $accordion = $(this);
-      let isOpen = $accordion.data('active') !== undefined;
-      
-      let $accordionToggle = $accordion.find('[data-accordion-toggle]');
-      let $accordionNoActiveItem = $accordion.find('[data-accordion-not-active]');
-      let $accordionActiveItem = $accordion.find('[data-accordion-active]');
-      let $accordionContent = $accordion.find('[data-accordion-details]');
-      
-      $accordionToggle.on('click', function () {
-        if (isOpen) {
-          $accordionNoActiveItem.show();
-          $accordionActiveItem.hide();
-          $accordionContent.slideUp();
-        } else {
-          $accordionNoActiveItem.hide();
-          $accordionActiveItem.show();
-          $accordionContent.slideDown();
-        }
-        
-        isOpen = !isOpen;
-      })
-    })
-  })
-  
-  $(function () {
-    $('[data-slick-carousel-detail]').each(function () {
-      let $carousel = $(this);
+Vue.component('test-drive-edit', require('./Components/ManagerTestdriveFormFields.vue').default);
+Vue.component('test-drive-create-fields', require('./Components/TestdriveSelectsFields.vue').default);
+Vue.component('homepage-slider', require('./Components/HomepageSlider.vue').default);
+Vue.component('modal', require('./Components/Modal.vue').default);
 
-      $carousel.find('[data-slick-carousel-detail-items]').slick({
-        dots: true,
-        arrows: false,
-        appendDots: $carousel.find('[data-slick-carousel-detail-pager]'),
-        rows: 0,
-        customPaging: function (slick, index) {
-          let imageSrc = slick.$slides[index].src;
+Vue.use(Dropdown, SsrCarousel)
 
-          return `
-<div class="relative">
-<svg xmlns="http://www.w3.org/2000/svg" class="active-arrow absolute -top-6 left-2/4 -ml-3 text-orange h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
-</svg>
-<span class="inline-block border rounded cursor-pointer"><img class="h-20 w-40 object-cover" src="${imageSrc}" alt="" title=""></span>
-</div>`;
-        }
-      })
-    })
-  })
-
+new Vue({
+    el: '#app',
+    data: {
+        exampleModalShowing: false,
+    },
+});

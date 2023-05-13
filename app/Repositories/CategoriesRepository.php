@@ -4,18 +4,15 @@ namespace App\Repositories;
 
 use App\Contracts\Repositories\CategoriesRepositoryContract;
 use App\Models\Category;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
-use Kalnoy\Nestedset\NodeTrait;
 use Illuminate\Support\Facades\Cache;
 
 class CategoriesRepository implements CategoriesRepositoryContract
 {
     use FlushesCache;
-    
-    public function __construct(private Category $model)
+
+    public function __construct(private readonly Category $model)
     {
-        
     }
 
     protected function cacheTags(): array
@@ -23,34 +20,38 @@ class CategoriesRepository implements CategoriesRepositoryContract
         return ['categories'];
     }
 
+    public function getTree(?int $maxDepth = null): Collection
+    {
+        return Cache::tags($this->cacheTags())->remember(
+            "categoriesTree|$maxDepth",
+            3600,
+            fn () => $this->getModel()
+                ->withDepth()
+                ->when($maxDepth, fn ($query) => $query->having('depth', '<=', $maxDepth))
+                ->get()
+                ->toTree()
+        );
+    }
+
+    public function findAll(): Collection
+    {
+        return $this->getModel()->get();
+    }
+
+    public function findBySlug(string $slug, array $relations = []): Category
+    {
+        return Cache::tags($this->cacheTags())->remember(
+            sprintf('categoryBySlug|%s|%s', $slug, implode('|', $relations)),
+            3600,
+            fn () => $this->getModel()
+                ->where('slug', $slug)
+                ->when($relations, fn ($query) => $query->with($relations))
+                ->firstOrFail()
+        );
+    }
+
     private function getModel(): Category
     {
         return $this->model;
-    }
-
-    public function getTree(?int $maxDepth = null): Collection
-    {
-        return Cache::tags(['categories'])->remember("categoriesMaxDepth|$maxDepth", Carbon::now()->addHours(1), fn () =>
-            $this->getModel()
-            ->withDepth()
-            ->when($maxDepth, function ($query, $maxDepth) { 
-                $query->having('depth', '<=', $maxDepth);
-            })
-            ->get()
-            ->toTree()
-        );
-    }
-
-    public function getBySlug(string $slug, array $relations): Category
-    {
-        return Cache::tags(['categories'])->remember(
-            sprintf('categoryBySlug|%s|%s', $slug, implode('|', $relations)),
-            Carbon::now()->addHours(1),
-            fn () =>
-            $this->getModel()
-            ->where('slug', $slug)
-            ->when($relations, fn ($query) => $query->with($relations))
-            ->firstOrFail()
-        );
     }
 }

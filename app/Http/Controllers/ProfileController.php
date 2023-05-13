@@ -2,33 +2,42 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\Repositories\OrdersRepositoryContract;
+use App\Contracts\Services\UserNotificationServiceContract;
+use App\Contracts\Services\OrdersServiceContract;
+use App\Http\Requests\Profile\ProfileDeleteRequest;
 use App\Http\Requests\ProfileUpdateRequest;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Validation\Rules\Password;
+use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
     /**
      * Display the user's profile form.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\View\View
      */
-    public function edit(Request $request)
-    {
-        return view('profile.edit', [
+    public function edit(
+        Request $request,
+        UserNotificationServiceContract $userNotificationService,
+        OrdersRepositoryContract $userOrdersRepository
+    ): View {
+        $notifications = $userNotificationService->findNotifications(Auth::user());
+        $orders = $userOrdersRepository->find(Auth::user());
+
+        return view('pages.profile.edit', [
             'user' => $request->user(),
+            'notifications' => $notifications,
+            'orders' => $orders,
         ]);
     }
 
     /**
      * Update the user's profile information.
-     *
-     * @param  \App\Http\Requests\ProfileUpdateRequest  $request
-     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(ProfileUpdateRequest $request)
+    public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $request->user()->fill($request->validated());
 
@@ -38,21 +47,14 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        return Redirect::route('profile.edit');
     }
 
     /**
      * Delete the user's account.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Request $request)
+    public function destroy(ProfileDeleteRequest $request): RedirectResponse
     {
-        $request->validateWithBag('userDeletion', [
-            'password' => ['required', 'current-password'],
-        ]);
-
         $user = $request->user();
 
         Auth::logout();

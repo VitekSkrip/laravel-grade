@@ -2,12 +2,14 @@
 
 namespace App\Contracts\Repositories;
 
-use Illuminate\Support\Collection;
 use App\Models\Category;
+use Illuminate\Support\Collection;
 
-interface CategoriesRepositoryContract
+interface CategoriesRepositoryContract extends FlushCacheRepositoryContract
 {
     public function getTree(?int $maxDepth = null): Collection;
 
-    public function getBySlug(string $slug, array $relations): Category;
+    public function findAll(): Collection;
+
+    public function findBySlug(string $slug, array $relations = []): Category;
 }

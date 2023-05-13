@@ -9,11 +9,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class CarClass extends Model
 {
     use HasFactory;
+
     protected $fillable = ['name'];
 
     public function cars(): HasMany
-   {
-       return $this->hasMany(Car::class);
-   }
-
+    {
+        return $this->hasMany(Car::class, 'class_id');
+    }
 }

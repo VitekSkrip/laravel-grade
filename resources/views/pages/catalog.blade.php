@@ -1,19 +1,19 @@
-@extends('layouts.app')
+<x-layouts.app
+    page-title="Каталог"
+    title="Каталог"
+>
+    @if ($catalogData->currentCategory)
+        {{ Breadcrumbs::setCurrentRoute('category', $catalogData->currentCategory) }}
+    @else
+        {{ Breadcrumbs::setCurrentRoute('catalog') }}
+    @endif
 
-@section('page-title', 'Каталог машин')
+    <x-panels.category-menu />
 
-@if ($currentCategory)
-    {{ Breadcrumbs::setCurrentRoute('category', $currentCategory) }}
-@else
-    {{ Breadcrumbs::setCurrentRoute('catalog') }}
-@endif
+    <x-catalog.filter class="my-4" method="get" :currentCategory="$catalogData->currentCategory" :filter-values="$catalogData->filter"/>
 
-@section('content')
-    <div class="p-4">
-        <h1 class="text-black text-3xl font-bold mb-4">Каталог машин</h1>
+    <x-catalog.catalog :cars="$catalogData->cars" />
 
-        <x-carsCatalog.catalog :cars="$cars"/>
-    </div>
+    <x-panels.pagination :paginator="$catalogData->cars" />
 
-    <x-panels.pagination :paginator="$cars"/>
-@endsection
+</x-layouts.app>

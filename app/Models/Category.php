@@ -4,13 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Kalnoy\Nestedset\NodeTrait;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Kalnoy\Nestedset\NodeTrait;
 
 class Category extends Model
 {
     use HasFactory;
     use NodeTrait;
+
+    protected $fillable = ['slug', 'name'];
 
     public function getRouteKeyName(): string
     {
@@ -19,6 +21,6 @@ class Category extends Model
 
     public function cars(): HasMany
     {
-        return $this->hasMany(Car::class);
+        return $this->HasMany(Car::class);
     }
 }

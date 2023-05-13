@@ -4,6 +4,7 @@ namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 
+use App\Contracts\Services\RolesServiceContract;
 use App\Models\User;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
@@ -29,7 +30,11 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Gate::define('admin', function (User $user) {
-            return $user->role->name == 'admin'; 
+            return app(RolesServiceContract::class)->userIsAdmin($user->id);
+        });
+
+        Gate::define('manager', function (User $user) {
+            return app(RolesServiceContract::class)->userIsManager($user->id);
         });
     }
 }

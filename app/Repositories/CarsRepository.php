@@ -3,19 +3,18 @@
 namespace App\Repositories;
 
 use App\Contracts\Repositories\CarsRepositoryContract;
+use App\DTO\CatalogFilterDTO;
 use App\Models\Car;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
 class CarsRepository implements CarsRepositoryContract
 {
     use FlushesCache;
-    
-    public function __construct(private Car $model)
+
+    public function __construct(private readonly Car $model)
     {
-        
     }
 
     protected function cacheTags(): array
@@ -23,55 +22,84 @@ class CarsRepository implements CarsRepositoryContract
         return ['cars'];
     }
 
-    public function findForHomePage(int $limit): Collection
+    public function findAll(): Collection
     {
-        return Cache::tags(['cars', 'images'])->remember("homePageCars|$limit", Carbon::now()->addHours(1), fn () =>
-            $this->getModel()->with('image')->where('is_new', true)->limit($limit)->get()
+        return $this->getModel()->get();
+    }
+
+    public function findAvailableAtSalons(array $withRelations = []): Collection
+    {
+        return $this->getModel()->has('salons')->with($withRelations)->get();
+    }
+
+    public function findForMainPage(int $limit): Collection
+    {
+        return Cache::tags(['cars', 'images'])->remember(
+            "mainPageCars|$limit",
+            3600,
+            fn () => $this->getModel()->with('image')->limit($limit)->get()
         );
     }
 
-    private function getModel(): Car
-    {
-        return $this->model;
+    public function findForCatalog(
+        CatalogFilterDTO $catalogFilterDTO,
+        array $fields = ['*'],
+    ): Collection {
+        return  $this->catalogQuery($catalogFilterDTO)->get($fields);
     }
 
-    public function getById(int $id): Car
-    {
-        return Cache::tags(['cars', 'images'])->remember("carById|$id", Carbon::now()->addHours(1), fn () =>
-            $this->getModel()->with(['carClass', 'engine', 'carBody', 'imagesCatalog', 'category'])->findOrFail($id)
+    public function paginateForCatalog(
+        CatalogFilterDTO $catalogFilterDTO,
+        array $fields = ['*'],
+        int $perPage = 10,
+        int $page = 1,
+        string $pageName = 'page',
+        array $relations = [],
+    ): LengthAwarePaginator {
+        return Cache::tags(['cars', 'images'])->remember(
+            sprintf(
+                'paginateForCatalog|%s',
+                serialize([
+                    'filter' => $catalogFilterDTO,
+                    'fields' => $fields,
+                    'perPage' => $perPage,
+                    'page' => $page,
+                    'pageName' => $pageName,
+                    'relations' => $relations,
+                ])
+            ),
+            3600,
+            fn () => $this->catalogQuery($catalogFilterDTO)->with($relations)->paginate($perPage, $fields, $pageName, $page)
         );
     }
 
-    public function paginateForCatalog(array $allCategories, int $perPage = 10, array $fields = ['*'], string $pageName = 'page', int $page = 1): LengthAwarePaginator
+    private function catalogQuery(CatalogFilterDTO $catalogFilterDTO)
     {
-        $params = serialize([
-                'categories' => $allCategories,
-                'perPage' => $perPage,
-                'fields' => $fields,
-                'pageName' => $pageName,
-                'page' => $page,
-        ]);
-
-        return Cache::tags(['cars', 'images'])->remember("paginateForCatalog|$params", Carbon::now()->addHours(1), fn () => 
-            $this->catalogBuilder($allCategories)->with(['image', 'category'])->paginate($perPage, $fields, $pageName, $page)
-        );
-    }
-
-    private function catalogBuilder(array $allCategories)
-    {
-        return $this->getModel()
-            ->when($allCategories, fn($query) => $query->whereHas('category', fn($query) => $query->whereIn('id', $allCategories)))
+        return $this
+            ->getModel()
+            ->when($catalogFilterDTO->getModel() !== null, fn ($query) => $query->where('name', 'like', '%' . $catalogFilterDTO->getModel() . '%'))
+            ->when($catalogFilterDTO->getMinPrice(), fn ($query) => $query->where('price', '>=', $catalogFilterDTO->getMinPrice()))
+            ->when($catalogFilterDTO->getMaxPrice(), fn ($query) => $query->where('price', '<=', $catalogFilterDTO->getMaxPrice()))
+            ->when($catalogFilterDTO->getOrderPrice() !== null, fn ($query) => $query->orderBy('price', $catalogFilterDTO->getOrderPrice()))
+            ->when($catalogFilterDTO->getOrderModel() !== null, fn ($query) => $query->orderBy('name', $catalogFilterDTO->getOrderModel()))
+            ->when($catalogFilterDTO->getAllCategories(), fn ($query) => $query->whereHas('category', fn ($query) => $query->whereIn('id', $catalogFilterDTO->getAllCategories())))
         ;
     }
 
-    public function getCount(): int
+    public function getById(int $id, array $relations = []): Car
     {
-        return $this->getModel()->count();
+        return Cache::tags(['cars', 'images', 'tags', 'carBodies', 'carEngines', 'carClasses', 'category'])->remember(
+            sprintf('carById|%s|%s', $id, implode('|', $relations)),
+            3600,
+            fn () => $this->getModel()
+                ->when($relations, fn ($query) => $query->with($relations))
+                ->findOrFail($id)
+        );
     }
 
     public function create(array $fields): Car
     {
-        return $this->getModel()::create($fields);
+        return $this->getModel()->create($fields);
     }
 
     public function update(Car $car, array $fields): Car
@@ -81,8 +109,20 @@ class CarsRepository implements CarsRepositoryContract
         return $car;
     }
 
-    public function delete(int $id)
+    public function delete(int $id): void
     {
-        $this->getById($id)->delete();
+        $this->getModel()->where('id', $id)->delete();
+    }
+
+    public function syncCategory(Car $car, int $categoryId): Car
+    {
+        $car->category()->associate($categoryId);
+        $car->save();
+        return $car;
+    }
+
+    public function getModel(): Car
+    {
+        return $this->model;
     }
 }

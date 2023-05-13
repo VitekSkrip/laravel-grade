@@ -2,17 +2,14 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Collection;
-use App\Models\Tag;
-use App\Contracts\Services\HasTagsContract;
+use App\Contracts\HasTagsContract;
 use App\Contracts\Repositories\TagsRepositoryContract;
 use App\Contracts\Services\TagsSynchronizerServiceContract;
 
 class TagsSynchronizerService implements TagsSynchronizerServiceContract
 {
-    public function __construct(private TagsRepositoryContract $tagsRepository)
+    public function __construct(private readonly TagsRepositoryContract $tagsRepository)
     {
-        
     }
 
     public function sync(HasTagsContract $model, array $tags)
@@ -20,7 +17,7 @@ class TagsSynchronizerService implements TagsSynchronizerServiceContract
         $tagsToSync = collect();
 
         foreach ($tags as $tag) {
-            $tagsToSync->push($this->tagsRepository->getFirstOrCreate($tag));
+            $tagsToSync->push($this->tagsRepository->firstOrCreateByName($tag));
         }
 
         $this->tagsRepository->syncTags($model, $tagsToSync->pluck('id')->all());

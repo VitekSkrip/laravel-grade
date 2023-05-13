@@ -21,7 +21,7 @@ class SendMailOnArticleDeletedListener
     /**
      * Handle the event.
      *
-     * @param  object  $event
+     * @param ArticleDeletedEvent $event
      * @return void
      */
     public function handle(ArticleDeletedEvent $event): void
