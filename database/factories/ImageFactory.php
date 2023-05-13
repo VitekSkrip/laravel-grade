@@ -14,7 +14,7 @@ class ImageFactory extends Factory
     {
         /** @var ImagesServiceContract $imagesService */
         $imagesService = app(ImagesServiceContract::class);
-        $image = $this->faker->image(width: 1020, height: 500, category: 'car');
+        $image = $this->faker->image(width: 620, height: 500, category: 'car');
         return [
             'path' => $image ? $imagesService->saveFile($image) : $this->faker->unique()->slug(),
         ];

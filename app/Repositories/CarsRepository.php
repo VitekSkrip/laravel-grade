@@ -27,6 +27,11 @@ class CarsRepository implements CarsRepositoryContract
         return $this->getModel()->get();
     }
 
+    public function findAvailableAtSalons(array $withRelations = []): Collection
+    {
+        return $this->getModel()->has('salons')->with($withRelations)->get();
+    }
+
     public function findForMainPage(int $limit): Collection
     {
         return Cache::tags(['cars', 'images'])->remember(
@@ -109,9 +114,10 @@ class CarsRepository implements CarsRepositoryContract
         $this->getModel()->where('id', $id)->delete();
     }
 
-    public function syncCategories(Car $car, array $categories): Car
+    public function syncCategory(Car $car, int $categoryId): Car
     {
-        $car->categories()->sync($categories);
+        $car->category()->associate($categoryId);
+        $car->save();
         return $car;
     }
 

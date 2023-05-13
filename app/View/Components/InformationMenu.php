@@ -21,18 +21,6 @@ class InformationMenu extends Component
             'title' => 'Новости',
             'route' => 'articles.index'
         ],
-//        [
-//            'title' => 'Контактная информация',
-//            'route' => 'contacts',
-//        ],
-//        [
-//            'title' => 'Финансовый отдел',
-//            'route' => 'finances',
-//        ],
-//        [
-//            'title' => 'Для клиентов',
-//            'route' => 'clients',
-//        ],
     ];
 
     public function __construct(public readonly string $template)

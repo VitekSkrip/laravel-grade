@@ -14,7 +14,7 @@ class ArticlesController extends Controller
 
     public function index(Request $request)
     {
-        $allArticles = $this->articlesRepository->paginateForArticlesList(5, ['*'], 'page', $request->get('page', 1));
+        $allArticles = $this->articlesRepository->paginateForArticlesList(5, ['*'], 'page', $request->get('page', 1), ['image', 'tags']);
 
         return view('pages.articles', compact('allArticles'));
     }

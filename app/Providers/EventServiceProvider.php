@@ -6,12 +6,14 @@ use App\Events\ArticleCreatedEvent;
 use App\Events\ArticleDeletedEvent;
 use App\Events\ArticleUpdatedEvent;
 use App\Events\CarCreatedEvent;
-use App\Events\ReportGeneratedEvent;
+use App\Listeners\LogArticleActionSubscriber;
+use App\Listeners\LogCarActionSubscriber;
+use App\Listeners\SendArticleActionNotificationsSubscriber;
+use App\Listeners\SendCarActionNotificationSubscriber;
 use App\Listeners\SendMailOnArticleDeletedListener;
 use App\Listeners\SendMailOnArticleUpdatedListener;
 use App\Listeners\SendMailOnNewArticleCreatedListener;
 use App\Listeners\SendMailOnNewCarCreatedListener;
-use App\Listeners\SendMailOnReportGeneratedMailListener;
 use App\Models\Image;
 use App\Observers\ImageObserver;
 use Illuminate\Auth\Events\Registered;
@@ -36,9 +38,6 @@ class EventServiceProvider extends ServiceProvider
         ArticleDeletedEvent::class => [
             SendMailOnArticleDeletedListener::class,
         ],
-        ReportGeneratedEvent::class => [
-            SendMailOnReportGeneratedMailListener::class,
-        ],
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
@@ -46,6 +45,14 @@ class EventServiceProvider extends ServiceProvider
             SendMailOnNewCarCreatedListener::class,
         ],
     ];
+
+    protected $subscribe = [
+        LogCarActionSubscriber::class,
+        LogArticleActionSubscriber::class,
+        SendArticleActionNotificationsSubscriber::class,
+        SendCarActionNotificationSubscriber::class,
+    ];
+
 
     /**
      * Register any events for your application.

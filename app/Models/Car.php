@@ -49,6 +49,11 @@ class Car extends Model implements HasTagsContract
         return $this->belongsTo(Image::class);
     }
 
+    public function salons(): BelongsToMany
+    {
+        return $this->belongsToMany(Salon::class);
+    }
+
     public function imageUrl(): Attribute
     {
         return Attribute::get(fn () => $this->image?->url ?: '/assets/images/no_image.png');
@@ -122,5 +127,10 @@ class Car extends Model implements HasTagsContract
     public function fixedProducts(): HasMany
     {
         return $this->hasMany(FixedProduct::class, 'car_id', 'id');
+    }
+
+    public function testDrives(): HasMany
+    {
+        return $this->hasMany(TestDrive::class);
     }
 }

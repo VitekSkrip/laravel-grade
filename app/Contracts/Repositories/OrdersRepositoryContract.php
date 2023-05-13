@@ -16,11 +16,13 @@ interface OrdersRepositoryContract
 
     public function findById(int $id, array $withRelations = []): Order;
 
+    public function findWhichNotPaid(array $withRelations = []): Collection;
+
+    public function findAll(array $withRelations = []): Collection;
+
     public function create(User $user, array $fields = []): Model;
 
-    public function findWhichNotPaid(): Collection;
+    public function update(Order $order, array $fields): Order;
 
-    public function updateStatus(int $orderId, OrderPaymentStatus $status): Order;
-
-    public function findAll(): Collection;
+    public function delete(Order $order): void;
 }

@@ -2,11 +2,13 @@
 
 namespace App\Listeners;
 
+use App\Contracts\Events\ArticleActionEventContract;
 use App\Contracts\Events\CarActionEventContract;
 use App\Events\ArticleCreatedEvent;
 use App\Events\ArticleDeletedEvent;
 use App\Events\ArticleUpdatedEvent;
 use App\Models\User;
+use App\Notifications\MyArticleActionNotification;
 use App\Notifications\MyCarActionNotification;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Support\Facades\Auth;
@@ -21,7 +23,7 @@ class SendArticleActionNotificationsSubscriber
             return;
         }
 
-        $user->notify(new MyArticleActionNotification($event->car(), $action));
+        $user->notify(new MyArticleActionNotification($event->article(), $action));
     }
 
     public function created(ArticleCreatedEvent $event): void

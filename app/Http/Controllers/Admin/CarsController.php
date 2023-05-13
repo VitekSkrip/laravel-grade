@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Contracts\Repositories\CarsRepositoryContract;
-use App\Contracts\Services\CarCreationServiceContract;
-use App\Contracts\Services\CarRemoverServiceContract;
-use App\Contracts\Services\CarUpdateServiceContract;
+use App\Contracts\Services\Cars\CarCreationServiceContract;
+use App\Contracts\Services\Cars\CarRemoverServiceContract;
+use App\Contracts\Services\Cars\CarUpdateServiceContract;
 use App\Contracts\Services\FlashMessageContract;
 use App\Contracts\Services\TagsSynchronizerServiceContract;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CarRequest;
+use App\Http\Requests\Admin\CarRequest;
 use App\Http\Requests\TagsRequest;
 use App\Models\Car;
 use Illuminate\Http\RedirectResponse;
@@ -17,8 +17,9 @@ use Illuminate\View\View;
 
 class CarsController extends Controller
 {
-    public function __construct(private readonly CarsRepositoryContract $carsRepository)
-    {
+    public function __construct(
+        private readonly CarsRepositoryContract $carsRepository
+    ) {
     }
 
     public function index(): View
@@ -45,7 +46,7 @@ class CarsController extends Controller
     ): RedirectResponse {
         $this->authorize('create', Car::class);
 
-        $car = $carCreationService->create($request->validated(), $request->get('categories'));
+        $car = $carCreationService->create($request->validated(), $request->get('category_id'));
 
         $tagsSynchronizerService->sync($car, $tagsRequest->get('tags'));
 
@@ -72,7 +73,7 @@ class CarsController extends Controller
     ): RedirectResponse {
         $this->authorize('update', [Car::class, $id]);
 
-        $car = $carUpdateService->update($id, $request->validated(), $request->get('categories'));
+        $car = $carUpdateService->update($id, $request->validated(), $request->get('category_id'));
 
         $tagsSynchronizerService->sync($car, $tagsRequest->get('tags'));
 

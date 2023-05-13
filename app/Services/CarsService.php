@@ -3,9 +3,9 @@
 namespace App\Services;
 
 use App\Contracts\Repositories\CarsRepositoryContract;
-use App\Contracts\Services\CarCreationServiceContract;
-use App\Contracts\Services\CarRemoverServiceContract;
-use App\Contracts\Services\CarUpdateServiceContract;
+use App\Contracts\Services\Cars\CarCreationServiceContract;
+use App\Contracts\Services\Cars\CarRemoverServiceContract;
+use App\Contracts\Services\Cars\CarUpdateServiceContract;
 use App\Contracts\Services\ImagesServiceContract;
 use App\Events\CarCreatedEvent;
 use App\Events\CarDeletedEvent;
@@ -21,7 +21,7 @@ class CarsService implements CarCreationServiceContract, CarRemoverServiceContra
     ) {
     }
 
-    public function create(array $fields, array $categories = []): Car
+    public function create(array $fields, int $categoryId): Car
     {
         if (! empty($fields['image'])) {
             $image = $this->imagesService->createImage($fields['image']);
@@ -30,9 +30,7 @@ class CarsService implements CarCreationServiceContract, CarRemoverServiceContra
 
         $car = $this->carsRepository->create($fields);
 
-        if (! empty($categories)) {
-            $this->carsRepository->syncCategories($car, $categories);
-        }
+        $this->carsRepository->syncCategory($car, $categoryId);
 
         $this->carsRepository->flushCache();
 
@@ -41,7 +39,7 @@ class CarsService implements CarCreationServiceContract, CarRemoverServiceContra
         return $car;
     }
 
-    public function update(int $id, array $fields, ?array $categories = null): Car
+    public function update(int $id, array $fields, int $categoryId): Car
     {
         $car = $this->carsRepository->getById($id);
         $oldImageId = null;
@@ -54,9 +52,7 @@ class CarsService implements CarCreationServiceContract, CarRemoverServiceContra
 
         $this->carsRepository->update($car, $fields);
 
-        if ($categories !== null) {
-            $this->carsRepository->syncCategories($car, $categories);
-        }
+        $this->carsRepository->syncCategory($car, $categoryId);
 
         if (! empty($oldImageId)) {
             $this->imagesService->deleteImage($oldImageId);

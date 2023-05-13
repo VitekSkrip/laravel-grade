@@ -1,6 +1,6 @@
 @props(['car'])
 <div class="bg-white w-full border border-gray-100 rounded overflow-hidden shadow-lg hover:shadow-2xl pt-4">
-    <a class="block w-full h-40" href="{{ route('product', $car) }}">
+    <a class="block w-full" href="{{ route('product', $car) }}">
         <img class="w-full h-full hover:opacity-90 object-cover" src="{{ $car->imageUrl }}" alt="{{ $car->name }}">
     </a>
     <div class="items-center space-y-4 sm:flex sm:space-y-0 sm:space-x-4">

@@ -1,6 +1,14 @@
-<table class="w-full text-sm text-left text-gray-500 text-gray-400">
-    <thead class="text-xs text-gray-700 uppercase bg-gray-50 bg-gray-700 text-gray-400">
+<table class="w-full text-sm text-left">
+    <thead class="text-xs uppercase text-black border-2">
     <tr>
+        @manager
+        <th scope="col" class="px-6 py-3 font-bold">
+            Клиент
+        </th>
+        <th scope="col" class="px-6 py-3 font-bold">
+            Почта
+        </th>
+        @endmanager
         <th scope="col" class="px-6 py-3 font-bold">
             Номер заказа
         </th>
@@ -11,7 +19,7 @@
             Общая стоимость
         </th>
         <th scope="col" class="px-6 py-3 font-bold">
-            Статус оплаты
+            Статус предоплаты
         </th>
     </tr>
     </thead>

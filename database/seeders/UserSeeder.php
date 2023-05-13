@@ -10,7 +10,7 @@ class UserSeeder extends Seeder
 {
     public function run()
     {
-        User::factory()->count(5)->hasProfile()->create();
+        User::factory()->count(10)->hasProfile()->create();
 
         /** @var User $user */
         $user = User::factory()->create();

@@ -22,7 +22,7 @@ class NewCarCreatedMail extends Mailable
         $mail = $this
             ->markdown('mail.new-car-created-mail')
             ->with([
-                'url' => route('product', ['product' => $this->car], true),
+                'url' => route('product', ['car' => $this->car], true),
             ])
             ->attachData('some Text', 'example.txt', ['mime' => 'plain/text'])
         ;

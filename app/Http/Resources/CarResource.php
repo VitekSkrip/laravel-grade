@@ -14,7 +14,7 @@ class CarResource extends JsonResource
             'price' => $this->price,
             'old_price' => $this->old_price,
             'image' => $this->image?->url,
-            'categories' => CategoryResource::collection($this->whenLoaded('categories'))
+            'category' => CategoryResource::collection($this->whenLoaded('category'))
         ];
     }
 

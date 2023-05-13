@@ -9,7 +9,7 @@
                 <a class="hover:text-orange" href="{{ route('articles.show', $article) }}">{{ $article->title }}</a>
             </div>
             <p class="text-gray-300 text-base">
-                <a class="hover:text-orange" href="{{ route('articles.show', $article) }}">{{ $article->description }}</a>
+                <a class="hover:text-orange" href="{{ route('articles.show', $article) }}">{{ mb_substr($article->description, 0, 50) . '...' }}</a>
             </p>
         </div>
 

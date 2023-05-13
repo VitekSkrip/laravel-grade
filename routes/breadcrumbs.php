@@ -12,24 +12,19 @@ Breadcrumbs::register('about', function ($breadcrumbs) {
     $breadcrumbs->push('О компании', route('about'));
 });
 
-Breadcrumbs::register('finances', function ($breadcrumbs) {
+Breadcrumbs::register('callback.show', function ($breadcrumbs) {
     $breadcrumbs->parent('home');
-    $breadcrumbs->push('Финансовый отдел', route('finances'));
+    $breadcrumbs->push('Обратный звонок', route('callback.show'));
 });
 
-Breadcrumbs::register('clients', function ($breadcrumbs) {
+Breadcrumbs::register('test-drive.show', function ($breadcrumbs) {
     $breadcrumbs->parent('home');
-    $breadcrumbs->push('Для клиентов', route('clients'));
+    $breadcrumbs->push('Запись на тест-драйв', route('test-drive.show'));
 });
 
-Breadcrumbs::register('contacts', function ($breadcrumbs) {
-    $breadcrumbs->parent('home');
-    $breadcrumbs->push('Контактная информация', route('contacts'));
-});
-
-Breadcrumbs::register('sales', function ($breadcrumbs) {
-    $breadcrumbs->parent('home');
-    $breadcrumbs->push('Условия продаж', route('sales'));
+Breadcrumbs::register('manager.test-drive.edit', function ($breadcrumbs, $testDrive) {
+    $breadcrumbs->parent('manager.manager');
+    $breadcrumbs->push('Изменение заявки', route('manager.test-drive.edit', $testDrive));
 });
 
 Breadcrumbs::register('catalog', function ($breadcrumbs) {
@@ -135,14 +130,4 @@ Breadcrumbs::for('manager.manager', function ($breadcrumbs) {
 Breadcrumbs::for('salons.index', function ($breadcrumbs) {
     $breadcrumbs->parent('home');
     $breadcrumbs->push('Салоны', route('salons.index'));
-});
-
-Breadcrumbs::for('reports', function ($breadcrumbs) {
-    $breadcrumbs->parent('home');
-    $breadcrumbs->push('Отчеты', route('reports'));
-});
-
-Breadcrumbs::for('statistics', function ($breadcrumbs) {
-    $breadcrumbs->parent('reports');
-    $breadcrumbs->push('Отчет по статистике', route('statistics'));
 });

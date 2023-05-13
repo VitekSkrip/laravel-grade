@@ -10,6 +10,7 @@
                 </x-slot:navLinks>
 
                 <x-slot:authMenu>
+                    <x-panels.user_auth_menu />
                 </x-slot:authMenu>
             </x-panels.navigation>
         </x-layouts.parts.header>

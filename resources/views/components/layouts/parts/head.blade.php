@@ -15,8 +15,4 @@
     <!-- Styles -->
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     @stack('styles')
-
-    <!-- Scripts -->
-    <script src="{{ mix('js/app.js') }}"></script>
-    @stack('scripts')
 </head>

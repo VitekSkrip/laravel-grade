@@ -31,28 +31,32 @@ class OrdersRepository implements OrdersRepositoryContract
         return $this->getModel()->where('id', $id)->with($withRelations)->firstOrFail();
     }
 
+    public function findAll(array $withRelations = []): Collection
+    {
+        return $this->getModel()->with($withRelations)->get();
+    }
+
+    public function findWhichNotPaid(array $withRelations = []): Collection
+    {
+        return $this->getModel()
+            ->whereIn('payment_status', [OrderPaymentStatus::PAYMENT_ERROR->value, OrderPaymentStatus::NOT_PAID->value])
+            ->get()
+        ;
+    }
+
     public function create(User $user, array $fields = []): Model
     {
         return $user->orders()->firstOrCreate($fields);
     }
 
-    public function findWhichNotPaid(): Collection
+    public function update(Order $order, array $fields): Order
     {
-        return $this->getModel()
-            ->whereIn('payment_status', [OrderPaymentStatus::PAYMENT_ERROR->value, OrderPaymentStatus::NOT_CHECKED->value])
-            ->get()
-        ;
-    }
-
-    public function updateStatus(int $orderId, OrderPaymentStatus $status): Order
-    {
-        $order = $this->findById($orderId);
-        $order->update(['payment_status' => $status->value]);
+        $order->update($fields);
         return $order;
     }
 
-    public function findAll(): Collection
+    public function delete(Order $order): void
     {
-        return $this->getModel()->get();
+        $order->delete();
     }
 }

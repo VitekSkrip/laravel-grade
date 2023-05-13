@@ -21,7 +21,7 @@ class MyArticleActionNotification extends Notification
 
     public function via($notifiable): array
     {
-        return ['mail', 'database', 'telegram'];
+        return ['mail', 'database'];
     }
 
     public function toMail($notifiable): MailMessage
@@ -29,14 +29,6 @@ class MyArticleActionNotification extends Notification
         return (new MailMessage())
             ->line('Машина ' . $this->article->title . ' ' . $this->action)
             ->action('Посмотреть', route('articles.show', ['slug' => $this->article->slug]))
-            ;
-    }
-
-    public function toTelegram($notifiable): TelegramMessage
-    {
-        return (TelegramMessage::create())
-            ->line('Новость ' . $this->article->title . ' ' . $this->action)
-            ->button('Посмотреть', route('articles.show', ['slug' => $this->article->slug]))
             ;
     }
 

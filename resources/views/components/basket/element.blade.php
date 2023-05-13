@@ -1,10 +1,10 @@
 @props([
     'product'
 ])
-<tr class="bg-white border-b bg-gray-800 border-gray-700 hover:bg-gray-50 hover:bg-gray-600">
+<tr class="bg-white border-b hover:bg-gray-100">
     <td class="w-32 p-4">
         <a class="hover:opacity-75" href="{{ route('product', $product) }}">
-            <img src="{{ $product->image->url }}" alt="">
+            <img src="{{ $product->imageUrl }}" alt="">
         </a>
     </td>
     <td class="px-6 py-4 font-semibold">
@@ -14,6 +14,9 @@
     </td>
     <td class="px-6 py-4 font-semibold text-gray-900">
         {{ $product->price }} ₽
+    </td>
+    <td class="px-6 py-4 font-semibold text-gray-900">
+        Предоплата: 5000 ₽
     </td>
     <td class="px-6 py-4">
         <form action="{{ route('basket.removeProduct') }}" method="POST">

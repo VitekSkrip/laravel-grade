@@ -40,15 +40,15 @@
     />
 </x-forms.groups.group>
 
-<x-forms.groups.group for="fieldCarCategories" error="{{ $errors->first('category') }}">
+<x-forms.groups.group for="fieldCarCategories" error="{{ $errors->first('category_id') }}">
     <x-slot:label>Категория</x-slot:label>
     <x-forms.inputs.select
         id="fieldCarCategories"
-        name="category"
-        error="{{ $errors->first('category') }}"
+        name="category_id"
+        error="{{ $errors->first('category_id') }}"
     >
         @foreach ($categories as $category)
-            <option @isset($car->$category) @selected(in_array($category->id, old('category', $car->category->pluck('id')->all()))) @endisset value="{{ $category->id }}">{{ $category->name }}</option>
+            <option @isset($car->category) @selected($category->id == old('category_id', $car->category->id)) @endisset value="{{ $category->id }}">{{ $category->name }}</option>
         @endforeach
     </x-forms.inputs.select>
 </x-forms.groups.group>
@@ -120,7 +120,6 @@
             <option @selected($class->id == old('class_id', $car->class_id)) value="{{ $class->id }}">{{ $class->name }}</option>
         @endforeach
     </x-forms.inputs.select>
-    </select>
 </x-forms.groups.group>
 
 <x-forms.groups.group for="fieldCarBody" error="{{ $errors->first('body_id') }}">
@@ -134,7 +133,6 @@
             <option @selected($body->id == old('body_id', $car->body_id)) value="{{ $body->id }}">{{ $body->name }}</option>
         @endforeach
     </x-forms.inputs.select>
-    </select>
 </x-forms.groups.group>
 
 <x-forms.groups.group for="fieldCarEngine" error="{{ $errors->first('engine_id') }}">

@@ -20,6 +20,7 @@ class BasketController extends Controller
         $basketProducts = $this->basketsRepositoryContract->findProducts($request->user()->id);
         $totalCost = $this->basketsRepositoryContract->calculateTotalCost($basketProducts);
         $totalQuantity = $this->basketsRepositoryContract->calculateTotalQuantity($basketProducts);
+
         return view('pages.basket', compact('basketProducts', 'totalCost', 'totalQuantity'));
     }
 
@@ -32,7 +33,7 @@ class BasketController extends Controller
             $request->product_id
         );
 
-        $flashMessage->success('Модель добавлена в корзину');
+        $flashMessage->success('Модель добавлена в избранное');
 
         return back();
     }

@@ -13,6 +13,8 @@ interface CarsRepositoryContract extends FlushCacheRepositoryContract
 
     public function findAll(): Collection;
 
+    public function findAvailableAtSalons(array $withRelations = []): Collection;
+
     public function findForMainPage(int $limit): Collection;
 
     public function findForCatalog(
@@ -33,7 +35,7 @@ interface CarsRepositoryContract extends FlushCacheRepositoryContract
 
     public function create(array $fields): Car;
 
-    public function syncCategories(Car $car, array $categories): Car;
+    public function syncCategory(Car $car, int $categoryId): Car;
 
     public function update(Car $car, array $fields): Car;
 

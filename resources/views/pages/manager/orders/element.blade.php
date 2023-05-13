@@ -1,4 +1,12 @@
-<tr class="bg-white border-b bg-gray-800 border-gray-700 hover:bg-gray-50 hover:bg-gray-600">
+<tr class="bg-white border-b bg-gray-800 border-gray-700 hover:bg-gray-100">
+    @manager
+    <td class="px-6 py-4 font-semibold text-gray-900">
+        {{ $order->user->name }}
+    </td>
+    <td class="px-6 py-4 font-semibold text-gray-900">
+        {{ $order->user->email }}
+    </td>
+    @endmanager
     <td class="px-6 py-4 font-semibold text-gray-900">
         {{ $order->id }}
     </td>

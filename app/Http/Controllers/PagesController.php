@@ -16,7 +16,7 @@ class PagesController extends Controller
 
     public function homepage(): View
     {
-        $homeNews = $this->articlesRepository->findForHomePage(3);
+        $homeNews = $this->articlesRepository->findForHomePage(2);
 
         $cars = $this->carsRepositoryContract->findForMainPage(4);
 
@@ -29,25 +29,5 @@ class PagesController extends Controller
     public function about(): View
     {
         return view('pages.about');
-    }
-
-    public function contacts(): View
-    {
-        return view('pages.contacts');
-    }
-
-    public function sales(): View
-    {
-        return view('pages.sales');
-    }
-
-    public function finances(): View
-    {
-        return view('pages.finances');
-    }
-
-    public function clients(): View
-    {
-        return view('pages.clients');
     }
 }

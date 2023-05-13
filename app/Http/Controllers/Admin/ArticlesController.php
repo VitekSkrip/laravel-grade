@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Contracts\Services\Articles\ArticleCreationServiceContract;
+use App\Contracts\Services\Articles\ArticleRemoverServiceContract;
+use App\Contracts\Services\Articles\ArticleUpdateServiceContract;
 use App\Contracts\Services\FlashMessageContract;
-use App\Http\Requests\ArticleRequest;
+use App\Http\Requests\Admin\ArticleRequest;
 use App\Http\Requests\TagsRequest;
 use App\Models\Article;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Contracts\Repositories\ArticlesRepositoryContract;
-use App\Contracts\Services\CreateArticleServiceContract;
-use App\Contracts\Services\UpdateArticleServiceContract;
 use Illuminate\View\View;
 
 class ArticlesController extends Controller
@@ -42,7 +43,7 @@ class ArticlesController extends Controller
         ArticleRequest $request,
         TagsRequest $tagsRequest,
         FlashMessageContract $flashMessage,
-        CreateArticleServiceContract $createArticleService
+        ArticleCreationServiceContract $createArticleService
     ): RedirectResponse {
         $this->authorize('create', Article::class);
 
@@ -67,7 +68,7 @@ class ArticlesController extends Controller
         string $slug,
         TagsRequest $tagsRequest,
         FlashMessageContract $flashMessage,
-        UpdateArticleServiceContract $updateArticleService
+        ArticleUpdateServiceContract $updateArticleService
     ): RedirectResponse {
         $this->authorize('update', $this->articlesRepository->findBySlug($slug));
 
@@ -81,10 +82,11 @@ class ArticlesController extends Controller
     public function destroy(
         string $slug,
         FlashMessageContract $flashMessage,
+        ArticleRemoverServiceContract $articleRemoverService
     ): RedirectResponse {
         $this->authorize('update', $this->articlesRepository->findBySlug($slug));
 
-        $this->articlesRepository->delete($slug);
+        $articleRemoverService->delete($slug);
 
         $flashMessage->success('Новость удалена');
 

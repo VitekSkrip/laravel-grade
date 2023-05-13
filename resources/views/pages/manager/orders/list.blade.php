@@ -1,11 +1,11 @@
 <section>
     <header>
         <h2 class="text-lg font-medium text-gray-900">
-            {{ __('Список заявок') }}
+            {{ __('Список заявок на предоплату') }}
         </h2>
 
         <p class="mt-1 text-sm text-gray-600">
-            {{ __("Информация о всех активных заявках.") }}
+            {{ __("Информация о всех заявках.") }}
         </p>
     </header>
     @if($orders->isEmpty())
