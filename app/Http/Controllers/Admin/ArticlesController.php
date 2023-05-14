@@ -72,11 +72,11 @@ class ArticlesController extends Controller
     ): RedirectResponse {
         $this->authorize('update', $this->articlesRepository->findBySlug($slug));
 
-        $updateArticleService->update($slug, $request->validated(), $tagsRequest->get('tags'));
+        $article = $updateArticleService->update($slug, $request->validated(), $tagsRequest->get('tags'));
 
         $flashMessage->success('Новость успешно обновлена');
 
-        return back();
+        return redirect(route('admin.articles.edit', $article));
     }
 
     public function destroy(

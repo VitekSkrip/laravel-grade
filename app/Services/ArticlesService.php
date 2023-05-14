@@ -11,6 +11,7 @@ use App\Contracts\Services\TagsSynchronizerServiceContract;
 use App\Events\ArticleCreatedEvent;
 use App\Events\ArticleDeletedEvent;
 use App\Events\ArticleUpdatedEvent;
+use App\Models\Article;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 
@@ -42,9 +43,9 @@ class ArticlesService implements ArticleCreationServiceContract, ArticleUpdateSe
         });
     }
 
-    public function update(string $slug, array $fields, array $tags): void
+    public function update(string $slug, array $fields, array $tags): Article
     {
-        DB::transaction(function () use ($slug, $fields, $tags) {
+        return DB::transaction(function () use ($slug, $fields, $tags) {
 
             $oldImageId = null;
             $article = $this->articlesRepository->findBySlug($slug);
@@ -59,7 +60,7 @@ class ArticlesService implements ArticleCreationServiceContract, ArticleUpdateSe
                 $this->imagesService->deleteImage($oldImageId);
             }
 
-            $this->articlesRepository->update($article, $fields);
+            $article = $this->articlesRepository->update($article, $fields);
 
             $this->tagsSynchronizerService->sync($article, $tags);
 

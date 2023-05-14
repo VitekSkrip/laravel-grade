@@ -29,20 +29,8 @@ class EventServiceProvider extends ServiceProvider
      * @var array<class-string, array<int, class-string>>
      */
     protected $listen = [
-        ArticleCreatedEvent::class => [
-            SendMailOnNewArticleCreatedListener::class,
-        ],
-        ArticleUpdatedEvent::class => [
-            SendMailOnArticleUpdatedListener::class,
-        ],
-        ArticleDeletedEvent::class => [
-            SendMailOnArticleDeletedListener::class,
-        ],
         Registered::class => [
             SendEmailVerificationNotification::class,
-        ],
-        CarCreatedEvent::class => [
-            SendMailOnNewCarCreatedListener::class,
         ],
     ];
 

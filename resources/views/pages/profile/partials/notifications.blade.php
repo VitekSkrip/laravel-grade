@@ -9,7 +9,7 @@
         </p>
     </header>
 
-    @if(! empty($notifications->items))
+    @if(! $notifications->isEmpty())
         <table class="border border-collapse w-full">
             <thead>
             <tr>

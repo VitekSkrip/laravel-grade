@@ -42,7 +42,6 @@ class CarsService implements CarCreationServiceContract, CarRemoverServiceContra
     public function update(int $id, array $fields, int $categoryId): Car
     {
         $car = $this->carsRepository->getById($id);
-        $oldImageId = null;
 
         if (! empty($fields['image'])) {
             $image = $this->imagesService->createImage($fields['image']);
@@ -53,10 +52,6 @@ class CarsService implements CarCreationServiceContract, CarRemoverServiceContra
         $this->carsRepository->update($car, $fields);
 
         $this->carsRepository->syncCategory($car, $categoryId);
-
-        if (! empty($oldImageId)) {
-            $this->imagesService->deleteImage($oldImageId);
-        }
 
         $this->carsRepository->flushCache();
 
@@ -70,10 +65,6 @@ class CarsService implements CarCreationServiceContract, CarRemoverServiceContra
         $car = $this->carsRepository->getById($id);
 
         $this->carsRepository->delete($id);
-
-        if (! empty($car->image_id)) {
-            $this->imagesService->deleteImage($car->image_id);
-        }
 
         $this->carsRepository->flushCache();
 

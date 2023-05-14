@@ -27,7 +27,7 @@ class MyArticleActionNotification extends Notification
     public function toMail($notifiable): MailMessage
     {
         return (new MailMessage())
-            ->line('Машина ' . $this->article->title . ' ' . $this->action)
+            ->line('Новость ' . $this->article->title . ' ' . $this->action)
             ->action('Посмотреть', route('articles.show', ['slug' => $this->article->slug]))
             ;
     }

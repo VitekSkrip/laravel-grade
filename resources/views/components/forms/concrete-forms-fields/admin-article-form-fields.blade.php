@@ -1,4 +1,14 @@
 @csrf
+<x-forms.groups.group for="fieldArticleId">
+    <x-slot:label></x-slot:label>
+    <x-forms.inputs.text
+        id="fieldArticleId"
+        name="id"
+        value="{{ $article->id }}"
+        type="hidden"
+    />
+</x-forms.groups.group>
+
 <x-forms.groups.group for="fieldArticleName" error="{{ $errors->first('title') }}">
     <x-slot:label>Заголовок новости</x-slot:label>
     <x-forms.inputs.text
