@@ -10,6 +10,12 @@
  */
 
 /*!
+ * Vue.js v2.7.14
+ * (c) 2014-2022 Evan You
+ * Released under the MIT License.
+ */
+
+/*!
  * jQuery JavaScript Library v3.6.3
  * https://jquery.com/
  *
@@ -21,4 +27,21 @@
  * https://jquery.org/license
  *
  * Date: 2022-12-20T21:28Z
+ */
+
+/*!
+ * vue-client-only v2.0.0
+ * (c) 2019-present egoist <0x142857@gmail.com>
+ * Released under the MIT License.
+ */
+
+/*! 
+  * portal-vue © Thorsten Lünborg, 2019 
+  * 
+  * Version: 2.1.7
+  * 
+  * LICENCE: MIT 
+  * 
+  * https://github.com/linusborg/portal-vue
+  * 
  */

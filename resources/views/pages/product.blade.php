@@ -1,7 +1,7 @@
 <x-layouts.app>
-    <x-slot name="title">{{ $product->title }}</x-slot>
+    <x-slot name="title">{{ $product->name }}</x-slot>
 
-    @section('page-title', $product->title)
+    @section('page-title', $product->name)
 
     {{ Breadcrumbs::setCurrentRoute('product', $product) }}
 
@@ -19,6 +19,8 @@
         <div class="col-span-1 lg:col-span-2">
             <div class="space-y-4 w-full">
                 <div class="block px-4">
+                    <p class="font-bold">Модель: {{ $product->name }}</p>
+
                     <p class="font-bold">Цена:</p>
                     @isset ($product->old_price)
                         <p class="text-base line-through text-gray-400"><x-price :price="$product->old_price" /></p>
